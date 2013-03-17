@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.berlin.batch.bean">
+    <class name="BotDataMessages" table="bot_data_messages">        
+        <id name="id" column="id">
+        	<generator class="identity"/>
+        </id>              
+        <property name="createdAt" type="timestamp" column="created_at"/>        
+        <property name="message" />
+        <property name="messageCreatedAtStr" column="message_created_at_str" />
+        <property name="messageCreatedAt" type="timestamp" column="message_created_at" />                	
+		<property name="followersCount" column="followers_count" />                				
+		<property name="userId" column="user_id" />
+		<property name="messageId" column="message_id" />		
+		<property name="screenName" column="screen_name" />
+		<property name="query" column="query" />
+    </class>
+    <class name="BotDataUser" table="bot_data_user">
+    	<id name="id" column="id">
+    		<generator class="identity" />
+        </id>    	
+        <property name="createdAt" type="timestamp" column="created_at"/>                               
+		<property name="followersCount" column="followers_count" />                						
+		<property name="messageUserId" column="message_user_id" />
+		<property name="screenName" column="screen_name" />
+    </class>
+</hibernate-mapping>

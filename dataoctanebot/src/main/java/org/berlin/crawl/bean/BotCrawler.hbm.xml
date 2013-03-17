@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.berlin.crawl.bean">
+    <!-- ========== -->
+    <!-- Data Model for Octane Web Crawler -->
+    <!-- ========== -->
+    <class name="BotSeed" table="bot_crawler_seeds">        
+        <id name="id" column="id">
+        	<generator class="identity"/>
+        </id>              
+        <property name="createdAt" type="timestamp" column="created_at"/>        
+        <property name="scheme" />
+        <property name="host" />
+        <property name="port" />
+        <property name="path" />  
+        <property name="enabled" />      
+    </class>    
+    
+    <class name="BotCrawlerLink" table="bot_crawler_links">        
+        <id name="id" column="id">
+        	<generator class="identity"/>
+        </id>              
+        <property name="createdAt" type="timestamp" column="created_at"/>        
+        <property name="url" />
+        <property name="host" />
+        <property name="status" />
+        <property name="title" />
+        <property name="descr" />
+        <property name="path" />        
+        <property name="statusline" />
+        <property name="score" />
+        <property name="linktext" />
+        <property name="linkcount" />
+        <property name="source" />
+    </class>
+    
+    <class name="BotCrawlerError" table="bot_crawler_errors">        
+        <id name="id" column="id">
+        	<generator class="identity"/>
+        </id>              
+        <property name="createdAt" type="timestamp" column="created_at"/>        
+        <property name="url" />
+        <property name="host" />
+        <property name="status" />               
+        <property name="statusline" />       
+    </class>
+    
+    <class name="BotCrawlerIgnore" table="bot_crawler_ignores">        
+        <id name="id" column="id">
+        	<generator class="identity"/>
+        </id>              
+        <property name="createdAt" type="timestamp" column="created_at"/>                
+        <property name="host" />             
+        <property name="descr" />
+        <property name="path" />        
+        <property name="disabled" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,199 @@
+====================
+ Copyright (c) 2013 Berlin Brown (berlin2research.com)
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at 
+      http://www.apache.org/licenses/LICENSE-2.0 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+====================
+
+Queries and data model for bot crawlers
+
+====================
+CREATE DATABASE botdb;
+USE  botdb;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON botdb.* TO 'botdb_admin'@'localhost' IDENTIFIED BY 'botdb_admin_password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON botdb.* TO 'botdb_admin'@'localhost.localdomain' IDENTIFIED BY 'botdb_admin_password';
+FLUSH PRIVILEGES;
+
+====================
+
+Queries for new bot crawlers
+This consists of a data model for web crawler
+====================
+
+CREATE TABLE bot_crawler_seeds (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, scheme varchar(10) NOT NULL, host varchar(255) UNIQUE NOT NULL, port TINYINT DEFAULT NULL, path VARCHAR(512) NOT NULL, enabled varchar(10) DEFAULT NULL, PRIMARY KEY (id) );
+
+CREATE TABLE bot_crawler_links (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, url varchar(600) UNIQUE NOT NULL, host varchar(255) NOT NULL, status INTEGER DEFAULT NULL, title VARCHAR(255) DEFAULT NULL, descr VARCHAR(300) DEFAULT NULL,  path VARCHAR(600) DEFAULT NULL,  statusline varchar(40) DEFAULT NULL, score INTEGER DEFAULT 0, linktext varchar(255) default null, linkcount INTEGER DEFAULT 0, source varchar(140) default null, PRIMARY KEY (id) );
+
+CREATE TABLE bot_crawler_errors (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, url varchar(600) NOT NULL, host varchar(255) NOT NULL, status INTEGER DEFAULT NULL, statusline varchar(40) DEFAULT NULL, PRIMARY KEY (id) );
+
+CREATE TABLE bot_crawler_ignores (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, host varchar(255) NOT NULL, descr VARCHAR(80) DEFAULT NULL, path VARCHAR(255) DEFAULT NULL, disabled varchar(10) DEFAULT NULL, PRIMARY KEY (id) );
+
+===== TABLES for twitter bot:
+
+show tables;
+describe ...
+
+Example:
+"Sat Feb 23 17:41:13 +0000 2013"
+
+--- With foreign key constraints
+
+CREATE TABLE bot_data_user (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, followers_count BIGINT NOT NULL, message_user_id BIGINT UNIQUE NOT NULL, screen_name varchar(80) UNIQUE NOT NULL, PRIMARY KEY (id) );
+
+CREATE TABLE bot_data_messages (id MEDIUMINT NOT NULL AUTO_INCREMENT, created_at DATETIME DEFAULT NULL, message_created_at_str varchar(40) NOT NULL, message_created_at DATETIME DEFAULT NULL, message varchar(400) UNIQUE NOT NULL, message_id BIGINT NOT NULL, followers_count BIGINT NOT NULL, user_id MEDIUMINT NOT NULL, screen_name varchar(80) NOT NULL, query varchar(100) DEFAULT NULL, KEY FK_USER_ID (user_id), CONSTRAINT FK_USER_ID FOREIGN KEY (user_id) REFERENCES bot_data_user (id), PRIMARY KEY (id) );
+    
+=====
+
+Example with foreign key.
+
+KEY `FK_employee` (`address_id`), 
+CONSTRAINT `FK_employee` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 
+
+
+===== inserts
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'berlin2research.com', '/crawl1/cr1.html', 'Y'); 
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'berlin2research.com', '/crawl2/cr1.html', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'thehill.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'usagov.gov', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'singularityhub.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'https', 'news.ycombinator.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.reddit.com', '/r/technology', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'huffingtonpost.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'cnn.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'reuters.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'drudgereport.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.realclearpolitics.com', '/', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.newscientist.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.marco.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.hooktheory.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'wordpress.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.cnn.com', '/', 'Y');                       
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.theverge.com', '/', 'Y');                 
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.detroitnews.com', '/', 'Y');               
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.deadline.com', '/', 'Y');                                 
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.realclearreligion.org', '/', 'Y');                        
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.nytimes.com', '/', 'Y');                                  
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'ocw.mit.edu', '/', 'Y');                                      
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.edx.org', '/', 'Y');                                      
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.breitbart.com', '/', 'Y');                                
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.hlntv.com', '/', 'Y');                                    
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.realclearworld.com', '/', 'Y');                           
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'nejm.org', '/', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.japantoday.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.africanews.com', '/', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'news.bbc.co.uk', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.techcrunch.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'phil.cdc.gov', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'cdn.breitbart.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.economist.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'diversity.mit.edu', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.foxnews.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.usatoday.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.guardian.co.uk', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.johnthavis.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.abcnews.com', '/', 'Y');
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.theverge.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.anncoulter.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.nationalpost.com', '/index.html', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'news.nationalpost.com', '/category/news/world/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'blog.markwatson.com', '/2012/10/clojure-vs-scala-smackdown.html', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'jim.com', '/anarchy', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'dailyanarchist.com', '/category/anarcho-capitalism/', 'Y');
+
+---
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'cspan.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'americablog.blogspot.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.americanpatrol.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'crooksandliars.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.breitbart.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.publicagenda.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'mises.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'jamescarlin.wikidot.com', '/', 'Y');
+
+================
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'berlin2research');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'google.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'google');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'youtube');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'facebook');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'twitter');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'adobe.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'bankofamerica');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'capitalone');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'godaddy.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'yahoo.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'bing');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'flickr.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'fbi.gov');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'digg.com');
+insert into bot_crawler_ignores(creatinsert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'itunes');ed_at, host) values('2013-03-14 03:22:36', 'microsoft.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'apple.com');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'phobos');
+insert into bot_crawler_ignores(created_at, host) values('2013-03-14 03:22:36', 'itunes');
+
+====================
+
+----
+
+Interesting queries:
+
+Find the most posted users:
+mysql> select a.screen_name, a.user_id, count(*) as "Messages" from bot_data_messages a, bot_data_user b where a.user_id = b.id group by a.user_id order by Messages;
+
+select screen_name, count(message) as "Number" from bot_data_messages group by screen_name order by Number;
+
+select host, count(host) as 'Count' from bot_crawler_links group by host order by Count;
+
+
+----
+
+More seeds:
+
+
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'supremecourt.c-span.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.tocqueville.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'whitehouse.c-span.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'mises.givingplan.net', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'presidentiallibraries.c-span.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'topics.nytimes.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'journalism.nyu.edu', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.baseballhq.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.foxbusiness.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.spiegel.de', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.boston.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.rushlimbaugh.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'smallbusiness.foxbusiness.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.muslims4liberty.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'bitcoin.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.aol.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.forbes.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.infomart.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.fosspatents.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'newsbusters.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'timesmachine.nytimes.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'giving.mit.edu', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'english.kyodonews.jp', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.townhall.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.opencalais.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.jewishworldreview.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.americanpresidents.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.americanwriters.org', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.oregonlive.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'www.macworld.com', '/', 'Y');
+insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', 'wiredbusinessconference.com', '/', 'Y');
+

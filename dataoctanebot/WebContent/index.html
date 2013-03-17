@@ -1,0 +1,31 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Crawler Web Monitor</title>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() { 		
+			setInterval(function() {
+				$.ajax({
+		  			url: "/dataoctanebot/ListMessages.do",
+		  			cache: false
+				}).done(function(html) {
+					$("#results").text(html);
+				});
+			}, 60000);
+		});
+	</script>
+	<style>		
+		body { 
+			font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+		}
+	</style>
+</head>
+<body> 
+    <div style="margin: 80px; padding: 10px; color: white; background-color: #900; width: 800px">
+		Web Crawler Monitor
+		<br />		
+		<div id="results">0</div>
+	</div>
+</body>
+</html>

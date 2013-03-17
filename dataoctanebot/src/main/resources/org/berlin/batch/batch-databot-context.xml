@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:batch="http://www.springframework.org/schema/batch"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/jdbc 
+                        http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                        http://www.springframework.org/schema/batch 
+                        http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<jdbc:initialize-database data-source="dataSourceBatch" enabled="true">		
+		<jdbc:script location="classpath:/org/springframework/batch/core/schema-h2.sql" />
+	</jdbc:initialize-database>
+
+    <!--
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    	<property name="driverClassName" value="org.h2.Driver" />    	
+    	<property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE" />    	     	         
+        <property name="url" value="jdbc:h2:~/db/databotdb" />
+    	<property name="username" value="sa" />
+    	<property name="password" value="" />    	
+    	<property name="maxActive" value="10" />
+    	<property name="minIdle" value="4"/> 
+	</bean>
+	-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+  		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+  		<property name="url" value="jdbc:mysql://localhost/botdb"/>
+  		<property name="username" value="botdb_admin"/>
+  		<property name="password" value="botdb_admin_password"/>
+  		<property name="maxActive" value="6" />
+    	<property name="minIdle" value="2"/>  		  		  		
+ 	</bean>
+	<bean id="dataSourceBatch" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:mem:botbatch" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+		<property name="suppressClose" value="true" />
+	</bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+          p:dataSource-ref="dataSource">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:org/berlin/batch/bean/BotMessages.hbm.xml</value>                
+                <value>classpath:org/berlin/crawl/bean/BotCrawler.hbm.xml</value>
+            </list>
+        </property>        
+        <!-- SQL dialect -->        
+        <!-- Disable the second-level cache  -->
+        <!-- Echo all executed SQL to stdout -->        
+        <!-- Drop and re-create the database schema on startup -->
+        <!-- To create : hibernate.hbm2ddl.auto=create -->        		                      
+        <property name="hibernateProperties">
+            <value>            	
+                hibernate.show_sql=true
+            	hibernate.format_sql=true               	               
+                hibernate.dialect=org.hibernate.dialect.HSQLDialect
+                
+            </value>
+        </property>
+    </bean>
+    
+    <!-- Spring Batch Config -->
+    
+    <job id="runDataBot" xmlns="http://www.springframework.org/schema/batch">
+		<step id="connect">
+			<tasklet ref="connectTasklet" />
+		</step>		
+	</job>
+	<bean id="connectTasklet" class="org.berlin.batch.DataBotTasklet" scope="step">
+		<property name="inputResource" value="#{jobParameters['inputResource']}" />
+		<property name="targetDirectory" value="#{jobParameters['targetDirectory']}" />
+		<property name="targetFile" value="#{jobParameters['targetFile']}" />
+	</bean>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceBatch" />
+	</bean>
+	
+	<batch:job-repository id="jobRepository" data-source="dataSourceBatch" transaction-manager="transactionManager" />
+	
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+</beans>
