@@ -1,21 +1,16 @@
-########################################
 # README for Octane Web Crawler
-########################################
 Date: 3/15/2012
 
-Octane Crawler is a Java based web crawler. Octane Crawler follows polite web crawler rules. 
-The goal of this project is to research content on the web.
+Octane Crawler and OpenBotList are Java-based tools designed for web crawling and indexing the machine-readable web. Octane Crawler adheres to polite web crawling rules, ensuring responsible interaction with websites.
 
-########################################
-# Quick start for octane crawler
-########################################
+The primary goal of this project is to research web content and publish it to centralized or decentralized platforms, promoting a free and connected web where information is openly accessible to everyone.
+
+## Quick start for octane crawler
 
  1. Run the database setup routines in docs/DATABASE.txt
  2. Launch the program org.berlin.crawl.OctaneCrawlMain
-
-########################################
-# README for twitter data collection
-########################################
+ 3. 
+## README for twitter data collection
 
 Note: OpenNLP natural language processing data from:
 
@@ -31,9 +26,7 @@ Author and Contact
 Berlin Brown (berlin dot brown at gmail.com)
 http://berlin2research.com/
 
-########################################
- License 
-########################################
+## License 
 
  Copyright (c) 2013 Berlin Brown (berlin2research.com)
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,9 +39,7 @@ http://berlin2research.com/
  See the License for the specific language governing permissions and
  limitations under the License.
 
-########################################
-# Libraries used
-########################################
+## Libraries used
 
 commons-io-2.1.jar, commons-lang3-3.1.jar, commons-logging-1.1.1.jar, derby-10.8.3.0.jar, 
 dom4j-1.6.1.jar, hibernate-core-4.0.1.Final.jar, hsqldb-1.8.0.10.jar, httpclient-4.2.3.jar, jackson-core-asl-1.9.12.jar, 
