@@ -42,62 +42,63 @@ import org.slf4j.LoggerFactory;
  * Delete old log files.
  */
 public class FileCleaner {
-  
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileCleaner.class);
-  
-    private final FileWriterConf conf;
-    
-    public FileCleaner(final FileWriterConf conf) {
-        this.conf = conf;
-    }
-    
-    /**
-     * Delete old files.
-     */
-    public void clean() {
-        
-        if (this.conf == null) {
-            LOGGER.info("At fileClean, invalid configuration");
-            return;
-        }
-        LOGGER.info("At clean : LocalTargetDir - " + this.conf.getLocalTargetDir());
-        if (this.conf.getLocalTargetDir() == null || this.conf.getLocalTargetDir().length() == 0) {
-            LOGGER.warn("At fileClean, invalid configuration, TargetLogDirToSearch is empty");
-            return;
-        }         
-        final File fdir = new File(this.conf.getLocalTargetDir());
-        final File fdirSys = new File(this.conf.getLocalTargetDir() + "system");
-        final long tstart = System.currentTimeMillis();
-        final int i = this.clean(fdir);
-        final int ix = this.clean(fdirSys) + i;
-        final long tdiff = System.currentTimeMillis() - tstart;
-        LOGGER.info("Complete deleted files in " + tdiff + " ms totalFilesDeleted=" + ix);
-    }
-    
-    /**
-     * Remove the file.
-     * @param fdir
-     * @return
-     */
-    protected int clean(final File fdir) {
-        int i = 0;
-        if (!fdir.exists()) {
-            return i;
-        }
-        if (fdir.listFiles() == null) {
-            LOGGER.info("No files for cleaning");
-            return i;
-        }
-        for (final File f : fdir.listFiles()) {
-            if (f.isFile()) {
-                final boolean r = f.delete();
-                if (r) {
-                    i++;
-                    LOGGER.info("Deleted file = " + f.getAbsolutePath());
-                }
-            } // End of the if //
-        } // End of the For //
-        return i;
-    }
-    
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileCleaner.class);
+
+	private final FileWriterConf conf;
+
+	public FileCleaner(final FileWriterConf conf) {
+		this.conf = conf;
+	}
+
+	/**
+	 * Delete old files.
+	 */
+	public void clean() {
+
+		if (this.conf == null) {
+			LOGGER.info("At fileClean, invalid configuration");
+			return;
+		}
+		LOGGER.info("At clean : LocalTargetDir - " + this.conf.getLocalTargetDir());
+		if (this.conf.getLocalTargetDir() == null || this.conf.getLocalTargetDir().length() == 0) {
+			LOGGER.warn("At fileClean, invalid configuration, TargetLogDirToSearch is empty");
+			return;
+		}
+		final File fdir = new File(this.conf.getLocalTargetDir());
+		final File fdirSys = new File(this.conf.getLocalTargetDir() + "system");
+		final long tstart = System.currentTimeMillis();
+		final int i = this.clean(fdir);
+		final int ix = this.clean(fdirSys) + i;
+		final long tdiff = System.currentTimeMillis() - tstart;
+		LOGGER.info("Complete deleted files in " + tdiff + " ms totalFilesDeleted=" + ix);
+	}
+
+	/**
+	 * Remove the file.
+	 * 
+	 * @param fdir
+	 * @return
+	 */
+	protected int clean(final File fdir) {
+		int i = 0;
+		if (!fdir.exists()) {
+			return i;
+		}
+		if (fdir.listFiles() == null) {
+			LOGGER.info("No files for cleaning");
+			return i;
+		}
+		for (final File f : fdir.listFiles()) {
+			if (f.isFile()) {
+				final boolean r = f.delete();
+				if (r) {
+					i++;
+					LOGGER.info("Deleted file = " + f.getAbsolutePath());
+				}
+			} // End of the if //
+		} // End of the For //
+		return i;
+	}
+
 } // End of the Class //

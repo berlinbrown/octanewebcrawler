@@ -35,6 +35,6 @@ package org.berlin.logs.idsl;
 
 public interface IExecutor {
 
-  public void run();
-  
+	public void run();
+
 } // End of the interface //

@@ -35,81 +35,82 @@ package org.berlin.logs.scan.terms;
 
 public class ServerInfo {
 
-    public static final int OFFSET_PREV_DAY = 1;
-    public static final int OFFSET_PREV_HOURS = 9;
-    public static final int OFFSET_PREV_WEEK = 9;
-    public static final int MIN_TIME_LOG_LEN = 35;
-    
-    public static final int INDEX_FORMAT_CHECK_1 = 24;
-    public static final int INDEX_FORMAT_CHECK_2 = 26;
-    
-    public static final int F1 = 0;
-    public static final int F2 = 1;
-    public static final int F3 = 2;
-    
-    String serverName = "";
-    String serverNumber = "";
-    int serverNumberVal = -1;
-    int format = 0;
-    
-    public static ServerInfo parseAndLoad(final String filename) {
-        // Example line: 
-        final ServerInfo inf = new ServerInfo();
-        if (filename.length() < MIN_TIME_LOG_LEN) {
-            return inf;
-        }
-        inf.format = inf.format(filename);
-        if (inf.format == F1) {
-            inf.serverName = filename.substring(24, 32);  
-            inf.serverNumber = filename.substring(33, 35);
-            inf.serverNumberVal = Integer.parseInt(inf.serverNumber);
-        } else if (inf.format == F2) {
-           
-        } else if (inf.format == F3) {
-            if (filename.length() >= 46) {
-                inf.serverName = filename.substring(35, 43);
-                inf.serverNumber = filename.substring(44, 46);
-                inf.serverNumberVal = Integer.parseInt(inf.serverNumber);
-            }
-        }
-        return inf;
-    }
-    
-    /**
-     * Determine filename format.
-     * 
-     * @param line
-     * @return
-     */
-    protected int format(final String line) {
-        if (line == null) {
-            return F1;
-        }
-        if (line.length() < MIN_TIME_LOG_LEN) {
-            return F1;
-        }
-        final int index1chk = INDEX_FORMAT_CHECK_1;
-        final int index2chk = INDEX_FORMAT_CHECK_2;
-        
-        final Character c1 = line.charAt(index1chk);
-        if (Character.isLetter(c1)) {
-            return F1;
-        } else {
-            final Character c2 = line.charAt(index2chk);
-            if (Character.isLetter(c2)) {
-                return F2;
-            } else {
-                return F3;
-            }            
-        } // End of the if - else //
-    }
-    
-    public String toString() {
-        return "[ServerInf : filenameFormat=" + this.format+ " serv=" + this.serverName + "." + this.serverNumberVal + "]";
-    }
-    
-    public boolean valid() {
-        return !(this.serverName == null || this.serverName.length() == 0); 
-    }
-    
+	public static final int OFFSET_PREV_DAY = 1;
+	public static final int OFFSET_PREV_HOURS = 9;
+	public static final int OFFSET_PREV_WEEK = 9;
+	public static final int MIN_TIME_LOG_LEN = 35;
+
+	public static final int INDEX_FORMAT_CHECK_1 = 24;
+	public static final int INDEX_FORMAT_CHECK_2 = 26;
+
+	public static final int F1 = 0;
+	public static final int F2 = 1;
+	public static final int F3 = 2;
+
+	String serverName = "";
+	String serverNumber = "";
+	int serverNumberVal = -1;
+	int format = 0;
+
+	public static ServerInfo parseAndLoad(final String filename) {
+		// Example line:
+		final ServerInfo inf = new ServerInfo();
+		if (filename.length() < MIN_TIME_LOG_LEN) {
+			return inf;
+		}
+		inf.format = inf.format(filename);
+		if (inf.format == F1) {
+			inf.serverName = filename.substring(24, 32);
+			inf.serverNumber = filename.substring(33, 35);
+			inf.serverNumberVal = Integer.parseInt(inf.serverNumber);
+		} else if (inf.format == F2) {
+
+		} else if (inf.format == F3) {
+			if (filename.length() >= 46) {
+				inf.serverName = filename.substring(35, 43);
+				inf.serverNumber = filename.substring(44, 46);
+				inf.serverNumberVal = Integer.parseInt(inf.serverNumber);
+			}
+		}
+		return inf;
+	}
+
+	/**
+	 * Determine filename format.
+	 * 
+	 * @param line
+	 * @return
+	 */
+	protected int format(final String line) {
+		if (line == null) {
+			return F1;
+		}
+		if (line.length() < MIN_TIME_LOG_LEN) {
+			return F1;
+		}
+		final int index1chk = INDEX_FORMAT_CHECK_1;
+		final int index2chk = INDEX_FORMAT_CHECK_2;
+
+		final Character c1 = line.charAt(index1chk);
+		if (Character.isLetter(c1)) {
+			return F1;
+		} else {
+			final Character c2 = line.charAt(index2chk);
+			if (Character.isLetter(c2)) {
+				return F2;
+			} else {
+				return F3;
+			}
+		} // End of the if - else //
+	}
+
+	public String toString() {
+		return "[ServerInf : filenameFormat=" + this.format + " serv=" + this.serverName + "." + this.serverNumberVal
+				+ "]";
+	}
+
+	public boolean valid() {
+		return !(this.serverName == null || this.serverName.length() == 0);
+	}
+
 } // End of the class //

@@ -40,59 +40,60 @@ public class BotLinkConsumerProducer implements Runnable {
 
 	// It is possible to launch multiple consumer producers against the same
 	// link without issue.
-	
+
 	private final LinkProcessQueueDatabase queue;
 	private static final Logger logger = LoggerFactory.getLogger(BotLinkConsumerProducer.class);
-	
+
 	private final ApplicationContext ctx;
-	
+
 	private boolean completeWithProcessing = false;
-	
-	public BotLinkConsumerProducer(final ApplicationContext ctx, final LinkProcessQueueDatabase queue)  {
+
+	public BotLinkConsumerProducer(final ApplicationContext ctx, final LinkProcessQueueDatabase queue) {
 		this.queue = queue;
 		this.ctx = ctx;
 	}
-	
+
 	public void run() {
-		try {			
+		try {
 			final QueueMonitorThread monitor = new QueueMonitorThread();
 			final Thread mn = new Thread(monitor);
 			mn.setDaemon(false);
-			mn.start();			
+			mn.start();
 			// Run until incomplete with processing //
 			while (!completeWithProcessing) {
 				// Loop until no other links are available //
 				// We may need poison the queue so we can release
 				consumeLink(queue.get().take());
-				
-				// Also add random delay between requests to avoid too much of an automated request
+
+				// Also add random delay between requests to avoid too much of an automated
+				// request
 				final Random rr = new Random(System.currentTimeMillis());
-				final int rdelay = rr.nextInt(LinkProcessQueueDatabase.LINK_PROCESS_DELAY+400);
-				Thread.sleep(LinkProcessQueueDatabase.LINK_PROCESS_DELAY+rdelay);
+				final int rdelay = rr.nextInt(LinkProcessQueueDatabase.LINK_PROCESS_DELAY + 400);
+				Thread.sleep(LinkProcessQueueDatabase.LINK_PROCESS_DELAY + rdelay);
 			} // End of the while //
-			
+
 			// We have to remove the thread //
-		} catch (final Throwable ex) { 
+		} catch (final Throwable ex) {
 			ex.printStackTrace();
 		} // End of the try - catch //
 	} // End of the method //
-	
+
 	public void consumeLink(final BotLink link) {
 		if (link.getHost() == null) {
 			// It is possible this is poisoned link, so exit
 			logger.warn("Consuming link but this is invalid data, exiting");
 			return;
 		}
-		logger.info("Consuming link : " + link + " consumedCount=" + queue.incConsumed());		
+		logger.info("Consuming link : " + link + " consumedCount=" + queue.incConsumed());
 		// This operation will robots, connect and produce links
 		// and add to the queue. (non-threaded)
 		// Recursive call //
 		final BotCrawlerProducer crawl = new BotCrawlerProducer(ctx, queue);
-		crawl.connectAndCrawl(link);								
+		crawl.connectAndCrawl(link);
 		// Size of queue after crawl
-		logger.info("At consumer/producer crawler thread, size of queue after crawl : " + queue.get().size());		
+		logger.info("At consumer/producer crawler thread, size of queue after crawl : " + queue.get().size());
 	} // End of the method //
-	
+
 	protected class QueueMonitorThread implements Runnable {
 		// Monitor the link queue if no more links,
 		// Wait after so many seconds and then exit
@@ -100,37 +101,40 @@ public class BotLinkConsumerProducer implements Runnable {
 		@Override
 		public void run() {
 			boolean operational = true;
-			/// Run for 100 seconds			
+			/// Run for 100 seconds
 			try {
 				// Delay for so many seconds //
 				Thread.sleep(38 * 1000);
 				while (operational) {
 					// Monitor link queue
 					// If queue size is zero run for a while
-					// keep checking.  If it is still zero then exit
-					if (queue.get().size() == 0) {					
+					// keep checking. If it is still zero then exit
+					if (queue.get().size() == 0) {
 						for (int i = 0; i < numberOfChecks; i++) {
 							Thread.sleep(10 * 1000);
-							logger.info("At consumer/producer crawler monitor thread, checking status of queue ... size=" + queue.get().size());
+							logger.info(
+									"At consumer/producer crawler monitor thread, checking status of queue ... size="
+											+ queue.get().size());
 						} // End of the if //
-						
+
 						// Perform one more check, if NOT zero, we are OK
 						if (queue.get().size() == 0) {
 							// Complete with processing
 							completeWithProcessing = true;
 							operational = false;
 							queue.poison();
-							logger.info("At consumer/producer crawler monitor thread, complete with processing, sending message");
+							logger.info(
+									"At consumer/producer crawler monitor thread, complete with processing, sending message");
 							// At this point, the thread should be dead //
 						} // End of the if //
-					} // End of if //						
-					// Main monitor delay
+					} // End of if //
+						// Main monitor delay
 					Thread.sleep(20 * 1000);
-				} // End of while				
-			} catch(final Exception e) {
+				} // End of while
+			} catch (final Exception e) {
 				e.printStackTrace();
 			}
 		} // End of the method run
 	} // End of the class //
-	
+
 } // End of the class //

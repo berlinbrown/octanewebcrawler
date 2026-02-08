@@ -50,62 +50,62 @@ import java.util.Map;
  */
 public class SortedMap<K, V extends Comparable<V>> extends LinkedHashMap<K, V> {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public SortedMap() {
-    super();
-  }
+	public SortedMap() {
+		super();
+	}
 
-  public SortedMap(final Map<K, V> map) {
-    super(map);
-  }
-  /**
-   * Sort collection.
-   * 
-   * @param <T>
-   * @param c
-   * @return
-   */
-  public static <T extends Comparable<? super T>> List<T> sort(final Collection<T> c) {
-    final List<T> list = new ArrayList<T>(c);
-    java.util.Collections.sort(list);
-    return list;
-  }
-  
-  /**
-   * Sort generic collection.
-   * 
-   * @param c
-   * @param cp
-   * @return
-   */
-  public static List sort(final Collection c, final Comparator cp) {
-    final List list = new ArrayList(c);
-    java.util.Collections.sort(list, cp);
-    return list;
-  }
-  
-  /**
-   * Sort by value.
-   */
-  public void sortByValue() {
-    final List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(entrySet());
-    Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-      public int compare(final Map.Entry<K, V> entry1, final Map.Entry<K, V> entry2) {
-        if (entry1 == null) {
-          return 1;
-        }
-        if (entry2 == null) {
-          return -1;
-        }
-        return entry1.getValue().compareTo(entry2.getValue());
-      }
+	public SortedMap(final Map<K, V> map) {
+		super(map);
+	}
+	/**
+	 * Sort collection.
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @return
+	 */
+	public static <T extends Comparable<? super T>> List<T> sort(final Collection<T> c) {
+		final List<T> list = new ArrayList<T>(c);
+		java.util.Collections.sort(list);
+		return list;
+	}
 
-    });
-    this.clear();
-    for (Map.Entry<K, V> entry : list) {
-      this.put(entry.getKey(), entry.getValue());
-    }
-  }
+	/**
+	 * Sort generic collection.
+	 * 
+	 * @param c
+	 * @param cp
+	 * @return
+	 */
+	public static List sort(final Collection c, final Comparator cp) {
+		final List list = new ArrayList(c);
+		java.util.Collections.sort(list, cp);
+		return list;
+	}
+
+	/**
+	 * Sort by value.
+	 */
+	public void sortByValue() {
+		final List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			public int compare(final Map.Entry<K, V> entry1, final Map.Entry<K, V> entry2) {
+				if (entry1 == null) {
+					return 1;
+				}
+				if (entry2 == null) {
+					return -1;
+				}
+				return entry1.getValue().compareTo(entry2.getValue());
+			}
+
+		});
+		this.clear();
+		for (Map.Entry<K, V> entry : list) {
+			this.put(entry.getKey(), entry.getValue());
+		}
+	}
 
 } // End of the Class //

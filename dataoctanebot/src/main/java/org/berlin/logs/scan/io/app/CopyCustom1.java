@@ -39,42 +39,42 @@ import org.berlin.logs.scan.io.FileWriterConf;
 import org.berlin.logs.scan.io.ServerLogFileBatchWriter;
 
 public class CopyCustom1 implements IExecutor {
-    
-    private final GlobalConfiguration globalConf;
-    
-    public CopyCustom1(final GlobalConfiguration globalConf) {
-        this.globalConf = globalConf;
-    }
-    
-    public void run() {
-      
-        final FileWriterConf conf = new FileWriterConf();        
-        conf.addServerForSearch(this.globalConf.getServer1());
-        conf.addServerForSearch(this.globalConf.getServer2());   
-        
-        conf.addJvmForSearch(this.globalConf.getSubserver1());
-        conf.addJvmForSearch(this.globalConf.getSubserver2());
-        conf.addJvmForSearch(this.globalConf.getSubserver3());
-        conf.addJvmForSearch(this.globalConf.getSubserver4());
-        conf.addJvmForSearch(this.globalConf.getSubserver5());
-        conf.addJvmForSearch(this.globalConf.getSubserver6());
-        
-        conf.addJvmForSearch(this.globalConf.getSubserver7());
-        conf.addJvmForSearch(this.globalConf.getSubserver8());
-        conf.addJvmForSearch(this.globalConf.getSubserver9());
-        conf.addJvmForSearch(this.globalConf.getSubserver10());
-        conf.addJvmForSearch(this.globalConf.getSubserver11());        
-        conf.addJvmForSearch(this.globalConf.getSubserver12());
-                
-        conf.setLocalTargetDir(this.globalConf.getFileCopyLocalTargetDir());
-        conf.setLogDirToSearch("logs");
-        conf.setRegexIncludeFile(".*(?i)(log4j).*");
-        conf.setTargetLogDirToSearch("logs");
-        
-        conf.lock();            
-        final ServerLogFileBatchWriter processor = new ServerLogFileBatchWriter(conf);
-        conf.setUnzipArchiveFiles(this.globalConf.isUnzipArchiveFiles());
-        processor.processAndCopy();
-    }
-    
+
+	private final GlobalConfiguration globalConf;
+
+	public CopyCustom1(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
+
+	public void run() {
+
+		final FileWriterConf conf = new FileWriterConf();
+		conf.addServerForSearch(this.globalConf.getServer1());
+		conf.addServerForSearch(this.globalConf.getServer2());
+
+		conf.addJvmForSearch(this.globalConf.getSubserver1());
+		conf.addJvmForSearch(this.globalConf.getSubserver2());
+		conf.addJvmForSearch(this.globalConf.getSubserver3());
+		conf.addJvmForSearch(this.globalConf.getSubserver4());
+		conf.addJvmForSearch(this.globalConf.getSubserver5());
+		conf.addJvmForSearch(this.globalConf.getSubserver6());
+
+		conf.addJvmForSearch(this.globalConf.getSubserver7());
+		conf.addJvmForSearch(this.globalConf.getSubserver8());
+		conf.addJvmForSearch(this.globalConf.getSubserver9());
+		conf.addJvmForSearch(this.globalConf.getSubserver10());
+		conf.addJvmForSearch(this.globalConf.getSubserver11());
+		conf.addJvmForSearch(this.globalConf.getSubserver12());
+
+		conf.setLocalTargetDir(this.globalConf.getFileCopyLocalTargetDir());
+		conf.setLogDirToSearch("logs");
+		conf.setRegexIncludeFile(".*(?i)(log4j).*");
+		conf.setTargetLogDirToSearch("logs");
+
+		conf.lock();
+		final ServerLogFileBatchWriter processor = new ServerLogFileBatchWriter(conf);
+		conf.setUnzipArchiveFiles(this.globalConf.isUnzipArchiveFiles());
+		processor.processAndCopy();
+	}
+
 } // End of the Class //

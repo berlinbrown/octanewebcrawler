@@ -42,51 +42,51 @@ import org.berlin.swing.ui.AbstractAction;
 import org.berlin.swing.ui.Components.IWindow;
 import org.berlin.swing.ui.app.BasicAppBaseUI.BasicWindow;
 
-/** 
- * Basic Java swing application, modify the basic app classes
- * for your particular task and application.
+/**
+ * Basic Java swing application, modify the basic app classes for your
+ * particular task and application.
  * 
- * @author berlin.brown 
+ * @author berlin.brown
  */
 public class ScriptActionHandler extends AbstractAction {
-    
-    private final BasicWindow window;
-    
-    public static final char NL = '\n';
-    
-    private Mutable<Boolean> inProcessRunningCommand = new Mutable<Boolean>(false);
-    
-    /**
-     * Basic application action.
-     * 
-     * @param window
-     */
-    public ScriptActionHandler(final IWindow window) { 
-        super(window);
-        this.window = (BasicWindow) window;
-    }
-    
-    /**    
-     * Basic application.
-     */
-    public synchronized void handleOnButtonEnter() {        
-        
-        System.out.println("InputText at Command : " + this.window.getInputTextArea().getText());
-        final StringBuffer bufOut = new StringBuffer();        
-        bufOut.append(this.window.getOutputTextArea().getText());
-        bufOut.append(NL);
-        bufOut.append("Last Doman Language Input Script : ").append(NL + this.window.getInputTextArea().getText());
-        bufOut.append(NL);        
-        try {            
-            new ScriptInterpreter(this.window, bufOut, inProcessRunningCommand).interpret();           
-        } catch(final Exception e) {
-            e.printStackTrace();            
-        }        
-        // Set text //
-        this.window.getOutputTextArea().setText(bufOut.toString());       
-    }
-    
-    public synchronized void handleOnButtonClear() {                      
-        this.window.getOutputTextArea().setText("");               
-    }        
+
+	private final BasicWindow window;
+
+	public static final char NL = '\n';
+
+	private Mutable<Boolean> inProcessRunningCommand = new Mutable<Boolean>(false);
+
+	/**
+	 * Basic application action.
+	 * 
+	 * @param window
+	 */
+	public ScriptActionHandler(final IWindow window) {
+		super(window);
+		this.window = (BasicWindow) window;
+	}
+
+	/**
+	 * Basic application.
+	 */
+	public synchronized void handleOnButtonEnter() {
+
+		System.out.println("InputText at Command : " + this.window.getInputTextArea().getText());
+		final StringBuffer bufOut = new StringBuffer();
+		bufOut.append(this.window.getOutputTextArea().getText());
+		bufOut.append(NL);
+		bufOut.append("Last Doman Language Input Script : ").append(NL + this.window.getInputTextArea().getText());
+		bufOut.append(NL);
+		try {
+			new ScriptInterpreter(this.window, bufOut, inProcessRunningCommand).interpret();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		// Set text //
+		this.window.getOutputTextArea().setText(bufOut.toString());
+	}
+
+	public synchronized void handleOnButtonClear() {
+		this.window.getOutputTextArea().setText("");
+	}
 } // End of the class

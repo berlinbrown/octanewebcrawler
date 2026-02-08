@@ -20,27 +20,28 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.struts.ActionSupport;
 
 public class ListMessagesAction extends ActionSupport {
-	
+
 	private final static String SUCCESS = "success";
 
 	private static final Logger logger = LoggerFactory.getLogger(ListMessagesAction.class);
-	
-	public ActionForward execute(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response) throws Exception {		
-		response.setContentType("application/json");		
+
+	public ActionForward execute(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
+			final HttpServletResponse response) throws Exception {
+		response.setContentType("application/json");
 		final HttpSession httpSession = request.getSession();
 		final ApplicationContext ctx = getWebApplicationContext();
-		final BotCrawlerDAO dao = new  BotCrawlerDAO();
+		final BotCrawlerDAO dao = new BotCrawlerDAO();
 		final SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
-		Session session = sf.openSession();		
+		Session session = sf.openSession();
 		// Now print the number of links //
 		final List<Long> ii = dao.countLinks(session);
 		logger.warn("Count of Links : " + ii);
-		
+
 		// Take the diff
-		final BotWebMonitorInfo infLast = (BotWebMonitorInfo) httpSession.getAttribute("countInfo");				
-		final BotWebMonitorInfo inf = new BotWebMonitorInfo();		
+		final BotWebMonitorInfo infLast = (BotWebMonitorInfo) httpSession.getAttribute("countInfo");
+		final BotWebMonitorInfo inf = new BotWebMonitorInfo();
 		inf.setCount(ii.get(0));
-		if (infLast != null) {			
+		if (infLast != null) {
 			inf.setDiff(inf.getCount() - infLast.getCount());
 		} // End of the if //
 		inf.setCountMessage(ii.get(0) + " : " + new Date() + " : " + inf.getDiff() + " (per minute)");
@@ -48,7 +49,7 @@ public class ListMessagesAction extends ActionSupport {
 		if (session != null) {
 			// May not need to close the session
 			session.close();
-		} // End of the if //		
+		} // End of the if //
 		return mapping.findForward(SUCCESS);
 	} // End of the method //
 

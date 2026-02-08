@@ -44,15 +44,14 @@ import org.berlin.logs.scan.terms.LogTermProcessor;
  */
 public class Main {
 
-    public static void main(final String [] args) {
-        System.out.println("Running log file processor...");
-        final String targetDir = "../../search_result/logs";
-        final FileScanner scanner = new FileScanner(targetDir);
-        final LogTermProcessor processor = new LogTermProcessor(scanner);
-        processor.execute();
-        processor.report();
-        System.out.println(">>> Done with Scan <<<");
-    }
-    
-} // End of the Main //
+	public static void main(final String[] args) {
+		System.out.println("Running log file processor...");
+		final String targetDir = "../../search_result/logs";
+		final FileScanner scanner = new FileScanner(targetDir);
+		final LogTermProcessor processor = new LogTermProcessor(scanner);
+		processor.execute();
+		processor.report();
+		System.out.println(">>> Done with Scan <<<");
+	}
 
+} // End of the Main //

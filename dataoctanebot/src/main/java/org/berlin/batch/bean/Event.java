@@ -3,7 +3,7 @@ package org.berlin.batch.bean;
 import java.util.Date;
 
 public class Event {
-	
+
 	private Long id;
 	private String message;
 	private Date date;
@@ -23,7 +23,7 @@ public class Event {
 		// Return a formatted string
 		return String.format("[id=%s message=%s %s]", id, message, date);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -47,4 +47,4 @@ public class Event {
 	public void setMessage(String msg) {
 		this.message = msg;
 	}
-} // End of the class 
+} // End of the class

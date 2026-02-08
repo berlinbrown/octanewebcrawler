@@ -32,5 +32,5 @@ public class CrawlerError extends Exception {
 	public CrawlerError(final String msg) {
 		super(msg);
 	}
-	
+
 } // End of the class //

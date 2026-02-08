@@ -16,36 +16,36 @@ public class UserConnector {
 	 * This data structure is a link between a user and other users.
 	 */
 	private Map<BotDataUser, Set<BotDataUser>> connections = new HashMap<BotDataUser, Set<BotDataUser>>();
-	
+
 	int validSize = 0;
-	
+
 	/**
-	 * Loop through list of trees, connect a screenName/id pair to
-	 * a list of other users.
-	 *  
+	 * Loop through list of trees, connect a screenName/id pair to a list of other
+	 * users.
+	 * 
 	 * @param listOfTrees
 	 */
 	public void build(final List<GenericTree> listOfTrees) {
-		// Loop through the trees		
-		for (final GenericTree tree : listOfTrees) {			
+		// Loop through the trees
+		for (final GenericTree tree : listOfTrees) {
 			build(tree);
-		} // End of the for //					
+		} // End of the for //
 		System.out.println("Size: " + connections.size() + " // " + validSize);
-		
+
 		for (final BotDataUser k : connections.keySet()) {
 			final Set<BotDataUser> s = connections.get(k);
 			for (final BotDataUser b : s) {
 				System.out.println("key=" + k + "::: " + b);
 			}
 		}
-		
+
 	} // End of the method //
-	
+
 	public void build(final GenericTree tree) {
 		if (tree.root() != null) {
 			// Extract the elements
-			final List<UserLinkedListNode> nodes = tree.root().list();				
-			if (nodes != null) {										
+			final List<UserLinkedListNode> nodes = tree.root().list();
+			if (nodes != null) {
 				if (nodes.size() > 1) {
 					validSize++;
 					final UserLinkedListNode rootKey = nodes.get(0);
@@ -61,8 +61,8 @@ public class UserConnector {
 								build(rootKey.tree());
 							}
 						} // Iterate through all of the nodes in the list //
-					} // End of the if //					
-					
+					} // End of the if //
+
 					// Also build a data structure, key links to nodes.
 					// Now build the other links to the nodes
 					for (int i = 1; i < nodes.size(); i++) {
@@ -76,13 +76,13 @@ public class UserConnector {
 							} else {
 								// Otherwise
 								set.add(linkedUser);
-							} // End of the if //													
+							} // End of the if //
 						} // End of if - check linked user //
 					} // End of the for //
-					
-				} // End of the if //													
+
+				} // End of the if //
 			} /// End of the if - nodes //
-		} // End of the if //			
+		} // End of the if //
 	} // End of the method //
-	
+
 } // End of the class //

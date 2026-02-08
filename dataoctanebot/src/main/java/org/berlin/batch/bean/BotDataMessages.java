@@ -14,10 +14,10 @@ import org.hibernate.annotations.Cascade;
 @Entity
 @Table(name = "bot_data_messages")
 public class BotDataMessages {
-	
-	@Id	
+
+	@Id
 	private Long id;
-	
+
 	private Date createdAt;
 	private String messageCreatedAtStr;
 	private Date messageCreatedAt;
@@ -25,22 +25,23 @@ public class BotDataMessages {
 	private String screenName;
 	private Long followersCount;
 	private Long userId;
-	private BigInteger messageId;	
+	private BigInteger messageId;
 	private String query;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_id", insertable=true, updatable=true)	
-	@Cascade(value = { org.hibernate.annotations.CascadeType.ALL })	
+	@JoinColumn(name = "user_id", insertable = true, updatable = true)
+	@Cascade(value = {org.hibernate.annotations.CascadeType.ALL})
 	private BotDataUser user;
-	
+
 	/**
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;		
+		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -52,7 +53,8 @@ public class BotDataMessages {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -64,7 +66,8 @@ public class BotDataMessages {
 		return messageCreatedAtStr;
 	}
 	/**
-	 * @param messageCreatedAtStr the messageCreatedAtStr to set
+	 * @param messageCreatedAtStr
+	 *            the messageCreatedAtStr to set
 	 */
 	public void setMessageCreatedAtStr(String messageCreatedAtStr) {
 		this.messageCreatedAtStr = messageCreatedAtStr;
@@ -76,7 +79,8 @@ public class BotDataMessages {
 		return messageCreatedAt;
 	}
 	/**
-	 * @param messageCreatedAt the messageCreatedAt to set
+	 * @param messageCreatedAt
+	 *            the messageCreatedAt to set
 	 */
 	public void setMessageCreatedAt(Date messageCreatedAt) {
 		this.messageCreatedAt = messageCreatedAt;
@@ -88,7 +92,8 @@ public class BotDataMessages {
 		return message;
 	}
 	/**
-	 * @param message the message to set
+	 * @param message
+	 *            the message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
@@ -103,7 +108,8 @@ public class BotDataMessages {
 		return followersCount;
 	}
 	/**
-	 * @param followersCount the followersCount to set
+	 * @param followersCount
+	 *            the followersCount to set
 	 */
 	public void setFollowersCount(final Long followersCount) {
 		this.followersCount = followersCount;
@@ -115,7 +121,8 @@ public class BotDataMessages {
 		return userId;
 	}
 	/**
-	 * @param userId the userId to set
+	 * @param userId
+	 *            the userId to set
 	 */
 	public void setUserId(Long userId) {
 		this.userId = userId;
@@ -127,7 +134,8 @@ public class BotDataMessages {
 		return messageId;
 	}
 	/**
-	 * @param messageId the messageId to set
+	 * @param messageId
+	 *            the messageId to set
 	 */
 	public void setMessageId(final BigInteger messageId) {
 		this.messageId = messageId;
@@ -139,7 +147,8 @@ public class BotDataMessages {
 		return user;
 	}
 	/**
-	 * @param user the user to set
+	 * @param user
+	 *            the user to set
 	 */
 	public void setUser(final BotDataUser user) {
 		this.user = user;
@@ -151,7 +160,8 @@ public class BotDataMessages {
 		return screenName;
 	}
 	/**
-	 * @param screenName the screenName to set
+	 * @param screenName
+	 *            the screenName to set
 	 */
 	public void setScreenName(String screenName) {
 		this.screenName = screenName;
@@ -163,14 +173,17 @@ public class BotDataMessages {
 		return query;
 	}
 	/**
-	 * @param query the query to set
+	 * @param query
+	 *            the query to set
 	 */
 	public void setQuery(final String query) {
 		this.query = query;
 	}
-	
+
 	public String toString() {
-		final String txt = this.message == null ? "" : (this.message.length()>=14?this.message.substring(0,12):this.message);
+		final String txt = this.message == null
+				? ""
+				: (this.message.length() >= 14 ? this.message.substring(0, 12) : this.message);
 		return String.format("[query=%s messageId=%s]", this.query, txt);
 	}
 

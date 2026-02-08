@@ -48,135 +48,139 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class LogSearch {
-  
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogSearch.class);
-  
-    private PrintWriter printWriter;
-    private final GlobalConfiguration globalConf;    
-    private int statsTotalSearchFound = 0;
-        
-    boolean writeOutputFile = true;
-    String outputFilename = "X-output.log";        
-    
-    /**
-     * Constructor for LogSearch.
-     * 
-     * @param globalConf
-     */
-    public LogSearch(final GlobalConfiguration globalConf) {
-        this.globalConf = globalConf;           
-    }
-    
-    /**
-     * Search for term in log files.
-     * 
-     * @return
-     */
-    public LogSearch search() {
-        final long tstart = System.currentTimeMillis();
-        this.openOutputFile();
-        
-        final String dir = this.globalConf.getFileCopyLocalTargetDir();
-        final String searchTerm = this.globalConf.getUserSearchTerm();
-        if (searchTerm == null || searchTerm.length() == 0) {
-            LOGGER.info("Invalid search term");
-            return this;
-        }
-        LOGGER.info("Searching directory : " + dir);
-        LOGGER.info(">> Searching for term '" + searchTerm + "'");
-        final File fd = new File(dir);
-        if (!fd.isDirectory()) {
-            LOGGER.info("Target path is not a directory, exiting");
-            return this;
-        }
-        int totalAllFiles = 0;
-        for (final File f : fd.listFiles()) {
-          if (f.isDirectory()) {
-            continue;
-          }
-            final BasicSearch s = new BasicSearch(globalConf);            
-            s.writeOutputFile = this.writeOutputFile;
-            s.outputFilename = this.outputFilename;
-            s.setPrintWriter(printWriter);
-            s.saveOldLines = this.globalConf.isSaveOldLines();            
-            /****************
-             * Perform search
-             ****************/
-            s.search(searchTerm, f);            
-            totalAllFiles += s.getTermFoundTotal();
-        } // End of the For //        
-        this.statsTotalSearchFound = totalAllFiles;
-        this.close();
-        final long tdiff = System.currentTimeMillis() - tstart;
-        LOGGER.info(">> Found term '" + searchTerm + "' total of = " + this.statsTotalSearchFound + " times in files"); 
-        LOGGER.info(">> Found term in " + tdiff + " ms");
-        
-        final double mb = 1024.0 * 1024;
-        final double free = Runtime.getRuntime().freeMemory() / mb;            
-        final double total = Runtime.getRuntime().totalMemory() / mb;
-        final double max = Runtime.getRuntime().maxMemory() / mb;        
-        final String fmt = String.format("Memory after operation [ freeMemory=%.2fM total=%.2fM maxMemory=%.2fM ]", free, total, max);
-        LOGGER.info(fmt);
-        return this;
-    }
 
-    /**
-     * Open output file.
-     */
-    public void openOutputFile() {
-        if (!this.writeOutputFile) {
-            return;
-        }
-        if (this.outputFilename == null || this.outputFilename.length() == 0) {
-            return;
-        }
-        BufferedOutputStream bos;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
-            this.printWriter = new PrintWriter(bos);            
-        } catch (final FileNotFoundException e) { 
-            e.printStackTrace();
-            throw new IllegalStateException("Could not open output file");
-        }         
-    }
-    
-    /**
-     * Close the open output file.
-     */
-    public void close() {
-        if (!this.writeOutputFile) {
-            return;
-        }
-        if (this.outputFilename == null || this.outputFilename.length() == 0) {
-            return;
-        }
-        if (this.printWriter != null) {
-            this.printWriter.close();
-            
-            final File f = new File(this.outputFilename);            
-            LOGGER.info("LogSearch : Closing output file, see file for results : " + f.getAbsolutePath() + " parentDir=" + f.getParent());            
-        }
-    }
-    
-    /**
-     * @return the statsTotalSearchFound
-     */
-    public int getStatsTotalSearchFound() {
-        return statsTotalSearchFound;
-    }
+	private static final Logger LOGGER = LoggerFactory.getLogger(LogSearch.class);
 
-    /**
-     * @param writeOutputFile the writeOutputFile to set
-     */
-    public void setWriteOutputFile(boolean writeOutputFile) {
-        this.writeOutputFile = writeOutputFile;
-    }
+	private PrintWriter printWriter;
+	private final GlobalConfiguration globalConf;
+	private int statsTotalSearchFound = 0;
 
-    /**
-     * @param outputFilename the outputFilename to set
-     */
-    public void setOutputFilename(String outputFilename) {
-        this.outputFilename = outputFilename;
-    }
-    
+	boolean writeOutputFile = true;
+	String outputFilename = "X-output.log";
+
+	/**
+	 * Constructor for LogSearch.
+	 * 
+	 * @param globalConf
+	 */
+	public LogSearch(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
+
+	/**
+	 * Search for term in log files.
+	 * 
+	 * @return
+	 */
+	public LogSearch search() {
+		final long tstart = System.currentTimeMillis();
+		this.openOutputFile();
+
+		final String dir = this.globalConf.getFileCopyLocalTargetDir();
+		final String searchTerm = this.globalConf.getUserSearchTerm();
+		if (searchTerm == null || searchTerm.length() == 0) {
+			LOGGER.info("Invalid search term");
+			return this;
+		}
+		LOGGER.info("Searching directory : " + dir);
+		LOGGER.info(">> Searching for term '" + searchTerm + "'");
+		final File fd = new File(dir);
+		if (!fd.isDirectory()) {
+			LOGGER.info("Target path is not a directory, exiting");
+			return this;
+		}
+		int totalAllFiles = 0;
+		for (final File f : fd.listFiles()) {
+			if (f.isDirectory()) {
+				continue;
+			}
+			final BasicSearch s = new BasicSearch(globalConf);
+			s.writeOutputFile = this.writeOutputFile;
+			s.outputFilename = this.outputFilename;
+			s.setPrintWriter(printWriter);
+			s.saveOldLines = this.globalConf.isSaveOldLines();
+			/****************
+			 * Perform search
+			 ****************/
+			s.search(searchTerm, f);
+			totalAllFiles += s.getTermFoundTotal();
+		} // End of the For //
+		this.statsTotalSearchFound = totalAllFiles;
+		this.close();
+		final long tdiff = System.currentTimeMillis() - tstart;
+		LOGGER.info(">> Found term '" + searchTerm + "' total of = " + this.statsTotalSearchFound + " times in files");
+		LOGGER.info(">> Found term in " + tdiff + " ms");
+
+		final double mb = 1024.0 * 1024;
+		final double free = Runtime.getRuntime().freeMemory() / mb;
+		final double total = Runtime.getRuntime().totalMemory() / mb;
+		final double max = Runtime.getRuntime().maxMemory() / mb;
+		final String fmt = String.format("Memory after operation [ freeMemory=%.2fM total=%.2fM maxMemory=%.2fM ]",
+				free, total, max);
+		LOGGER.info(fmt);
+		return this;
+	}
+
+	/**
+	 * Open output file.
+	 */
+	public void openOutputFile() {
+		if (!this.writeOutputFile) {
+			return;
+		}
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
+			this.printWriter = new PrintWriter(bos);
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("Could not open output file");
+		}
+	}
+
+	/**
+	 * Close the open output file.
+	 */
+	public void close() {
+		if (!this.writeOutputFile) {
+			return;
+		}
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		if (this.printWriter != null) {
+			this.printWriter.close();
+
+			final File f = new File(this.outputFilename);
+			LOGGER.info("LogSearch : Closing output file, see file for results : " + f.getAbsolutePath() + " parentDir="
+					+ f.getParent());
+		}
+	}
+
+	/**
+	 * @return the statsTotalSearchFound
+	 */
+	public int getStatsTotalSearchFound() {
+		return statsTotalSearchFound;
+	}
+
+	/**
+	 * @param writeOutputFile
+	 *            the writeOutputFile to set
+	 */
+	public void setWriteOutputFile(boolean writeOutputFile) {
+		this.writeOutputFile = writeOutputFile;
+	}
+
+	/**
+	 * @param outputFilename
+	 *            the outputFilename to set
+	 */
+	public void setOutputFilename(String outputFilename) {
+		this.outputFilename = outputFilename;
+	}
+
 } // End of Class //

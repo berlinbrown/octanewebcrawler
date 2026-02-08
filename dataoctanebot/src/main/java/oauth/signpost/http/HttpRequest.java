@@ -19,26 +19,26 @@ import oauth.signpost.basic.HttpURLConnectionRequestAdapter;
  */
 public interface HttpRequest {
 
-    String getMethod();
+	String getMethod();
 
-    String getRequestUrl();
+	String getRequestUrl();
 
-    void setRequestUrl(String url);
+	void setRequestUrl(String url);
 
-    void setHeader(String name, String value);
+	void setHeader(String name, String value);
 
-    String getHeader(String name);
+	String getHeader(String name);
 
-    Map<String, String> getAllHeaders();
+	Map<String, String> getAllHeaders();
 
-    InputStream getMessagePayload() throws IOException;
+	InputStream getMessagePayload() throws IOException;
 
-    String getContentType();
+	String getContentType();
 
-    /**
-     * Returns the wrapped request object, in case you must work directly on it.
-     * 
-     * @return the wrapped request object
-     */
-    Object unwrap();
+	/**
+	 * Returns the wrapped request object, in case you must work directly on it.
+	 * 
+	 * @return the wrapped request object
+	 */
+	Object unwrap();
 }

@@ -13,28 +13,28 @@ import org.springframework.core.io.Resource;
  *
  */
 public class DataBotTasklet implements Tasklet {
-	
-	private Resource inputResource;	
-	private String targetDirectory;	
+
+	private Resource inputResource;
+	private String targetDirectory;
 	private String targetFile;
 
 	private static final Logger logger = LoggerFactory.getLogger(DataBotTasklet.class);
-	
+
 	public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 		logger.info("Executing task");
 		return RepeatStatus.FINISHED;
 	}
-	
+
 	public void setInputResource(Resource inputResource) {
 		this.inputResource = inputResource;
 	}
-	
+
 	public void setTargetDirectory(String targetDirectory) {
 		this.targetDirectory = targetDirectory;
 	}
-	
+
 	public void setTargetFile(String targetFile) {
 		this.targetFile = targetFile;
 	}
-	
+
 } // End of the class //

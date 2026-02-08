@@ -5,17 +5,17 @@ import java.io.InputStream;
 
 public interface HttpResponse {
 
-    int getStatusCode() throws IOException;
+	int getStatusCode() throws IOException;
 
-    String getReasonPhrase() throws Exception;
+	String getReasonPhrase() throws Exception;
 
-    InputStream getContent() throws IOException;
+	InputStream getContent() throws IOException;
 
-    /**
-     * Returns the underlying response object, in case you need to work on it
-     * directly.
-     * 
-     * @return the wrapped response object
-     */
-    Object unwrap();
+	/**
+	 * Returns the underlying response object, in case you need to work on it
+	 * directly.
+	 * 
+	 * @return the wrapped response object
+	 */
+	Object unwrap();
 }

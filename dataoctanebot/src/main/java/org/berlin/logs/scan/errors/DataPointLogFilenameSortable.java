@@ -39,47 +39,50 @@ package org.berlin.logs.scan.errors;
 @Deprecated
 public class DataPointLogFilenameSortable {
 
-    private String server = "";
-    private String jvm = "";
-    private String logFilename = "";    
-    
-    private String fullFilenameField = "";
-    
-    /**
-     * @return the server
-     */
-    public String getServer() {
-        return server;
-    }
-    /**
-     * @param server the server to set
-     */
-    public void setServer(String server) {
-        this.server = server;
-    }
-    /**
-     * @return the jvm
-     */
-    public String getJvm() {
-        return jvm;
-    }
-    /**
-     * @param jvm the jvm to set
-     */
-    public void setJvm(String jvm) {
-        this.jvm = jvm;
-    }
-    /**
-     * @return the logFilename
-     */
-    public String getLogFilename() {
-        return logFilename;
-    }
-    /**
-     * @param logFilename the logFilename to set
-     */
-    public void setLogFilename(String logFilename) {
-        this.logFilename = logFilename;
-    }
-    
+	private String server = "";
+	private String jvm = "";
+	private String logFilename = "";
+
+	private String fullFilenameField = "";
+
+	/**
+	 * @return the server
+	 */
+	public String getServer() {
+		return server;
+	}
+	/**
+	 * @param server
+	 *            the server to set
+	 */
+	public void setServer(String server) {
+		this.server = server;
+	}
+	/**
+	 * @return the jvm
+	 */
+	public String getJvm() {
+		return jvm;
+	}
+	/**
+	 * @param jvm
+	 *            the jvm to set
+	 */
+	public void setJvm(String jvm) {
+		this.jvm = jvm;
+	}
+	/**
+	 * @return the logFilename
+	 */
+	public String getLogFilename() {
+		return logFilename;
+	}
+	/**
+	 * @param logFilename
+	 *            the logFilename to set
+	 */
+	public void setLogFilename(String logFilename) {
+		this.logFilename = logFilename;
+	}
+
 } /// End of the class //

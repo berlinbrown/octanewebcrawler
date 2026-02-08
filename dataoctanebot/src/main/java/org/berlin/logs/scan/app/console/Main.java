@@ -37,13 +37,14 @@ package org.berlin.logs.scan.app.console;
  * Main entry point for simple expression script interpreter.
  */
 public class Main {
-  
-  /*
-   * mvn exec:java -Dexec.mainClass="org.berlin.logs.scan.app.console.Main" -Dexec.args="stats1"
-   */
-  
-  public static void main(final String [] args) {    
-      new ScriptInterpreter().interpret(args == null || args.length < 1 ? null : args[0]);    
-  }
-  
+
+	/*
+	 * mvn exec:java -Dexec.mainClass="org.berlin.logs.scan.app.console.Main"
+	 * -Dexec.args="stats1"
+	 */
+
+	public static void main(final String[] args) {
+		new ScriptInterpreter().interpret(args == null || args.length < 1 ? null : args[0]);
+	}
+
 } // End of the Class //

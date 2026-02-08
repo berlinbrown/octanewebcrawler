@@ -38,19 +38,19 @@ import org.berlin.logs.scan.search.LogSearch;
 
 public class Main {
 
-    /*
-     * To Run with maven:
-     * mvn exec:java -Dexec.mainClass="com.vineetmanohar.module.Main"  
-     * mvn exec:java -Dexec.mainClass="com.vineetmanohar.module.Main" -Dexec.args="arg0 arg1 arg2"  
-     */
-    
-    public static void main(final String [] args) {
-        
-        System.out.println(">> Running Search <<");
-        final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
-        System.out.println(globalConf);        
-        final LogSearch s = new LogSearch(globalConf).search();        
-        System.out.println(">> Done <<");
-    }
-    
+	/*
+	 * To Run with maven: mvn exec:java
+	 * -Dexec.mainClass="com.vineetmanohar.module.Main" mvn exec:java
+	 * -Dexec.mainClass="com.vineetmanohar.module.Main" -Dexec.args="arg0 arg1 arg2"
+	 */
+
+	public static void main(final String[] args) {
+
+		System.out.println(">> Running Search <<");
+		final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
+		System.out.println(globalConf);
+		final LogSearch s = new LogSearch(globalConf).search();
+		System.out.println(">> Done <<");
+	}
+
 } // End of the Class //

@@ -51,64 +51,65 @@ import org.berlin.logs.scan.session.custom.expr.ExpressionSession;
  */
 public class ExpressionRunner implements IExecutor {
 
-  String outputFilename = "xxx-output.log";
-  private PrintWriter printWriter;
-  GlobalConfiguration globalConf;
+	String outputFilename = "xxx-output.log";
+	private PrintWriter printWriter;
+	GlobalConfiguration globalConf;
 
-  /**
-   * Run the expression parser.
-   */
-  public void run() {
-    final ExpressionSession parser = new ExpressionSession(globalConf);
-    try {
-      final Collection<SessionInfo> res = parser.parseScript(globalConf.getScriptExpression());
-      // // Save to property file ///
-      {
-        // Write the full session database to file //
-        this.outputFilename = this.globalConf.getWorkingDirectory() + "\\expression_for_session.xml";
-        final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, null);
-        this.openOutputFile();
-        s.setPrintWriter(this.printWriter);
-        s.writeSessionDatabaseList(res);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      return;
-    } finally {
-      this.close();
-    }
-  }
+	/**
+	 * Run the expression parser.
+	 */
+	public void run() {
+		final ExpressionSession parser = new ExpressionSession(globalConf);
+		try {
+			final Collection<SessionInfo> res = parser.parseScript(globalConf.getScriptExpression());
+			// // Save to property file ///
+			{
+				// Write the full session database to file //
+				this.outputFilename = this.globalConf.getWorkingDirectory() + "\\expression_for_session.xml";
+				final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, null);
+				this.openOutputFile();
+				s.setPrintWriter(this.printWriter);
+				s.writeSessionDatabaseList(res);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		} finally {
+			this.close();
+		}
+	}
 
-  /**
-   * Open output file.
-   */
-  public void openOutputFile() {
+	/**
+	 * Open output file.
+	 */
+	public void openOutputFile() {
 
-    if (this.outputFilename == null || this.outputFilename.length() == 0) {
-      return;
-    }
-    BufferedOutputStream bos;
-    try {
-      bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
-      this.printWriter = new PrintWriter(bos);
-    } catch (final FileNotFoundException e) {
-      e.printStackTrace();
-      throw new IllegalStateException("Could not open output file");
-    }
-  }
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
+			this.printWriter = new PrintWriter(bos);
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("Could not open output file");
+		}
+	}
 
-  /**
-   * Close the open output file.
-   */
-  public void close() {
-    if (this.outputFilename == null || this.outputFilename.length() == 0) {
-      return;
-    }
-    if (this.printWriter != null) {
-      this.printWriter.close();
-      final File f = new File(this.outputFilename);
-      System.out.println("SessionSearch : Closing output file, see file for results : " + f.getAbsolutePath() + " parentDir=" + f.getParent());
-    }
-  }
+	/**
+	 * Close the open output file.
+	 */
+	public void close() {
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		if (this.printWriter != null) {
+			this.printWriter.close();
+			final File f = new File(this.outputFilename);
+			System.out.println("SessionSearch : Closing output file, see file for results : " + f.getAbsolutePath()
+					+ " parentDir=" + f.getParent());
+		}
+	}
 
 } // End of the Class //

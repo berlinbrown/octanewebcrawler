@@ -10,12 +10,10 @@ import org.apache.struts.action.ActionMapping;
 
 public class ListMessagesAction extends Action {
 
-	
 	private final static String SUCCESS = "success";
 
-	public ActionForward execute(final ActionMapping mapping, final ActionForm form
-			, final HttpServletRequest request, final HttpServletResponse response)
-			throws Exception {
+	public ActionForward execute(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
+			final HttpServletResponse response) throws Exception {
 		return mapping.findForward(SUCCESS);
 	}
 

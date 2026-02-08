@@ -46,38 +46,40 @@ import org.berlin.logs.scan.Version;
  * Main entry for parser application.
  */
 public class Main {
- 
-  /**
-   * Main entry point for parser application.
-   * 
-   * @param args
-   * @throws Exception
-   */
-  public static void main(final String [] args) throws Exception {
-    
-    /****************************************
-     * Load from the classpath, then the filesystem and then from the command console.
-     ****************************************/
-    final File fConfLocal = new File("log_scan_system.properties");
-    final Properties propsLocalFile = new Properties();
-    if (fConfLocal.exists()) {
-        System.out.println("Conf Exists, attempting to load - " + fConfLocal.getAbsolutePath());            
-        try {
-            propsLocalFile.load(new FileInputStream(fConfLocal));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    } // End of the if //
-    final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
-    globalConf.loadFromDynamicScript(propsLocalFile);        
-    System.out.println(globalConf);        
-    System.out.println(Version.num + " -- " + globalConf.getSystemApplicationName() + "-" + globalConf.getSystemVersion());
-       
-    final ExpressionRunner express = new ExpressionRunner();
-    express.globalConf = globalConf;
-    express.run();
-  }
- 
+
+	/**
+	 * Main entry point for parser application.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main(final String[] args) throws Exception {
+
+		/****************************************
+		 * Load from the classpath, then the filesystem and then from the command
+		 * console.
+		 ****************************************/
+		final File fConfLocal = new File("log_scan_system.properties");
+		final Properties propsLocalFile = new Properties();
+		if (fConfLocal.exists()) {
+			System.out.println("Conf Exists, attempting to load - " + fConfLocal.getAbsolutePath());
+			try {
+				propsLocalFile.load(new FileInputStream(fConfLocal));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} // End of the if //
+		final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
+		globalConf.loadFromDynamicScript(propsLocalFile);
+		System.out.println(globalConf);
+		System.out.println(
+				Version.num + " -- " + globalConf.getSystemApplicationName() + "-" + globalConf.getSystemVersion());
+
+		final ExpressionRunner express = new ExpressionRunner();
+		express.globalConf = globalConf;
+		express.run();
+	}
+
 } // End of the Class //

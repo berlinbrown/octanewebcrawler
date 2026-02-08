@@ -40,20 +40,20 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="bot_crawler_ignores")
+@Table(name = "bot_crawler_ignores")
 public class BotCrawlerIgnore {
 
-	@Id	
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
-	private Long id;		
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
+	private Long id;
 	private Date createdAt;
-	
-	private String host;	
+
+	private String host;
 	private String descr;
-	private String path;	
+	private String path;
 	private String disabled;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -61,7 +61,8 @@ public class BotCrawlerIgnore {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -73,11 +74,12 @@ public class BotCrawlerIgnore {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
-	}	
+	}
 	/**
 	 * @return the host
 	 */
@@ -85,7 +87,8 @@ public class BotCrawlerIgnore {
 		return host;
 	}
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -97,7 +100,8 @@ public class BotCrawlerIgnore {
 		return descr;
 	}
 	/**
-	 * @param descr the descr to set
+	 * @param descr
+	 *            the descr to set
 	 */
 	public void setDescr(String descr) {
 		this.descr = descr;
@@ -109,7 +113,8 @@ public class BotCrawlerIgnore {
 		return path;
 	}
 	/**
-	 * @param path the path to set
+	 * @param path
+	 *            the path to set
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -121,10 +126,11 @@ public class BotCrawlerIgnore {
 		return disabled;
 	}
 	/**
-	 * @param disabled the disabled to set
+	 * @param disabled
+	 *            the disabled to set
 	 */
 	public void setDisabled(String disabled) {
 		this.disabled = disabled;
 	}
-	
+
 } // End of the class //

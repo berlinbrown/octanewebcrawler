@@ -35,8 +35,8 @@ package org.berlin.logs.scan;
 
 public class Version {
 
-  public static final int vers = 2;
-  
-  public static final String num = "[Version : vers=" + vers + "]";
-  
+	public static final int vers = 2;
+
+	public static final String num = "[Version : vers=" + vers + "]";
+
 }

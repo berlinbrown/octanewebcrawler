@@ -28,32 +28,32 @@ import org.berlin.logs.scan.NullRef;
 public class RobotsInfo {
 
 	public static final String CORE_ROBOT_KEY = "*.disallow";
-	
+
 	/**
-	 * Allow and disallow path.
-	 * Example mapping : ('crawler1.disallow' = ['/tmp/','/foo.html'])
+	 * Allow and disallow path. Example mapping : ('crawler1.disallow' =
+	 * ['/tmp/','/foo.html'])
 	 */
 	private Map<String, List<String>> userAgentDisallowPath = new HashMap<String, List<String>>();
 	private List<String> sitemap = new ArrayList<String>();
-	
+
 	private String robotsText;
 	private String host;
 	private boolean valid = false;
-	
+
 	private String lastRuleFail = "";
-	
+
 	public boolean valid() {
 		// If these conditions met, info is valid
-		return robotsText != null && host != null && valid;		
+		return robotsText != null && host != null && valid;
 	}
-	
+
 	public String toString() {
 		final StringBuffer buf = new StringBuffer();
 		buf.append(userAgentDisallowPath);
 		buf.append("//");
 		buf.append(sitemap);
 		return buf.toString();
-	}	
+	}
 	public void add(final String key, final String path) {
 		// There is data here to parse, set for valid //
 		this.valid = true;
@@ -63,20 +63,20 @@ public class RobotsInfo {
 			this.userAgentDisallowPath.put(key, l);
 		} else {
 			this.userAgentDisallowPath.get(key).add(path);
-		} // End of the if - else 
+		} // End of the if - else
 	} // End of the method //
-	
+
 	public void addSitemap(final String s) {
 		sitemap.add(s);
 	}
-	
+
 	/**
 	 * Validate the link and check against the robots info.
 	 * 
 	 * @param link
 	 */
-	public boolean verifyLink(final BotLink link) {		
-		final List<String> list = this.userAgentDisallowPath.get(CORE_ROBOT_KEY);		
+	public boolean verifyLink(final BotLink link) {
+		final List<String> list = this.userAgentDisallowPath.get(CORE_ROBOT_KEY);
 		if (list == null) {
 			// If no disallow data, assume 'allow'
 			// OK to crawl
@@ -108,23 +108,23 @@ public class RobotsInfo {
 			// Cheap hack, try to find rule for hiding various extensions
 			final int chkSlash = chk.length() - chk.replaceAll("/", "").length();
 			final int chkWildcard = chk.length() - chk.replaceAll("\\*", "").length();
-			if (chkSlash==1 && chkWildcard==1) {
+			if (chkSlash == 1 && chkWildcard == 1) {
 				final Matcher m = Pattern.compile("^/\\*\\.([a-z0-9]*)$").matcher(chk);
 				String ext = null;
-				while(m.find()) {
+				while (m.find()) {
 					if (m.groupCount() == 1) {
 						ext = m.group(1);
 					}
 				}
-				if (path.endsWith("."+ext)) {
+				if (path.endsWith("." + ext)) {
 					lastRuleFail = "Rule failed, extension '" + ext + "'";
 					return false;
 				}
-			}			
-		}		
+			}
+		}
 		return true;
 	} // End of method //
-	
+
 	/**
 	 * @return the robotsText
 	 */
@@ -133,7 +133,8 @@ public class RobotsInfo {
 	}
 
 	/**
-	 * @param robotsText the robotsText to set
+	 * @param robotsText
+	 *            the robotsText to set
 	 */
 	public void setRobotsText(String robotsText) {
 		this.robotsText = robotsText;
@@ -147,13 +148,16 @@ public class RobotsInfo {
 	}
 
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -161,13 +165,14 @@ public class RobotsInfo {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((host == null) ? 0 : host.hashCode());
-		result = prime * result
-				+ ((robotsText == null) ? 0 : robotsText.hashCode());
+		result = prime * result + ((robotsText == null) ? 0 : robotsText.hashCode());
 		result = prime * result + ((sitemap == null) ? 0 : sitemap.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -196,19 +201,19 @@ public class RobotsInfo {
 			return false;
 		return true;
 	}
-	
-	public static void main(final String [] args) {
+
+	public static void main(final String[] args) {
 		System.out.println("Running");
 		final RobotsInfo r = new RobotsInfo();
-		
+
 		r.robotsText = "123";
 		final List<String> xx = new ArrayList<String>();
 		xx.add("/*.rssx");
 		r.userAgentDisallowPath.put("*.disallow", xx);
-		
+
 		final BotLink l = new BotLink();
 		l.setHost("berlin2.com");
-		l.setPath("/abc/fjfj/kjsdfkjsdlf.rssx");		
+		l.setPath("/abc/fjfj/kjsdfkjsdlf.rssx");
 		System.out.println("Done - " + r.verifyLink(l));
 	}
 
@@ -218,5 +223,5 @@ public class RobotsInfo {
 	public String getLastRuleFail() {
 		return lastRuleFail;
 	}
-	
+
 } /// End of the class //

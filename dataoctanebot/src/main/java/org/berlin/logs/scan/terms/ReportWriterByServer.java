@@ -42,149 +42,148 @@ import java.util.Random;
 
 import org.berlin.logs.scan.errors.Parser;
 
-
 public class ReportWriterByServer {
-    
-    private final LogFileStatistics stats;  
-    private final LogTermProcessor processor;
-        
-    public ReportWriterByServer(final LogFileStatistics stats, final LogTermProcessor processor) {
-        this.stats = stats;
-        this.processor = processor;
-    }
-    
-    /**
-     * Report by server name.
-     * 
-     * @param outputFilename
-     */
-    public void report(final String outputFilename) {
-        final Map<Long, Map<String, MinuteStatisticsHandler>> data = this.processor.getStatsByServer();
-        if (data == null) {
-            System.err.println("Invalid data for stats by server");
-            return;
-        }        
-        
-        final Map<String, Map<Long, MinuteStatisticsHandler>> newMapByServer = new LinkedHashMap<String, Map<Long, MinuteStatisticsHandler>>();        
-        for (final Long byTime : data.keySet()) {                      
-            final Map<String, MinuteStatisticsHandler> byServer = data.get(byTime);                        
-            for (final String server : byServer.keySet()) {                                 
-                final MinuteStatisticsHandler currentMinStats = byServer.get(server);                
-                // Build new map data transform
-                if (newMapByServer.get(server) == null) {
-                    final Map<Long, MinuteStatisticsHandler> subMapTime = new LinkedHashMap<Long, MinuteStatisticsHandler>();
-                    subMapTime.put(byTime, currentMinStats);
-                    newMapByServer.put(server, subMapTime);
-                } else {                  
-                    newMapByServer.get(server).put(byTime, currentMinStats);
-                }                 
-            } // End of the For //     
-        } // End of For by Time Period //
-        
-        // Re-run and print //
-        for (final String serverfilename : newMapByServer.keySet()) {
-            final String writefilename = outputFilename + "." + serverfilename;
-            reportTotalMinuteTimeplot(newMapByServer.get(serverfilename), writefilename); 
-        }
-    }
-        
-    /**
-     * Report totals based on 10 minute intervals.
-     * 
-     * @param outputFilename
-     */
-    protected void reportTotalMinuteTimeplot(final Map<Long, MinuteStatisticsHandler> statsMapByMinute, final String outputFilename) {
-        if (statsMapByMinute == null) {
-            System.out.println("reportTotalMinuteTimeplot: Invalid map data");
-            return;
-        }
-        final Random random = new Random();
-        final File f = new File(outputFilename + ".minuteplot.dat");        
-        StringBuffer buf = new StringBuffer(1024);
-        buf = new StringBuffer(1024);
-        buf.append("# \"Data\"");                
-        buf.append(Parser.NL);        
-        FileWriter fw = null;        
-        int i = 1;
-        try {
-            fw = new FileWriter(f);         
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try {                    
-            fw.write(buf.toString());
-            fw.flush();
-            buf = new StringBuffer(1024);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } // End of the try catch //
 
-        final StringBuffer bufXTicPlot = new StringBuffer();
-        bufXTicPlot.append("set xtics (");
-        int dataForXTics = 0;        
-        for (final Long timepoint : statsMapByMinute.keySet()) {                                                            
-            final MinuteStatisticsHandler info  = statsMapByMinute.get(timepoint);
-            final LineTermInfoHandler line = info.dataAtTimeOfStat; 
-            String jdate = "" + (line.javaDate == null ? "" : line.javaDate);
-            jdate = jdate.replaceAll(" ", "_"); 
-            final String jdateTrim = jdate.length() > 17 ? jdate.substring(0, 16) : jdate;            
-            buf.append("" + i);                    
-            buf.append("\t\t" + line.termType);                    
-            buf.append("\t\t" + line.timeByMin);
-            buf.append("\t\t" + timepoint);
-            buf.append("\t\t'" + jdate + "'");
-            buf.append("\t\t" + info.beginTotal);
-            buf.append("\t\t" + info.criticalerrorTotal);            
-            buf.append("\t\t" + info.exceptionTotal);
-            buf.append("\t\t" + info.errorTotal);
-            buf.append("\t\t" + info.searchTermTotal);
-            buf.append(Parser.NL);                               
-            /****************************
-             * After row data, print xtic information
-             ****************************/
-            if (i < 2) {
-                bufXTicPlot.append("'");
-                bufXTicPlot.append(jdateTrim);
-                bufXTicPlot.append("' " + line.timeByMin + ", ");
-                dataForXTics++;
-            } else {
-                if (random.nextDouble() < 0.0020 && dataForXTics < 26) {
-                    // Percent chance to print out the date for xlabel plot
-                    bufXTicPlot.append("'");
-                    bufXTicPlot.append(jdateTrim);
-                    bufXTicPlot.append("' " + line.timeByMin + ", ");
-                    dataForXTics++;
-                } 
-            } // End if - check random              
-            i++; 
-            if ((i % 100) == 0) {
-                try {        
-                    System.out.println("reportMinTimePlot[byServer]: Writing row..." + i);
-                    fw.write(buf.toString());
-                    fw.flush();
-                    buf = new StringBuffer(1024);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } // End of the try catch //
-            } // End of the if //                    
-        } // End of the For (one-file) //         
-        try {        
-            fw.write(buf.toString());
-            fw.flush();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } finally {        
-            try {
-                fw.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        } // End of try write                
-        
-        bufXTicPlot.append(")");
-        System.out.println("End with xlabel plot data");
-        System.out.println(bufXTicPlot);
-    }   
-    
-    
+	private final LogFileStatistics stats;
+	private final LogTermProcessor processor;
+
+	public ReportWriterByServer(final LogFileStatistics stats, final LogTermProcessor processor) {
+		this.stats = stats;
+		this.processor = processor;
+	}
+
+	/**
+	 * Report by server name.
+	 * 
+	 * @param outputFilename
+	 */
+	public void report(final String outputFilename) {
+		final Map<Long, Map<String, MinuteStatisticsHandler>> data = this.processor.getStatsByServer();
+		if (data == null) {
+			System.err.println("Invalid data for stats by server");
+			return;
+		}
+
+		final Map<String, Map<Long, MinuteStatisticsHandler>> newMapByServer = new LinkedHashMap<String, Map<Long, MinuteStatisticsHandler>>();
+		for (final Long byTime : data.keySet()) {
+			final Map<String, MinuteStatisticsHandler> byServer = data.get(byTime);
+			for (final String server : byServer.keySet()) {
+				final MinuteStatisticsHandler currentMinStats = byServer.get(server);
+				// Build new map data transform
+				if (newMapByServer.get(server) == null) {
+					final Map<Long, MinuteStatisticsHandler> subMapTime = new LinkedHashMap<Long, MinuteStatisticsHandler>();
+					subMapTime.put(byTime, currentMinStats);
+					newMapByServer.put(server, subMapTime);
+				} else {
+					newMapByServer.get(server).put(byTime, currentMinStats);
+				}
+			} // End of the For //
+		} // End of For by Time Period //
+
+		// Re-run and print //
+		for (final String serverfilename : newMapByServer.keySet()) {
+			final String writefilename = outputFilename + "." + serverfilename;
+			reportTotalMinuteTimeplot(newMapByServer.get(serverfilename), writefilename);
+		}
+	}
+
+	/**
+	 * Report totals based on 10 minute intervals.
+	 * 
+	 * @param outputFilename
+	 */
+	protected void reportTotalMinuteTimeplot(final Map<Long, MinuteStatisticsHandler> statsMapByMinute,
+			final String outputFilename) {
+		if (statsMapByMinute == null) {
+			System.out.println("reportTotalMinuteTimeplot: Invalid map data");
+			return;
+		}
+		final Random random = new Random();
+		final File f = new File(outputFilename + ".minuteplot.dat");
+		StringBuffer buf = new StringBuffer(1024);
+		buf = new StringBuffer(1024);
+		buf.append("# \"Data\"");
+		buf.append(Parser.NL);
+		FileWriter fw = null;
+		int i = 1;
+		try {
+			fw = new FileWriter(f);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fw.write(buf.toString());
+			fw.flush();
+			buf = new StringBuffer(1024);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} // End of the try catch //
+
+		final StringBuffer bufXTicPlot = new StringBuffer();
+		bufXTicPlot.append("set xtics (");
+		int dataForXTics = 0;
+		for (final Long timepoint : statsMapByMinute.keySet()) {
+			final MinuteStatisticsHandler info = statsMapByMinute.get(timepoint);
+			final LineTermInfoHandler line = info.dataAtTimeOfStat;
+			String jdate = "" + (line.javaDate == null ? "" : line.javaDate);
+			jdate = jdate.replaceAll(" ", "_");
+			final String jdateTrim = jdate.length() > 17 ? jdate.substring(0, 16) : jdate;
+			buf.append("" + i);
+			buf.append("\t\t" + line.termType);
+			buf.append("\t\t" + line.timeByMin);
+			buf.append("\t\t" + timepoint);
+			buf.append("\t\t'" + jdate + "'");
+			buf.append("\t\t" + info.beginTotal);
+			buf.append("\t\t" + info.criticalerrorTotal);
+			buf.append("\t\t" + info.exceptionTotal);
+			buf.append("\t\t" + info.errorTotal);
+			buf.append("\t\t" + info.searchTermTotal);
+			buf.append(Parser.NL);
+			/****************************
+			 * After row data, print xtic information
+			 ****************************/
+			if (i < 2) {
+				bufXTicPlot.append("'");
+				bufXTicPlot.append(jdateTrim);
+				bufXTicPlot.append("' " + line.timeByMin + ", ");
+				dataForXTics++;
+			} else {
+				if (random.nextDouble() < 0.0020 && dataForXTics < 26) {
+					// Percent chance to print out the date for xlabel plot
+					bufXTicPlot.append("'");
+					bufXTicPlot.append(jdateTrim);
+					bufXTicPlot.append("' " + line.timeByMin + ", ");
+					dataForXTics++;
+				}
+			} // End if - check random
+			i++;
+			if ((i % 100) == 0) {
+				try {
+					System.out.println("reportMinTimePlot[byServer]: Writing row..." + i);
+					fw.write(buf.toString());
+					fw.flush();
+					buf = new StringBuffer(1024);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} // End of the try catch //
+			} // End of the if //
+		} // End of the For (one-file) //
+		try {
+			fw.write(buf.toString());
+			fw.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} // End of try write
+
+		bufXTicPlot.append(")");
+		System.out.println("End with xlabel plot data");
+		System.out.println(bufXTicPlot);
+	}
+
 } // End of the Class //

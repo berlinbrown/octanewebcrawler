@@ -50,42 +50,42 @@ public class RobotsParser {
 			return robotsData;
 		}
 		final String robotsTxt = robotsTxtArg.trim();
-		final ByteArrayInputStream is = new ByteArrayInputStream(robotsTxt.getBytes());		
+		final ByteArrayInputStream is = new ByteArrayInputStream(robotsTxt.getBytes());
 		final BufferedReader in = new BufferedReader(new InputStreamReader(is));
-		String currentAgent = "";		
+		String currentAgent = "";
 		try {
 			robotsData.setRobotsText(robotsTxt);
 			robotsData.setHost(link.getHost());
-			String line = null;			
-			while((line = in.readLine()) != null) {
-			    final String l = line.trim();
-			    if (l.length() > 2) {			    	
-			    	// Mixed case, tag, white-space and then any other characters
-			    	final Pattern p = Pattern.compile("(?i)(disallow|sitemap|user-agent):\\s*(.*)");
-			    	final Matcher m = p.matcher(l);
-			    	while (m.find()) {			    		
-			    		if (m.groupCount() == 2) {
-			    			final String key = m.group(1).trim().toLowerCase();
-				    		final String val = m.group(2).trim();				    		
-				    		// Set a new current user agent //
-				    		if (key.equalsIgnoreCase("user-agent")) {
-				    			// E.g. '*'
-				    			currentAgent = val;
-				    			currentAgent = currentAgent + ".disallow"; 
-				    		} else if (key.equalsIgnoreCase("sitemap")) {
-				    			robotsData.addSitemap(val);
-				    		} else if (key.equalsIgnoreCase("disallow")) {
-				    			// We can add 'disallow' to the current agent set
-				    			robotsData.add(currentAgent, val);
-				    		} // End of the if //
-			    		} // End of the if //			    		
-			    	} // End of the while //			    
-			    } // End of the if //
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				final String l = line.trim();
+				if (l.length() > 2) {
+					// Mixed case, tag, white-space and then any other characters
+					final Pattern p = Pattern.compile("(?i)(disallow|sitemap|user-agent):\\s*(.*)");
+					final Matcher m = p.matcher(l);
+					while (m.find()) {
+						if (m.groupCount() == 2) {
+							final String key = m.group(1).trim().toLowerCase();
+							final String val = m.group(2).trim();
+							// Set a new current user agent //
+							if (key.equalsIgnoreCase("user-agent")) {
+								// E.g. '*'
+								currentAgent = val;
+								currentAgent = currentAgent + ".disallow";
+							} else if (key.equalsIgnoreCase("sitemap")) {
+								robotsData.addSitemap(val);
+							} else if (key.equalsIgnoreCase("disallow")) {
+								// We can add 'disallow' to the current agent set
+								robotsData.add(currentAgent, val);
+							} // End of the if //
+						} // End of the if //
+					} // End of the while //
+				} // End of the if //
 			} // End of the while //
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		} // End of the try - catch //
 		return robotsData;
 	} // End of the method //
-	
+
 } // End of the class //

@@ -10,12 +10,12 @@ public class UserLinkedListNode {
 	private UserLinkedListNode next;
 	private BotDataUser userData;
 	private GenericTree treeData;
-	
+
 	public UserLinkedListNode(final BotDataUser user, UserLinkedListNode n) {
 		this.userData = user;
-		this.setNext(n);	
+		this.setNext(n);
 	} // End of the method //
-	
+
 	public UserLinkedListNode() {
 		super();
 	} // End of the method //
@@ -28,9 +28,9 @@ public class UserLinkedListNode {
 	public GenericTree tree() {
 		return treeData;
 	}
-	
+
 	public void setNext(final UserLinkedListNode n) {
-		this.next = n;				
+		this.next = n;
 	} // End of the method //
 
 	/**
@@ -41,14 +41,15 @@ public class UserLinkedListNode {
 	}
 
 	/**
-	 * @param userData the userData to set
+	 * @param userData
+	 *            the userData to set
 	 */
 	public void setUserData(BotDataUser userData) {
 		this.userData = userData;
 	}
-	
+
 	public void print(final StringBuffer buf) {
-		if (this.next != null) {			
+		if (this.next != null) {
 			buf.append(String.format("[%s/%s] -> ", this.userData.getMessageUserId(), this.userData.getScreenName()));
 			this.next.print(buf);
 		} else {
@@ -57,17 +58,17 @@ public class UserLinkedListNode {
 			}
 		}
 	}
-	
+
 	public List<UserLinkedListNode> list() {
 		final List<UserLinkedListNode> list = new ArrayList<UserLinkedListNode>();
 		return this.list(list);
 	}
-	
+
 	public List<UserLinkedListNode> list(final List<UserLinkedListNode> list) {
 		if (this.next != null) {
 			list.add(this.next);
 			this.next.list(list);
-		} 
+		}
 		return list;
 	}
 
@@ -77,5 +78,5 @@ public class UserLinkedListNode {
 	public UserLinkedListNode getNext() {
 		return next;
 	}
-		
+
 } // End of the class //

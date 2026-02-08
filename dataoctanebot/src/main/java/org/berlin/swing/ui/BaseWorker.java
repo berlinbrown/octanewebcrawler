@@ -49,80 +49,78 @@ import org.berlin.swing.ui.Components.IWidget;
  * @author berlin.brown
  *
  */
-public abstract class BaseWorker implements IEventWorker {    
-    
-    /**
-     * Action method executed by the listener event.
-     */
-    public abstract void execute();
-    
-    private ActionEvent lastEvent;
-    private IWidget masterParent;
-    
-    /**
-     * 
-     * @param masterParent
-     * @param event
-     * @return
-     */
-    public SwingWorker buildWorker(final IWidget masterParent, final ActionEvent event) {        
-        // At this point, we know the event and the parent object
-        // before the event method is called.
-        this.masterParent = masterParent;
-        this.lastEvent = event;
-        return new Worker();
-        
-    }
-    
-    public ActionListener buildListener(final IWidget masterParent) {
-        
-        return new ActionListener() {    
-            public void actionPerformed(final ActionEvent event) {
-                final SwingWorker worker = BaseWorker.this.buildWorker(masterParent, event);
-                worker.start();
-            }
-        }; // End of Listener //
-        
-    }
-    
-    /**
-     * BaseWorker must be created first then
-     * the Worker class.
-     * 
-     * In the swing component action listener method,
-     * the contruct method is invoked.
-     * 
-     * Flow:
-     * 
-     * ------------------
-     * (1) new BaseWorker -> (2) [ActionListener/actionPerformed] obj.buildWorker() ... (3) [Event] obj.execute() called   
-     * ------------------
-     * 
-     */
-    public class Worker extends SwingWorker {        
-        public SwingWorker build() {
-            return this;
-        }
+public abstract class BaseWorker implements IEventWorker {
 
-        @Override
-        public Object construct() {
-            BaseWorker.this.execute();
-            return Thread.currentThread() + "-" + this.toString();
-        }
-    } // End of the Worker Class //
+	/**
+	 * Action method executed by the listener event.
+	 */
+	public abstract void execute();
 
-    /**
-     * @return the lastEvent
-     */
-    public ActionEvent getLastEvent() {
-        return lastEvent;
-    }
+	private ActionEvent lastEvent;
+	private IWidget masterParent;
 
-    /**
-     * @return the masterParent
-     */
-    public IWidget getMasterParent() {
-        return masterParent;
-    }
-    
+	/**
+	 * 
+	 * @param masterParent
+	 * @param event
+	 * @return
+	 */
+	public SwingWorker buildWorker(final IWidget masterParent, final ActionEvent event) {
+		// At this point, we know the event and the parent object
+		// before the event method is called.
+		this.masterParent = masterParent;
+		this.lastEvent = event;
+		return new Worker();
+
+	}
+
+	public ActionListener buildListener(final IWidget masterParent) {
+
+		return new ActionListener() {
+			public void actionPerformed(final ActionEvent event) {
+				final SwingWorker worker = BaseWorker.this.buildWorker(masterParent, event);
+				worker.start();
+			}
+		}; // End of Listener //
+
+	}
+
+	/**
+	 * BaseWorker must be created first then the Worker class.
+	 * 
+	 * In the swing component action listener method, the contruct method is
+	 * invoked.
+	 * 
+	 * Flow:
+	 * 
+	 * ------------------ (1) new BaseWorker -> (2) [ActionListener/actionPerformed]
+	 * obj.buildWorker() ... (3) [Event] obj.execute() called ------------------
+	 * 
+	 */
+	public class Worker extends SwingWorker {
+		public SwingWorker build() {
+			return this;
+		}
+
+		@Override
+		public Object construct() {
+			BaseWorker.this.execute();
+			return Thread.currentThread() + "-" + this.toString();
+		}
+	} // End of the Worker Class //
+
+	/**
+	 * @return the lastEvent
+	 */
+	public ActionEvent getLastEvent() {
+		return lastEvent;
+	}
+
+	/**
+	 * @return the masterParent
+	 */
+	public IWidget getMasterParent() {
+		return masterParent;
+	}
+
 } // End of the Class

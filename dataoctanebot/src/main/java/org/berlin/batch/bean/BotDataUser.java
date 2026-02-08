@@ -16,30 +16,31 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="bot_data_user")
+@Table(name = "bot_data_user")
 public class BotDataUser {
 
-	@Id	
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
-	private Long id;	
-	
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
+	private Long id;
+
 	private Date createdAt;
 	private Long followersCount;
 	private BigInteger messageUserId;
 	private String screenName;
-	
+
 	/**
 	 * A user may have many messages.
 	 */
 	@OneToMany(mappedBy = "bot_data_user", targetEntity = BotDataUser.class)
-    @JoinTable(name = "bot_data_messages", joinColumns = { @JoinColumn(name = "user_id") })
+	@JoinTable(name = "bot_data_messages", joinColumns = {@JoinColumn(name = "user_id")})
 	private Set<BotDataMessages> messages = new HashSet<BotDataMessages>();
-	
+
 	public String toString() {
-		return String.format("[DataUser : name=%s | userId=%s %s]", screenName, this.messageUserId, this.followersCount);
+		return String.format("[DataUser : name=%s | userId=%s %s]", screenName, this.messageUserId,
+				this.followersCount);
 	} // End of the method //
-	
+
 	/**
 	 * @return the id
 	 */
@@ -47,7 +48,8 @@ public class BotDataUser {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -59,7 +61,8 @@ public class BotDataUser {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -71,7 +74,8 @@ public class BotDataUser {
 		return followersCount;
 	}
 	/**
-	 * @param followersCount the followersCount to set
+	 * @param followersCount
+	 *            the followersCount to set
 	 */
 	public void setFollowersCount(final Long followersCount) {
 		this.followersCount = followersCount;
@@ -83,7 +87,8 @@ public class BotDataUser {
 		return messageUserId;
 	}
 	/**
-	 * @param messageUserId the messageUserId to set
+	 * @param messageUserId
+	 *            the messageUserId to set
 	 */
 	public void setMessageUserId(BigInteger messageUserId) {
 		this.messageUserId = messageUserId;
@@ -95,9 +100,10 @@ public class BotDataUser {
 		return screenName;
 	}
 	/**
-	 * @param screenName the screenName to set
+	 * @param screenName
+	 *            the screenName to set
 	 */
-	public void setScreenName(String screenName) {		
+	public void setScreenName(String screenName) {
 		this.screenName = screenName;
 		if (this.screenName != null) {
 			this.screenName = this.screenName.replaceAll("'", "");
@@ -110,7 +116,8 @@ public class BotDataUser {
 		return messages;
 	}
 	/**
-	 * @param messages the messages to set
+	 * @param messages
+	 *            the messages to set
 	 */
 	public void setMessages(final Set<BotDataMessages> messages) {
 		this.messages = messages;
@@ -123,15 +130,11 @@ public class BotDataUser {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((createdAt == null) ? 0 : createdAt.hashCode());
-		result = prime * result
-				+ ((followersCount == null) ? 0 : followersCount.hashCode());
+		result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime * result + ((followersCount == null) ? 0 : followersCount.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((messageUserId == null) ? 0 : messageUserId.hashCode());
-		result = prime * result
-				+ ((screenName == null) ? 0 : screenName.hashCode());
+		result = prime * result + ((messageUserId == null) ? 0 : messageUserId.hashCode());
+		result = prime * result + ((screenName == null) ? 0 : screenName.hashCode());
 		return result;
 	}
 
@@ -173,6 +176,6 @@ public class BotDataUser {
 		} else if (!screenName.equals(other.screenName))
 			return false;
 		return true;
-	}	
-	
+	}
+
 } // End of the class //

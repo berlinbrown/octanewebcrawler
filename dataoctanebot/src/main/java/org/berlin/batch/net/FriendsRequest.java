@@ -29,18 +29,17 @@ import org.slf4j.LoggerFactory;
 public class FriendsRequest {
 
 	public static final String USER_AGENT = "Mozilla/5.0 (compatible; octanebot/1.0; http://code.google.com/p/octane-crawler/)";
-	
+
 	private String nextRequestURI = "";
-	private String refreshURI = "";	
-	
+	private String refreshURI = "";
+
 	/**
-	 * Max number from friends.
-	 * Default 4-8
+	 * Max number from friends. Default 4-8
 	 */
 	private int maxNumberResults = 4;
-	
-	private static final Logger logger = LoggerFactory.getLogger(FriendsRequest.class);	
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(FriendsRequest.class);
+
 	public synchronized JsonNode connect(final String queryUserId) {		
 		// We are setting this to synchornized to avoid
 		// multiple requests to twitter
@@ -87,7 +86,7 @@ public class FriendsRequest {
 	        /*
 	        final String accessToken = consumer.getToken();
 	        final String tokenSecret = consumer.getTokenSecret();
-	        */we
+	        */
 	        final String accessToken = "2asdasd28wrwer246769-6jEUFqJo4ikKvWfEBX9ImsdfsdfsdfsdflsdfjlksjdiujewoiruweKYdckLykBuQARyzYIIX";
 	        final String tokenSecret = "0U1CBsdfsdfsdfVr31d2e14389uy9sdfsdf889jhoijosdfsdfsf";
 	        
@@ -160,17 +159,19 @@ public class FriendsRequest {
 	} // End of the method //
 
 	/**
-	 * @param nextRequestURI the nextRequestURI to set
+	 * @param nextRequestURI
+	 *            the nextRequestURI to set
 	 */
 	public void setNextRequestURI(String nextRequestURI) {
 		this.nextRequestURI = nextRequestURI;
 	}
 
 	/**
-	 * @param refreshURI the refreshURI to set
+	 * @param refreshURI
+	 *            the refreshURI to set
 	 */
 	public void setRefreshURI(String refreshURI) {
 		this.refreshURI = refreshURI;
 	}
-	
+
 } // End of the class //

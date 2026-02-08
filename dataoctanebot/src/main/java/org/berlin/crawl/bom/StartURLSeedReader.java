@@ -47,80 +47,81 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class StartURLSeedReader {
 
 	private Queue<Thread> activeThreads = new LinkedList<Thread>();
-	
+
 	/**
-	 * Max active threads for processing links.
-	 * Default (60)
+	 * Max active threads for processing links. Default (60)
 	 */
-	private int maxActiveThreads = 400;	
-	
+	private int maxActiveThreads = 400;
+
 	private static final Logger logger = LoggerFactory.getLogger(StartURLSeedReader.class);
-	
+
 	public void launch() {
-		final ApplicationContext ctx = new ClassPathXmlApplicationContext("/org/berlin/batch/batch-databot-context.xml");				
+		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"/org/berlin/batch/batch-databot-context.xml");
 		final BotCrawlerDAO dao = new BotCrawlerDAO();
 		final SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
-		final Session session = sf.openSession();		
+		final Session session = sf.openSession();
 		final List<BotSeed> seeds = dao.findSeedRequests(session);
 		int numberOfSeeds = 0;
-		
-		// Randomize the seed list //		
+
+		// Randomize the seed list //
 		Collections.shuffle(seeds);
 		for (final BotSeed seed : seeds) {
 			if ("Y".equalsIgnoreCase(seed.getEnabled())) {
-				numberOfSeeds++;				
+				numberOfSeeds++;
 				if (this.activeThreads.size() < maxActiveThreads) {
-					logger.info("At Start URL Seeder, seeding / num=" + numberOfSeeds + " / " + seed.getId() + " sz=" + this.activeThreads.size());
-					// Only launch so many threads					
+					logger.info("At Start URL Seeder, seeding / num=" + numberOfSeeds + " / " + seed.getId() + " sz="
+							+ this.activeThreads.size());
+					// Only launch so many threads
 					final BotTrueCrawler crawl = new BotTrueCrawler(this, ctx, seed.toLink());
 					crawl.launch();
 					// Slight delay after producing the links for processing //
 					try {
-						Thread.sleep(BotTrueCrawler.DELAY_FROM_PRODUCER+(4*1000));
-					} catch (final InterruptedException e) {			
+						Thread.sleep(BotTrueCrawler.DELAY_FROM_PRODUCER + (4 * 1000));
+					} catch (final InterruptedException e) {
 						e.printStackTrace();
 					} /// End of try catch //
-				} else {					
+				} else {
 					// Wait for the threads to finish, using join
 					for (final Thread wt : this.activeThreads) {
 						try {
 							logger.info("At Start URL Seeder, waiting on seeds to complete");
-							wt.join();							
+							wt.join();
 						} catch (final InterruptedException e) {
 							e.printStackTrace();
 						}
 					} // End of the for //
-					// If we reached this point, remove all the threads , they finished processing
+						// If we reached this point, remove all the threads , they finished processing
 					if (this.activeThreads.size() > 0) {
-						this.activeThreads.clear(); 
+						this.activeThreads.clear();
 					}
-				} // End of the if - else //				
+				} // End of the if - else //
 				logger.info("!/=! At END OF seed launching, seeding / num=" + numberOfSeeds + " / " + seed.getId());
 			} // End of the if //
 		} // End of the for //
-		
+
 		// Wait for the threads to finish, using join
 		for (final Thread wt : this.activeThreads) {
 			try {
 				logger.info("At Start URL Seeder, waiting on seeds to complete [f66x0");
-				wt.join();							
+				wt.join();
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		} // End of the for //
-		
+
 		logger.info("!/=! At END OF seed seeding, launch complete");
 		if (session != null) {
 			// May not need to close the session
 			session.close();
 		} // End of the if //
 	} // End of the method //
-	
+
 	public synchronized void addThread(final Thread t) {
 		if (this.activeThreads.size() < maxActiveThreads) {
-			// Only allow so many threads			
+			// Only allow so many threads
 			this.activeThreads.add(t);
 		}
 	} // End of the method //
-	
+
 } // End of the class //

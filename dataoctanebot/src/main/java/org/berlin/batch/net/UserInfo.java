@@ -25,20 +25,20 @@ import org.slf4j.LoggerFactory;
 public class UserInfo {
 
 	public static final String USER_AGENT = "Mozilla/5.0 (compatible; octanebot/1.0; http://code.google.com/p/octane-crawler/)";
-	private static final Logger logger = LoggerFactory.getLogger(UserInfo.class);	
-	
-	public synchronized BotDataUser connect(final String queryUserId) {		
+	private static final Logger logger = LoggerFactory.getLogger(UserInfo.class);
+
+	public synchronized BotDataUser connect(final String queryUserId) {
 
 		InputStream instream = null;
 		JsonNode rootNode = null;
-		try {			
+		try {
 			final URIBuilder builder = new URIBuilder();
 
 			// Example query string:
 			// ?max_id=305342403513044991&q=obama&lang=en&count=24&include_entities=1&result_type=mixed
-			builder.setScheme("https").setHost("api.twitter.com").setPath("/1/users/show.json");			
+			builder.setScheme("https").setHost("api.twitter.com").setPath("/1/users/show.json");
 			builder.setParameter("user_id", queryUserId);
-			
+
 			logger.info("Attempting request : " + builder.toString());
 
 			final HttpParams params = new BasicHttpParams();
@@ -52,7 +52,7 @@ public class UserInfo {
 			final HttpClient httpclient = new DefaultHttpClient();
 			final HttpGet httpget = new HttpGet(uri);
 			httpget.setParams(params);
-			
+
 			// Connect //
 			final HttpResponse response = httpclient.execute(httpget);
 			final HttpEntity entity = response.getEntity();
@@ -69,7 +69,7 @@ public class UserInfo {
 
 					final ObjectMapper mapper = new ObjectMapper();
 					rootNode = mapper.readValue(document.toString(), JsonNode.class);
-					
+
 					if (rootNode != null) {
 						if (rootNode.get("id_str") == null) {
 							return null;
@@ -87,7 +87,7 @@ public class UserInfo {
 			} // End of the if /
 			Thread.sleep(100);
 		} catch (final Exception e) {
-			logger.error("Error at query user info", e);			
+			logger.error("Error at query user info", e);
 		} finally {
 			try {
 				if (instream != null) {

@@ -42,36 +42,36 @@ import org.berlin.logs.idsl.IExecutor;
  */
 public class AppLogCleaner implements IExecutor {
 
-  /**
-   * Run App Log Cleaner.
-   */
-  public void run() {
-    final File f1 = new File("./logs");
-    final File f2 = new File("./lib/h/logs");
-    this.clean(f1);
-    this.clean(f2);
-  }
-  
-  /**
-   * Delete the files in this directory.
-   * 
-   * @param f
-   */
-  protected void clean(final File f) {
-    if (!f.exists()) {
-      System.out.println("Invalid file - does not exist : " + f);
-    }
-    for (final File fo : f.listFiles()) {
-      if (fo.isFile()) {
-        final boolean res = fo.delete();
-        System.out.println("Delete file : " + fo + " // status=" + res);
-      }
-    }
-  }
-  
-  public static void main(final String [] args) {
-    System.out.println("Running delete file script");
-    new AppLogCleaner().run();
-  }
-  
+	/**
+	 * Run App Log Cleaner.
+	 */
+	public void run() {
+		final File f1 = new File("./logs");
+		final File f2 = new File("./lib/h/logs");
+		this.clean(f1);
+		this.clean(f2);
+	}
+
+	/**
+	 * Delete the files in this directory.
+	 * 
+	 * @param f
+	 */
+	protected void clean(final File f) {
+		if (!f.exists()) {
+			System.out.println("Invalid file - does not exist : " + f);
+		}
+		for (final File fo : f.listFiles()) {
+			if (fo.isFile()) {
+				final boolean res = fo.delete();
+				System.out.println("Delete file : " + fo + " // status=" + res);
+			}
+		}
+	}
+
+	public static void main(final String[] args) {
+		System.out.println("Running delete file script");
+		new AppLogCleaner().run();
+	}
+
 } // End of the Class //

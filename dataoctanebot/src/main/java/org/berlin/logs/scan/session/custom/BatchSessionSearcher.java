@@ -47,167 +47,169 @@ import org.slf4j.LoggerFactory;
 
 public class BatchSessionSearcher {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(BatchSessionSearcher.class);
-  
-  private final GlobalConfiguration globalConf;
-  private int statsTotalSearchFound = 0;
+	private static final Logger LOGGER = LoggerFactory.getLogger(BatchSessionSearcher.class);
 
-  boolean writeOutputFile = true;
-  String outputFilename = "xxx-output.log";
-  private PrintWriter printWriter;
+	private final GlobalConfiguration globalConf;
+	private int statsTotalSearchFound = 0;
 
-  String regexSessionPattern = ".*\\d (\\[(WebContainer) : (\\d+)\\] \\[(\\S{23}) \\- (\\w{5})\\] (\\w*)) .*";
-  boolean useXMLFormat = true;
+	boolean writeOutputFile = true;
+	String outputFilename = "xxx-output.log";
+	private PrintWriter printWriter;
 
-  int smallerDefaultReadBufferSize = 10 * 1024 * 1024;
-  boolean readMoreLargeFile = true;
+	String regexSessionPattern = ".*\\d (\\[(WebContainer) : (\\d+)\\] \\[(\\S{23}) \\- (\\w{5})\\] (\\w*)) .*";
+	boolean useXMLFormat = true;
 
-  private final Map<String, SessionInfo> sessionDatabase = new LinkedHashMap<String, SessionInfo>();
+	int smallerDefaultReadBufferSize = 10 * 1024 * 1024;
+	boolean readMoreLargeFile = true;
 
-  /**
-   * Constructor for LogSearch.
-   * 
-   * @param globalConf
-   */
-  public BatchSessionSearcher(final GlobalConfiguration globalConf) {
-    this.globalConf = globalConf;
-  }
+	private final Map<String, SessionInfo> sessionDatabase = new LinkedHashMap<String, SessionInfo>();
 
-  /**
-   * Search for term in log files.
-   * 
-   * @return
-   */
-  public BatchSessionSearcher search() {
+	/**
+	 * Constructor for LogSearch.
+	 * 
+	 * @param globalConf
+	 */
+	public BatchSessionSearcher(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
 
-    final long tstart = System.currentTimeMillis();
-    this.openOutputFile();
-    final String dir = this.globalConf.getFileCopyLocalTargetDir();
-    final String searchTerm = this.globalConf.getUserSearchTerm();
-    if (searchTerm == null || searchTerm.length() == 0) {
-      LOGGER.info("Invalid search term");
-      return this;
-    }
-    LOGGER.info("Searching directory : " + dir);
-    LOGGER.info(">> Searching for term '" + searchTerm + "'");
-    final File fd = new File(dir);
-    if (!fd.isDirectory()) {
-      LOGGER.info("Target path is not a directory, exiting");
-      return this;
-    }
-    int totalAllFiles = 0;
-    int lastIdValue = 0;
+	/**
+	 * Search for term in log files.
+	 * 
+	 * @return
+	 */
+	public BatchSessionSearcher search() {
 
-    if (globalConf.isUseXMLPropertyFormat()) {
-      this.printWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-      this.printWriter.println("<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">");
-      this.printWriter.println("<properties>");
-    }
-    for (final File f : fd.listFiles()) {
-      if (f.isDirectory()) {
-        continue;
-      }
-      final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, sessionDatabase);
-      s.writeOutputFile = this.writeOutputFile;
-      s.outputFilename = this.outputFilename;
-      s.setPrintWriter(printWriter);
-      s.lastIdValue = lastIdValue;
-      s.search(regexSessionPattern, f);
-      lastIdValue = s.id;
-      totalAllFiles += s.getTermFoundTotal();
-    } // End of the For //
-    // Write the full session database to file //
-    final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, sessionDatabase);
-    s.writeOutputFile = this.writeOutputFile;
-    s.outputFilename = this.outputFilename;
-    s.setPrintWriter(printWriter);
-    s.writeSessionDatabase();
-    if (globalConf.isUseXMLPropertyFormat()) {
-      this.printWriter.println("</properties>");
-    }
-    this.statsTotalSearchFound = totalAllFiles;
-    this.close();
-    final long tdiff = System.currentTimeMillis() - tstart;
-    LOGGER.info(">> Found term '" + searchTerm + "' total of = " + this.statsTotalSearchFound + " times in files");
-    LOGGER.info(">> Found term in " + tdiff + " ms , " + (tdiff / 1000.0) + " seconds");
+		final long tstart = System.currentTimeMillis();
+		this.openOutputFile();
+		final String dir = this.globalConf.getFileCopyLocalTargetDir();
+		final String searchTerm = this.globalConf.getUserSearchTerm();
+		if (searchTerm == null || searchTerm.length() == 0) {
+			LOGGER.info("Invalid search term");
+			return this;
+		}
+		LOGGER.info("Searching directory : " + dir);
+		LOGGER.info(">> Searching for term '" + searchTerm + "'");
+		final File fd = new File(dir);
+		if (!fd.isDirectory()) {
+			LOGGER.info("Target path is not a directory, exiting");
+			return this;
+		}
+		int totalAllFiles = 0;
+		int lastIdValue = 0;
 
-    final double mb = 1024.0 * 1024;
-    final double free = Runtime.getRuntime().freeMemory() / mb;
-    final double total = Runtime.getRuntime().totalMemory() / mb;
-    final double max = Runtime.getRuntime().maxMemory() / mb;
-    final String fmt = String.format("Memory after operation [ freeMemory=%.2fM total=%.2fM maxMemory=%.2fM ]", free, total, max);
-    LOGGER.info(fmt);
-    return this;
-  }
+		if (globalConf.isUseXMLPropertyFormat()) {
+			this.printWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+			this.printWriter.println("<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">");
+			this.printWriter.println("<properties>");
+		}
+		for (final File f : fd.listFiles()) {
+			if (f.isDirectory()) {
+				continue;
+			}
+			final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, sessionDatabase);
+			s.writeOutputFile = this.writeOutputFile;
+			s.outputFilename = this.outputFilename;
+			s.setPrintWriter(printWriter);
+			s.lastIdValue = lastIdValue;
+			s.search(regexSessionPattern, f);
+			lastIdValue = s.id;
+			totalAllFiles += s.getTermFoundTotal();
+		} // End of the For //
+			// Write the full session database to file //
+		final BasicSesssionCollector s = new BasicSesssionCollector(globalConf, sessionDatabase);
+		s.writeOutputFile = this.writeOutputFile;
+		s.outputFilename = this.outputFilename;
+		s.setPrintWriter(printWriter);
+		s.writeSessionDatabase();
+		if (globalConf.isUseXMLPropertyFormat()) {
+			this.printWriter.println("</properties>");
+		}
+		this.statsTotalSearchFound = totalAllFiles;
+		this.close();
+		final long tdiff = System.currentTimeMillis() - tstart;
+		LOGGER.info(">> Found term '" + searchTerm + "' total of = " + this.statsTotalSearchFound + " times in files");
+		LOGGER.info(">> Found term in " + tdiff + " ms , " + (tdiff / 1000.0) + " seconds");
 
-  /**
-   * Open output file.
-   */
-  public void openOutputFile() {
+		final double mb = 1024.0 * 1024;
+		final double free = Runtime.getRuntime().freeMemory() / mb;
+		final double total = Runtime.getRuntime().totalMemory() / mb;
+		final double max = Runtime.getRuntime().maxMemory() / mb;
+		final String fmt = String.format("Memory after operation [ freeMemory=%.2fM total=%.2fM maxMemory=%.2fM ]",
+				free, total, max);
+		LOGGER.info(fmt);
+		return this;
+	}
 
-    if (!this.writeOutputFile) {
-      return;
-    }
-    if (this.outputFilename == null || this.outputFilename.length() == 0) {
-      return;
-    }
-    BufferedOutputStream bos;
-    try {
-      bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
-      this.printWriter = new PrintWriter(bos);
-    } catch (final FileNotFoundException e) {
-      e.printStackTrace();
-      throw new IllegalStateException("Could not open output file");
-    }
-  }
+	/**
+	 * Open output file.
+	 */
+	public void openOutputFile() {
 
-  /**
-   * Close the open output file.
-   */
-  public void close() {
-    if (!this.writeOutputFile) {
-      return;
-    }
-    if (this.outputFilename == null || this.outputFilename.length() == 0) {
-      return;
-    }
-    if (this.printWriter != null) {
-      this.printWriter.close();
+		if (!this.writeOutputFile) {
+			return;
+		}
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		BufferedOutputStream bos;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(this.outputFilename));
+			this.printWriter = new PrintWriter(bos);
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("Could not open output file");
+		}
+	}
 
-      final File f = new File(this.outputFilename);
-      LOGGER.info("SessionSearch : Closing output file, see file for results : " + f.getAbsolutePath() + " parentDir=" + f.getParent());
-    }
-  }
+	/**
+	 * Close the open output file.
+	 */
+	public void close() {
+		if (!this.writeOutputFile) {
+			return;
+		}
+		if (this.outputFilename == null || this.outputFilename.length() == 0) {
+			return;
+		}
+		if (this.printWriter != null) {
+			this.printWriter.close();
 
-  /**
-   * @return the statsTotalSearchFound
-   */
-  public int getStatsTotalSearchFound() {
-    return statsTotalSearchFound;
-  }
+			final File f = new File(this.outputFilename);
+			LOGGER.info("SessionSearch : Closing output file, see file for results : " + f.getAbsolutePath()
+					+ " parentDir=" + f.getParent());
+		}
+	}
 
-  /**
-   * @param writeOutputFile
-   *          the writeOutputFile to set
-   */
-  public void setWriteOutputFile(boolean writeOutputFile) {
-    this.writeOutputFile = writeOutputFile;
-  }
+	/**
+	 * @return the statsTotalSearchFound
+	 */
+	public int getStatsTotalSearchFound() {
+		return statsTotalSearchFound;
+	}
 
-  /**
-   * @param outputFilename
-   *          the outputFilename to set
-   */
-  public void setOutputFilename(String outputFilename) {
-    this.outputFilename = outputFilename;
-  }
+	/**
+	 * @param writeOutputFile
+	 *            the writeOutputFile to set
+	 */
+	public void setWriteOutputFile(boolean writeOutputFile) {
+		this.writeOutputFile = writeOutputFile;
+	}
 
-  public boolean isUseXMLFormat() {
-    return useXMLFormat;
-  }
+	/**
+	 * @param outputFilename
+	 *            the outputFilename to set
+	 */
+	public void setOutputFilename(String outputFilename) {
+		this.outputFilename = outputFilename;
+	}
 
-  public void setUseXMLFormat(boolean useXMLFormat) {
-    this.useXMLFormat = useXMLFormat;
-  }
+	public boolean isUseXMLFormat() {
+		return useXMLFormat;
+	}
+
+	public void setUseXMLFormat(boolean useXMLFormat) {
+		this.useXMLFormat = useXMLFormat;
+	}
 
 } // End of Class //

@@ -37,7 +37,7 @@ import oauth.signpost.http.HttpParameters;
  * 
  * <pre>
  * OAuthProvider provider = new DefaultOAuthProvider(&quot;http://twitter.com/oauth/request_token&quot;,
- *         &quot;http://twitter.com/oauth/access_token&quot;, &quot;http://twitter.com/oauth/authorize&quot;);
+ * 		&quot;http://twitter.com/oauth/access_token&quot;, &quot;http://twitter.com/oauth/authorize&quot;);
  * </pre>
  * <p>
  * Depending on the HTTP library you use, you may need a different provider
@@ -84,165 +84,162 @@ import oauth.signpost.http.HttpParameters;
  */
 public interface OAuthProvider extends Serializable {
 
-    /**
-     * Queries the service provider for a request token.
-     * <p>
-     * <b>Pre-conditions:</b> the given {@link OAuthConsumer} must have a valid
-     * consumer key and consumer secret already set.
-     * </p>
-     * <p>
-     * <b>Post-conditions:</b> the given {@link OAuthConsumer} will have an
-     * unauthorized request token and token secret set.
-     * </p>
-     * 
-     * @param consumer
-     *        the {@link OAuthConsumer} that should be used to sign the request
-     * @param callbackUrl
-     *        Pass an actual URL if your app can receive callbacks and you want
-     *        to get informed about the result of the authorization process.
-     *        Pass {@link OAuth.OUT_OF_BAND} if the service provider implements
-     *        OAuth 1.0a and your app cannot receive callbacks. Pass null if the
-     *        service provider implements OAuth 1.0 and your app cannot receive
-     *        callbacks. Please note that some services (among them Twitter)
-     *        will fail authorization if you pass a callback URL but register
-     *        your application as a desktop app (which would only be able to
-     *        handle OOB requests).
-     * @param customOAuthParams
-     *        you can pass custom OAuth parameters here which will go directly
-     *        into the signer, i.e. you don't have to put them into the request
-     *        first. This is useful for pre-setting OAuth params for signing.
-     *        Pass them sequentially in key/value order.
-     * @return The URL to which the user must be sent in order to authorize the
-     *         consumer. It includes the unauthorized request token (and in the
-     *         case of OAuth 1.0, the callback URL -- 1.0a clients send along
-     *         with the token request).
-     * @throws OAuthMessageSignerException
-     *         if signing the request failed
-     * @throws OAuthNotAuthorizedException
-     *         if the service provider rejected the consumer
-     * @throws OAuthExpectationFailedException
-     *         if required parameters were not correctly set by the consumer or
-     *         service provider
-     * @throws OAuthCommunicationException
-     *         if server communication failed
-     */
-    public String retrieveRequestToken(OAuthConsumer consumer, String callbackUrl,
-            String... customOAuthParams) throws OAuthMessageSignerException,
-            OAuthNotAuthorizedException, OAuthExpectationFailedException,
-            OAuthCommunicationException;
+	/**
+	 * Queries the service provider for a request token.
+	 * <p>
+	 * <b>Pre-conditions:</b> the given {@link OAuthConsumer} must have a valid
+	 * consumer key and consumer secret already set.
+	 * </p>
+	 * <p>
+	 * <b>Post-conditions:</b> the given {@link OAuthConsumer} will have an
+	 * unauthorized request token and token secret set.
+	 * </p>
+	 * 
+	 * @param consumer
+	 *            the {@link OAuthConsumer} that should be used to sign the request
+	 * @param callbackUrl
+	 *            Pass an actual URL if your app can receive callbacks and you want
+	 *            to get informed about the result of the authorization process.
+	 *            Pass {@link OAuth.OUT_OF_BAND} if the service provider implements
+	 *            OAuth 1.0a and your app cannot receive callbacks. Pass null if the
+	 *            service provider implements OAuth 1.0 and your app cannot receive
+	 *            callbacks. Please note that some services (among them Twitter)
+	 *            will fail authorization if you pass a callback URL but register
+	 *            your application as a desktop app (which would only be able to
+	 *            handle OOB requests).
+	 * @param customOAuthParams
+	 *            you can pass custom OAuth parameters here which will go directly
+	 *            into the signer, i.e. you don't have to put them into the request
+	 *            first. This is useful for pre-setting OAuth params for signing.
+	 *            Pass them sequentially in key/value order.
+	 * @return The URL to which the user must be sent in order to authorize the
+	 *         consumer. It includes the unauthorized request token (and in the case
+	 *         of OAuth 1.0, the callback URL -- 1.0a clients send along with the
+	 *         token request).
+	 * @throws OAuthMessageSignerException
+	 *             if signing the request failed
+	 * @throws OAuthNotAuthorizedException
+	 *             if the service provider rejected the consumer
+	 * @throws OAuthExpectationFailedException
+	 *             if required parameters were not correctly set by the consumer or
+	 *             service provider
+	 * @throws OAuthCommunicationException
+	 *             if server communication failed
+	 */
+	public String retrieveRequestToken(OAuthConsumer consumer, String callbackUrl, String... customOAuthParams)
+			throws OAuthMessageSignerException, OAuthNotAuthorizedException, OAuthExpectationFailedException,
+			OAuthCommunicationException;
 
-    /**
-     * Queries the service provider for an access token.
-     * <p>
-     * <b>Pre-conditions:</b> the given {@link OAuthConsumer} must have a valid
-     * consumer key, consumer secret, authorized request token and token secret
-     * already set.
-     * </p>
-     * <p>
-     * <b>Post-conditions:</b> the given {@link OAuthConsumer} will have an
-     * access token and token secret set.
-     * </p>
-     * 
-     * @param consumer
-     *        the {@link OAuthConsumer} that should be used to sign the request
-     * @param oauthVerifier
-     *        <b>NOTE: Only applies to service providers implementing OAuth
-     *        1.0a. Set to null if the service provider is still using OAuth
-     *        1.0.</b> The verification code issued by the service provider
-     *        after the the user has granted the consumer authorization. If the
-     *        callback method provided in the previous step was
-     *        {@link OAuth.OUT_OF_BAND}, then you must ask the user for this
-     *        value. If your app has received a callback, the verfication code
-     *        was passed as part of that request instead.
-     * @param customOAuthParams
-     *        you can pass custom OAuth parameters here which will go directly
-     *        into the signer, i.e. you don't have to put them into the request
-     *        first. This is useful for pre-setting OAuth params for signing.
-     *        Pass them sequentially in key/value order.
-     * @throws OAuthMessageSignerException
-     *         if signing the request failed
-     * @throws OAuthNotAuthorizedException
-     *         if the service provider rejected the consumer
-     * @throws OAuthExpectationFailedException
-     *         if required parameters were not correctly set by the consumer or
-     *         service provider
-     * @throws OAuthCommunicationException
-     *         if server communication failed
-     */
-    public void retrieveAccessToken(OAuthConsumer consumer, String oauthVerifier,
-            String... customOAuthParams) throws OAuthMessageSignerException,
-            OAuthNotAuthorizedException, OAuthExpectationFailedException,
-            OAuthCommunicationException;
+	/**
+	 * Queries the service provider for an access token.
+	 * <p>
+	 * <b>Pre-conditions:</b> the given {@link OAuthConsumer} must have a valid
+	 * consumer key, consumer secret, authorized request token and token secret
+	 * already set.
+	 * </p>
+	 * <p>
+	 * <b>Post-conditions:</b> the given {@link OAuthConsumer} will have an access
+	 * token and token secret set.
+	 * </p>
+	 * 
+	 * @param consumer
+	 *            the {@link OAuthConsumer} that should be used to sign the request
+	 * @param oauthVerifier
+	 *            <b>NOTE: Only applies to service providers implementing OAuth
+	 *            1.0a. Set to null if the service provider is still using OAuth
+	 *            1.0.</b> The verification code issued by the service provider
+	 *            after the the user has granted the consumer authorization. If the
+	 *            callback method provided in the previous step was
+	 *            {@link OAuth.OUT_OF_BAND}, then you must ask the user for this
+	 *            value. If your app has received a callback, the verfication code
+	 *            was passed as part of that request instead.
+	 * @param customOAuthParams
+	 *            you can pass custom OAuth parameters here which will go directly
+	 *            into the signer, i.e. you don't have to put them into the request
+	 *            first. This is useful for pre-setting OAuth params for signing.
+	 *            Pass them sequentially in key/value order.
+	 * @throws OAuthMessageSignerException
+	 *             if signing the request failed
+	 * @throws OAuthNotAuthorizedException
+	 *             if the service provider rejected the consumer
+	 * @throws OAuthExpectationFailedException
+	 *             if required parameters were not correctly set by the consumer or
+	 *             service provider
+	 * @throws OAuthCommunicationException
+	 *             if server communication failed
+	 */
+	public void retrieveAccessToken(OAuthConsumer consumer, String oauthVerifier, String... customOAuthParams)
+			throws OAuthMessageSignerException, OAuthNotAuthorizedException, OAuthExpectationFailedException,
+			OAuthCommunicationException;
 
-    /**
-     * Any additional non-OAuth parameters returned in the response body of a
-     * token request can be obtained through this method. These parameters will
-     * be preserved until the next token request is issued. The return value is
-     * never null.
-     */
-    public HttpParameters getResponseParameters();
+	/**
+	 * Any additional non-OAuth parameters returned in the response body of a token
+	 * request can be obtained through this method. These parameters will be
+	 * preserved until the next token request is issued. The return value is never
+	 * null.
+	 */
+	public HttpParameters getResponseParameters();
 
-    /**
-     * Subclasses must use this setter to preserve any non-OAuth query
-     * parameters contained in the server response. It's the caller's
-     * responsibility that any OAuth parameters be removed beforehand.
-     * 
-     * @param parameters
-     *        the map of query parameters served by the service provider in the
-     *        token response
-     */
-    public void setResponseParameters(HttpParameters parameters);
+	/**
+	 * Subclasses must use this setter to preserve any non-OAuth query parameters
+	 * contained in the server response. It's the caller's responsibility that any
+	 * OAuth parameters be removed beforehand.
+	 * 
+	 * @param parameters
+	 *            the map of query parameters served by the service provider in the
+	 *            token response
+	 */
+	public void setResponseParameters(HttpParameters parameters);
 
-    /**
-     * Use this method to set custom HTTP headers to be used for the requests
-     * which are sent to retrieve tokens. @deprecated THIS METHOD HAS BEEN
-     * DEPRECATED. Use {@link OAuthProviderListener} to customize requests.
-     * 
-     * @param header
-     *        The header name (e.g. 'WWW-Authenticate')
-     * @param value
-     *        The header value (e.g. 'realm=www.example.com')
-     */
-    @Deprecated
-    public void setRequestHeader(String header, String value);
+	/**
+	 * Use this method to set custom HTTP headers to be used for the requests which
+	 * are sent to retrieve tokens. @deprecated THIS METHOD HAS BEEN DEPRECATED. Use
+	 * {@link OAuthProviderListener} to customize requests.
+	 * 
+	 * @param header
+	 *            The header name (e.g. 'WWW-Authenticate')
+	 * @param value
+	 *            The header value (e.g. 'realm=www.example.com')
+	 */
+	@Deprecated
+	public void setRequestHeader(String header, String value);
 
-    /**
-     * @deprecated THIS METHOD HAS BEEN DEPRECATED. Use
-     *             {@link OAuthProviderListener} to customize requests.
-     * @return all request headers set via {@link #setRequestHeader}
-     */
-    @Deprecated
-    public Map<String, String> getRequestHeaders();
+	/**
+	 * @deprecated THIS METHOD HAS BEEN DEPRECATED. Use
+	 *             {@link OAuthProviderListener} to customize requests.
+	 * @return all request headers set via {@link #setRequestHeader}
+	 */
+	@Deprecated
+	public Map<String, String> getRequestHeaders();
 
-    /**
-     * @param isOAuth10aProvider
-     *        set to true if the service provider supports OAuth 1.0a. Note that
-     *        you need only call this method if you reconstruct a provider
-     *        object in between calls to retrieveRequestToken() and
-     *        retrieveAccessToken() (i.e. if the object state isn't preserved).
-     *        If instead those two methods are called on the same provider
-     *        instance, this flag will be deducted automatically based on the
-     *        server response during retrieveRequestToken(), so you can simply
-     *        ignore this method.
-     */
-    public void setOAuth10a(boolean isOAuth10aProvider);
+	/**
+	 * @param isOAuth10aProvider
+	 *            set to true if the service provider supports OAuth 1.0a. Note that
+	 *            you need only call this method if you reconstruct a provider
+	 *            object in between calls to retrieveRequestToken() and
+	 *            retrieveAccessToken() (i.e. if the object state isn't preserved).
+	 *            If instead those two methods are called on the same provider
+	 *            instance, this flag will be deducted automatically based on the
+	 *            server response during retrieveRequestToken(), so you can simply
+	 *            ignore this method.
+	 */
+	public void setOAuth10a(boolean isOAuth10aProvider);
 
-    /**
-     * @return true if the service provider supports OAuth 1.0a. Note that the
-     *         value returned here is only meaningful after you have already
-     *         performed the token handshake, otherwise there is no way to
-     *         determine what version of the OAuth protocol the service provider
-     *         implements.
-     */
-    public boolean isOAuth10a();
+	/**
+	 * @return true if the service provider supports OAuth 1.0a. Note that the value
+	 *         returned here is only meaningful after you have already performed the
+	 *         token handshake, otherwise there is no way to determine what version
+	 *         of the OAuth protocol the service provider implements.
+	 */
+	public boolean isOAuth10a();
 
-    public String getRequestTokenEndpointUrl();
+	public String getRequestTokenEndpointUrl();
 
-    public String getAccessTokenEndpointUrl();
+	public String getAccessTokenEndpointUrl();
 
-    public String getAuthorizationWebsiteUrl();
+	public String getAuthorizationWebsiteUrl();
 
-    public void setListener(OAuthProviderListener listener);
+	public void setListener(OAuthProviderListener listener);
 
-    public void removeListener(OAuthProviderListener listener);
+	public void removeListener(OAuthProviderListener listener);
 }

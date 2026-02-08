@@ -43,16 +43,17 @@ import org.berlin.logs.scan.session.custom.SessionInfo;
  */
 public interface IExpressionParser {
 
-  public Collection<SessionInfo> parseScript(final String expression) throws Exception;
+	public Collection<SessionInfo> parseScript(final String expression) throws Exception;
 
-  public Collection<SessionInfo> parseScript(final String expression, final String tokenParameter, final String tokenOperation, final String tokenValue) throws Exception;
+	public Collection<SessionInfo> parseScript(final String expression, final String tokenParameter,
+			final String tokenOperation, final String tokenValue) throws Exception;
 
-  public Collection<SessionInfo> run() throws Exception;
+	public Collection<SessionInfo> run() throws Exception;
 
-  public IHandler<SessionInfo, Boolean> $newFuncGreaterThan();
+	public IHandler<SessionInfo, Boolean> $newFuncGreaterThan();
 
-  public IHandler<SessionInfo, Boolean> $newFuncLessThan();
+	public IHandler<SessionInfo, Boolean> $newFuncLessThan();
 
-  public IHandler<SessionInfo, Boolean> $newFuncEquals();
+	public IHandler<SessionInfo, Boolean> $newFuncEquals();
 
 } // End of interface //

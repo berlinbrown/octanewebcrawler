@@ -28,21 +28,21 @@ import javax.persistence.Table;
 import org.apache.http.client.utils.URIBuilder;
 
 @Entity
-@Table(name="bot_crawler_seeds")
+@Table(name = "bot_crawler_seeds")
 public class BotSeed {
 
-	@Id	
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
-	private Long id;		
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
+	private Long id;
 	private Date createdAt;
-	
+
 	private Integer port;
 	private String scheme;
 	private String host;
 	private String path;
 	private String enabled;
-	
+
 	public BotLink toLink() {
 		final BotLink link = new BotLink();
 		link.setHost(host);
@@ -53,11 +53,11 @@ public class BotSeed {
 		link.setScheme(scheme);
 		return link;
 	}
-	
-	public String toString() {			
+
+	public String toString() {
 		return String.valueOf(toBuilder());
 	}
-	
+
 	public URIBuilder toBuilder() {
 		final URIBuilder b = new URIBuilder();
 		b.setPath(path);
@@ -65,7 +65,7 @@ public class BotSeed {
 		b.setScheme(scheme);
 		return b;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -73,7 +73,8 @@ public class BotSeed {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -85,7 +86,8 @@ public class BotSeed {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -99,7 +101,8 @@ public class BotSeed {
 	}
 
 	/**
-	 * @param port the port to set
+	 * @param port
+	 *            the port to set
 	 */
 	public void setPort(Integer port) {
 		this.port = port;
@@ -113,7 +116,8 @@ public class BotSeed {
 	}
 
 	/**
-	 * @param scheme the scheme to set
+	 * @param scheme
+	 *            the scheme to set
 	 */
 	public void setScheme(String scheme) {
 		this.scheme = scheme;
@@ -127,7 +131,8 @@ public class BotSeed {
 	}
 
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -141,7 +146,8 @@ public class BotSeed {
 	}
 
 	/**
-	 * @param path the path to set
+	 * @param path
+	 *            the path to set
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -155,10 +161,11 @@ public class BotSeed {
 	}
 
 	/**
-	 * @param enabled the enabled to set
+	 * @param enabled
+	 *            the enabled to set
 	 */
 	public void setEnabled(String enabled) {
 		this.enabled = enabled;
-	}	
-	
+	}
+
 } // End of the class //

@@ -38,14 +38,14 @@ import java.io.IOException;
 
 public interface ILogErrorParser {
 
-    public void report();
-    public ILogErrorParser parse(final BufferedReader reader) throws IOException;
-    
-    public void setLineMarker(String lineMarker);
+	public void report();
+	public ILogErrorParser parse(final BufferedReader reader) throws IOException;
 
-    /**
-     * @return the markerFound
-     */
-    public int getMarkersFound();
-    
+	public void setLineMarker(String lineMarker);
+
+	/**
+	 * @return the markerFound
+	 */
+	public int getMarkersFound();
+
 } // End of the interface //

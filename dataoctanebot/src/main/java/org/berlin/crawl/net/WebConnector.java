@@ -53,24 +53,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WebConnector {
-	
+
 	public static final int LINK_PROCESS_DELAY = 200;
 	public static final String USER_AGENT = OctaneCrawlerConstants.USER_AGENT;
-	
+
 	private static final String NL = System.getProperty("line.separator");
-	
-	private static final Logger logger = LoggerFactory.getLogger(WebConnector.class);			
+
+	private static final Logger logger = LoggerFactory.getLogger(WebConnector.class);
 	private final LinkProcessQueueDatabase db;
-	
-	private HttpResponse response; 
-	
+
+	private HttpResponse response;
+
 	public WebConnector(final LinkProcessQueueDatabase db) {
 		this.db = db;
 	}
-	
-	public synchronized String connect(final BotLink blink, final URIBuilder builder) throws Exception {	
+
+	public synchronized String connect(final BotLink blink, final URIBuilder builder) throws Exception {
 		InputStream instream = null;
-		try {						
+		try {
 			logger.info("!* Attempting download and connect request : " + builder.toString());
 			final HttpParams params = new BasicHttpParams();
 			final HttpProtocolParamBean paramsBean = new HttpProtocolParamBean(params);
@@ -83,22 +83,22 @@ public class WebConnector {
 			final HttpClient httpclient = new DefaultHttpClient();
 			final HttpGet httpget = new HttpGet(uri);
 			httpget.setParams(params);
-			
+
 			// Connect //
 			final HttpResponse response = httpclient.execute(httpget);
 			final HttpEntity entity = response.getEntity();
-			
+
 			this.response = response;
-			if (response != null) {				
+			if (response != null) {
 				if (response.getStatusLine() != null) {
 					if (response.getStatusLine().getStatusCode() != 200) {
 						// Log the error line
-						logger.error("Invalid status code - "   + response.getStatusLine().getStatusCode());
+						logger.error("Invalid status code - " + response.getStatusLine().getStatusCode());
 						throw new CrawlerError("Invalid status code - " + response.getStatusLine().getStatusCode());
 					}
 				}
 			}
-			
+
 			if (entity != null) {
 				blink.setStatusline(String.valueOf(response.getStatusLine()));
 				blink.setCode(response.getStatusLine().getStatusCode());
@@ -111,14 +111,14 @@ public class WebConnector {
 						document.append(line);
 						document.append(NL);
 					} // End of the while //
-					
+
 					db.proc(blink);
 					Thread.sleep(LINK_PROCESS_DELAY);
-					
+
 					return document.toString();
 				} // End of - instream ///
 			} // End of the if /
-						
+
 		} catch (final Throwable e) {
 			logger.error("Error at connect to LINK", e);
 			throw new CrawlerError("Error at connect to LINK", e);
@@ -140,5 +140,5 @@ public class WebConnector {
 	public HttpResponse getResponse() {
 		return response;
 	}
-	
+
 } // End of the class //

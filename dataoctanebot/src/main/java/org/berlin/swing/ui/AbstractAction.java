@@ -49,17 +49,17 @@ import org.berlin.swing.ui.Components.IWindow;
  */
 public class AbstractAction implements IActionHandler {
 
-    private final IWindow window;
-    
-    public AbstractAction(final IWindow window) {
-        this.window = window;
-    }
+	private final IWindow window;
 
-    /**
-     * @return the window
-     */
-    public IWindow getWindow() {
-        return window;
-    }
-    
+	public AbstractAction(final IWindow window) {
+		this.window = window;
+	}
+
+	/**
+	 * @return the window
+	 */
+	public IWindow getWindow() {
+		return window;
+	}
+
 } // End of the Class //

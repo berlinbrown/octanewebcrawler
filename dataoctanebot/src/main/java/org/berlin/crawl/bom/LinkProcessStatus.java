@@ -35,5 +35,5 @@ public class LinkProcessStatus {
 	public String toString() {
 		return "[LinkStat/]";
 	}
-	
+
 } // End of the class //

@@ -5,7 +5,7 @@ public class BotWebMonitorInfo {
 	private Long count;
 	private String countMessage;
 	private Long diff;
-	
+
 	/**
 	 * @return the count
 	 */
@@ -14,7 +14,8 @@ public class BotWebMonitorInfo {
 	}
 
 	/**
-	 * @param count the count to set
+	 * @param count
+	 *            the count to set
 	 */
 	public void setCount(Long count) {
 		this.count = count;
@@ -28,7 +29,8 @@ public class BotWebMonitorInfo {
 	}
 
 	/**
-	 * @param countMessage the countMessage to set
+	 * @param countMessage
+	 *            the countMessage to set
 	 */
 	public void setCountMessage(String countMessage) {
 		this.countMessage = countMessage;
@@ -42,10 +44,11 @@ public class BotWebMonitorInfo {
 	}
 
 	/**
-	 * @param diff the diff to set
+	 * @param diff
+	 *            the diff to set
 	 */
 	public void setDiff(Long diff) {
 		this.diff = diff;
 	}
-	
+
 } // End of the class //

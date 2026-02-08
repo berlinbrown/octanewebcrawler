@@ -37,15 +37,15 @@ import org.berlin.logs.scan.GlobalConfiguration;
 
 public class Main {
 
-    public static void main(final String [] args) {
-                
-        final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
-        System.out.println(globalConf);
-        
-        System.out.println(">> Begin Log File Download <<");
-        final CopyCustom1 custom1 = new CopyCustom1(globalConf);
-        custom1.run();
-        System.out.println(">> Done <<");
-    }
-    
+	public static void main(final String[] args) {
+
+		final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
+		System.out.println(globalConf);
+
+		System.out.println(">> Begin Log File Download <<");
+		final CopyCustom1 custom1 = new CopyCustom1(globalConf);
+		custom1.run();
+		System.out.println(">> Done <<");
+	}
+
 } // End of the Class //

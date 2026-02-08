@@ -39,32 +39,32 @@ import org.berlin.logs.scan.filter.custom.FilterFileProcessor;
 
 public class FilterCustom1 implements IExecutor {
 
-  private final GlobalConfiguration globalConf;
+	private final GlobalConfiguration globalConf;
 
-  public FilterCustom1(final GlobalConfiguration globalConf) {
-    this.globalConf = globalConf;
-  }
+	public FilterCustom1(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
 
-  public void run() {
+	public void run() {
 
-    final FilterFileProcessor f1 = new FilterFileProcessor(this.globalConf, 1);
-    f1.search();
-    try {
-      Thread.sleep(100);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+		final FilterFileProcessor f1 = new FilterFileProcessor(this.globalConf, 1);
+		f1.search();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-    if (globalConf.isHasHTMLFilterOutput()) {
-      final FilterFileProcessor f2 = new FilterFileProcessor(this.globalConf, 2);
-      f2.search();
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
+		if (globalConf.isHasHTMLFilterOutput()) {
+			final FilterFileProcessor f2 = new FilterFileProcessor(this.globalConf, 2);
+			f2.search();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
-  }
+	}
 
 } // End of the Class //

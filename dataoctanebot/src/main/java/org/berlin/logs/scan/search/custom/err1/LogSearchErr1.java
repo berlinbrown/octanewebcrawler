@@ -42,29 +42,29 @@ import org.berlin.logs.scan.search.LogSearch;
 
 public class LogSearchErr1 {
 
-    private final GlobalConfiguration globalConf;
-    
-    public LogSearchErr1(final GlobalConfiguration globalConf) {        
-        this.globalConf = globalConf;           
-    }
-    
-    public LogSearchErr1 run() {        
-        String dslScriptInput = "user.searchTerm=ERROR\n";
-        dslScriptInput += "search.savePreviousLines=true\n";
-        dslScriptInput += "user.defaultOutputName=all_err.txt\n";
-        final ByteArrayInputStream is = new ByteArrayInputStream(dslScriptInput.getBytes());
-        final Properties propertyScriptFromString = new Properties();
-        try {
-            propertyScriptFromString.load(is);
-            globalConf.loadFromDynamicScript(propertyScriptFromString);            
-        } catch(final IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        }        
-        final LogSearch s = new LogSearch(globalConf);        
-        s.setOutputFilename(globalConf.getWorkingDirectory() + "\\" + globalConf.getUserDefaultOutputName());
-        s.search();        
-        return this;
-    }
-    
+	private final GlobalConfiguration globalConf;
+
+	public LogSearchErr1(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
+
+	public LogSearchErr1 run() {
+		String dslScriptInput = "user.searchTerm=ERROR\n";
+		dslScriptInput += "search.savePreviousLines=true\n";
+		dslScriptInput += "user.defaultOutputName=all_err.txt\n";
+		final ByteArrayInputStream is = new ByteArrayInputStream(dslScriptInput.getBytes());
+		final Properties propertyScriptFromString = new Properties();
+		try {
+			propertyScriptFromString.load(is);
+			globalConf.loadFromDynamicScript(propertyScriptFromString);
+		} catch (final IOException e) {
+			e.printStackTrace();
+			throw new IllegalStateException(e);
+		}
+		final LogSearch s = new LogSearch(globalConf);
+		s.setOutputFilename(globalConf.getWorkingDirectory() + "\\" + globalConf.getUserDefaultOutputName());
+		s.search();
+		return this;
+	}
+
 } // End of the Class //

@@ -38,29 +38,32 @@ import java.util.Map;
 
 public class MapByServerParser {
 
-    public void parse(final Map<Long, Map<String, MinuteStatisticsHandler>> statsByServerByJVM, final MinuteStatisticsHandler minStats) {
-        if (minStats == null) {
-            return;
-        }
-        if (minStats.dataAtTimeOfStat == null) {
-            return;
-        }
-        final long timeKey = minStats.dataAtTimeOfStat.timeByTenMin;
-        
-        if (statsByServerByJVM.get(timeKey) == null) {
-            final Map<String, MinuteStatisticsHandler> newMap = new LinkedHashMap<String, MinuteStatisticsHandler>();
-            if (minStats.dataAtTimeOfStat.serverInfo.valid()) {
-                final String fullServerKey = (minStats.dataAtTimeOfStat.serverInfo.serverName+"_"+minStats.dataAtTimeOfStat.serverInfo.serverNumberVal);
-                newMap.put(fullServerKey, minStats);
-                statsByServerByJVM.put(timeKey, newMap);
-            }            
-        } else {            
-            final Map<String, MinuteStatisticsHandler> curMap = statsByServerByJVM.get(timeKey);
-            final String fullServerKey = (minStats.dataAtTimeOfStat.serverInfo.serverName+"_"+minStats.dataAtTimeOfStat.serverInfo.serverNumberVal);
-            if (curMap.get(fullServerKey) == null) {                
-                curMap.put(fullServerKey, minStats);                
-            }            
-        } // End of if - time by key //        
-    }
-    
+	public void parse(final Map<Long, Map<String, MinuteStatisticsHandler>> statsByServerByJVM,
+			final MinuteStatisticsHandler minStats) {
+		if (minStats == null) {
+			return;
+		}
+		if (minStats.dataAtTimeOfStat == null) {
+			return;
+		}
+		final long timeKey = minStats.dataAtTimeOfStat.timeByTenMin;
+
+		if (statsByServerByJVM.get(timeKey) == null) {
+			final Map<String, MinuteStatisticsHandler> newMap = new LinkedHashMap<String, MinuteStatisticsHandler>();
+			if (minStats.dataAtTimeOfStat.serverInfo.valid()) {
+				final String fullServerKey = (minStats.dataAtTimeOfStat.serverInfo.serverName + "_"
+						+ minStats.dataAtTimeOfStat.serverInfo.serverNumberVal);
+				newMap.put(fullServerKey, minStats);
+				statsByServerByJVM.put(timeKey, newMap);
+			}
+		} else {
+			final Map<String, MinuteStatisticsHandler> curMap = statsByServerByJVM.get(timeKey);
+			final String fullServerKey = (minStats.dataAtTimeOfStat.serverInfo.serverName + "_"
+					+ minStats.dataAtTimeOfStat.serverInfo.serverNumberVal);
+			if (curMap.get(fullServerKey) == null) {
+				curMap.put(fullServerKey, minStats);
+			}
+		} // End of if - time by key //
+	}
+
 } // End of the Class //

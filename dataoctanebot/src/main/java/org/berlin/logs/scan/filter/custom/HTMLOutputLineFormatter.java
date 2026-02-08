@@ -35,73 +35,76 @@ package org.berlin.logs.scan.filter.custom;
 
 public class HTMLOutputLineFormatter {
 
-  final String inputLine;
-  final FilterLineInfo info;
-  final HTML h = new HTML();
-  
-  public HTMLOutputLineFormatter(final String inputLine, final FilterLineInfo info) {
-    this.inputLine = inputLine;
-    this.info = info;
-  }
-  
-  public String format() {        
-    String newline = inputLine;
-    final StringBuilder buf = new StringBuilder(300);    
-            
-    if ((info != null) && (info.javaDate != null) && (info.endSizePrefixForStrip > 0)) {                                     
-      final String sid = String.valueOf((info.sessionIndex % (h.sessionBgColor.size()-1)) + 1);
-      final String aid = String.valueOf((info.agentIndex % (h.agentBgColor.size()-1)) + 1);
-      final String sidx = h.sessionBgColor.get(sid);
-      final String aidx = h.agentBgColor.get(aid);
-      
-      buf.append("\n<tr>\n");
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'><div style='width:330px;'>");
-      buf.append(info.javaDateFormatted);
-      buf.append("</div></td>\n");
-      
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'><div style='width:120px;'>");
-      buf.append(info.timeOfSession);
-      buf.append("</div></td>\n");
-      
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
-      buf.append(info.lineIndex);
-      buf.append("</td>\n");
-      
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
-      buf.append("tId=").append(info.threadId);
-      buf.append("</td>\n");
-      
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
-      buf.append("session_"+info.sessionIndex+"=").append(info.sessionId);
-      buf.append("</td>\n");
-      
-      buf.append("\n<td style='border-right: 1px solid #222; background-color: " + aidx + "'>");
-      buf.append("agent_"+info.agentIndex+"=").append("");
-      buf.append("</td>\n");
-      
-      final String data = newline.substring(info.endSizePrefixForStrip).trim();
-      if (data.indexOf("ERROR") > 0) { 
-        buf.append("\n<td style='border: 3px solid #f00; background-color: #ffdddd'>");       
-      } else {
-        if (data.endsWith("launch/")) {
-          buf.append("\n<td style='border: 3px solid #f00; background-color: #ccccff'>");
-        } else {
-          buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
-        }
-      }
-      buf.append(newline.substring(info.endSizePrefixForStrip).trim());
-      buf.append("</td>\n");           
-      buf.append("\n</tr>\n");
-           
-    } else {
-      buf.append("\n<tr>\n");
-      buf.append("\n<td colspan='7' style='border: 3px solid #ff3355; background-color: #fdfdfd'><div style='padding: 6px'>");      
-      buf.append(newline.trim());
-      buf.append("</div></td>\n");  
-      buf.append("\n</tr>\n");
-    }      
-       
-    return buf.toString();
-  }
-  
+	final String inputLine;
+	final FilterLineInfo info;
+	final HTML h = new HTML();
+
+	public HTMLOutputLineFormatter(final String inputLine, final FilterLineInfo info) {
+		this.inputLine = inputLine;
+		this.info = info;
+	}
+
+	public String format() {
+		String newline = inputLine;
+		final StringBuilder buf = new StringBuilder(300);
+
+		if ((info != null) && (info.javaDate != null) && (info.endSizePrefixForStrip > 0)) {
+			final String sid = String.valueOf((info.sessionIndex % (h.sessionBgColor.size() - 1)) + 1);
+			final String aid = String.valueOf((info.agentIndex % (h.agentBgColor.size() - 1)) + 1);
+			final String sidx = h.sessionBgColor.get(sid);
+			final String aidx = h.agentBgColor.get(aid);
+
+			buf.append("\n<tr>\n");
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx
+					+ "'><div style='width:330px;'>");
+			buf.append(info.javaDateFormatted);
+			buf.append("</div></td>\n");
+
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx
+					+ "'><div style='width:120px;'>");
+			buf.append(info.timeOfSession);
+			buf.append("</div></td>\n");
+
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
+			buf.append(info.lineIndex);
+			buf.append("</td>\n");
+
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
+			buf.append("tId=").append(info.threadId);
+			buf.append("</td>\n");
+
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
+			buf.append("session_" + info.sessionIndex + "=").append(info.sessionId);
+			buf.append("</td>\n");
+
+			buf.append("\n<td style='border-right: 1px solid #222; background-color: " + aidx + "'>");
+			buf.append("agent_" + info.agentIndex + "=").append("");
+			buf.append("</td>\n");
+
+			final String data = newline.substring(info.endSizePrefixForStrip).trim();
+			if (data.indexOf("ERROR") > 0) {
+				buf.append("\n<td style='border: 3px solid #f00; background-color: #ffdddd'>");
+			} else {
+				if (data.endsWith("launch/")) {
+					buf.append("\n<td style='border: 3px solid #f00; background-color: #ccccff'>");
+				} else {
+					buf.append("\n<td style='border-right: 1px solid #222; background-color: " + sidx + "'>");
+				}
+			}
+			buf.append(newline.substring(info.endSizePrefixForStrip).trim());
+			buf.append("</td>\n");
+			buf.append("\n</tr>\n");
+
+		} else {
+			buf.append("\n<tr>\n");
+			buf.append(
+					"\n<td colspan='7' style='border: 3px solid #ff3355; background-color: #fdfdfd'><div style='padding: 6px'>");
+			buf.append(newline.trim());
+			buf.append("</div></td>\n");
+			buf.append("\n</tr>\n");
+		}
+
+		return buf.toString();
+	}
+
 } // End of the Class //

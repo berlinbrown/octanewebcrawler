@@ -46,5 +46,5 @@ package org.berlin.swing.ui;
  */
 public interface ICloser {
 
-    public void close();    
+	public void close();
 }

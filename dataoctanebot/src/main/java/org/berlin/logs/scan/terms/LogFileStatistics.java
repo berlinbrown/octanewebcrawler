@@ -34,31 +34,32 @@
 package org.berlin.logs.scan.terms;
 
 /**
- * Statistics log. 
+ * Statistics log.
  */
 public class LogFileStatistics {
 
-    String filename = "";
-    String filepath = "";
- 
-    long totalLines = 0;
-    long totalFiles = 0;
-    
-    long totalBeginRequest = 0;
-    long totalEndRequest = 0;
-    
-    long totalCriticalError = 0;
-    long totalException = 0;
-    long totalError = 0;
-    long totalNullPointer = 0;
-    
-    long totalSearchTermFound = 0;
-    
-    /**
-     * Collect statistic totals but do not retain data.
-     * @param line
-     */
-    public void processAllStatistics(final String line)  {             
-    }    
-    
+	String filename = "";
+	String filepath = "";
+
+	long totalLines = 0;
+	long totalFiles = 0;
+
+	long totalBeginRequest = 0;
+	long totalEndRequest = 0;
+
+	long totalCriticalError = 0;
+	long totalException = 0;
+	long totalError = 0;
+	long totalNullPointer = 0;
+
+	long totalSearchTermFound = 0;
+
+	/**
+	 * Collect statistic totals but do not retain data.
+	 * 
+	 * @param line
+	 */
+	public void processAllStatistics(final String line) {
+	}
+
 } // End of the class //

@@ -35,21 +35,20 @@ import org.apache.http.annotation.Immutable;
 public class OctaneCrawlerConstants {
 
 	public static final String USER_AGENT = "Mozilla/5.0 (compatible; friendly octanebot/1.0; http://code.google.com/p/octane-crawler/)";
-	
+
 	public static final String CRAWLER_HOME = "/media/bbrown/TBDisk/crawl/dataoctanecrawl";
-		
+
 	/**
-     * Regex pattern to get URLs.
-     */
-    public static final String LINKS_REGEX =
-        "([A-Za-z][A-Za-z0-9+.-]{1,120}:"
-        + "[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])|%[A-Fa-f0-9]{2}){1,333}"
-        + "(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)";
-    
+	 * Regex pattern to get URLs.
+	 */
+	public static final String LINKS_REGEX = "([A-Za-z][A-Za-z0-9+.-]{1,120}:"
+			+ "[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])|%[A-Fa-f0-9]{2}){1,333}"
+			+ "(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)";
+
 	/**
-     * This class should not be instantiated.
-     */
-    private OctaneCrawlerConstants() {
-    }
-	
+	 * This class should not be instantiated.
+	 */
+	private OctaneCrawlerConstants() {
+	}
+
 } // End of the class //

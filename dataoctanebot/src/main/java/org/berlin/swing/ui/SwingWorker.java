@@ -50,161 +50,164 @@ import javax.swing.SwingUtilities;
  * start() on the SwingWorker after creating it.
  * 
  * Example Usage:
+ * 
  * <pre>
- *       final ActionListener connectListener = new ActionListener() {
- *            public void actionPerformed(final ActionEvent event) {
- *               final SwingWorker worker = BrowserFrame.this.browserHandler.buildConnectWorker();
- *               worker.start();
- *           }}; // End of the Method //
- *       this.actionButton.addActionListener(connectListener); 
- *       this.urlField.addActionListener(connectListener);
+ * final ActionListener connectListener = new ActionListener() {
+ * 	public void actionPerformed(final ActionEvent event) {
+ * 		final SwingWorker worker = BrowserFrame.this.browserHandler.buildConnectWorker();
+ * 		worker.start();
+ * 	}
+ * }; // End of the Method //
+ * this.actionButton.addActionListener(connectListener);
+ * this.urlField.addActionListener(connectListener);
  * </pre>
  */
 public abstract class SwingWorker {
-    
-    private Object value;    // see getValue(), setValue()
-    private Thread thread;
-    
-    /**
-     * Allow us to interact with the parent object that created this worker.
-     */
-    private Object parentMaster;
 
-    /**
-     * Start a thread that will call the <code>construct</code> method and then
-     * exit.
-     */
-    public SwingWorker() {
-                
-        final Runnable doFinished = new Runnable() {
-            public void run() {
-                finished();
-            }
-        };
+	private Object value; // see getValue(), setValue()
+	private Thread thread;
 
-        final Runnable doConstruct = new Runnable() {
-            public void run() {
-                try {
-                    setValue(construct());
-                } finally {
-                    threadVar.clear();
-                }
-                SwingUtilities.invokeLater(doFinished);
-            }
-        };
+	/**
+	 * Allow us to interact with the parent object that created this worker.
+	 */
+	private Object parentMaster;
 
-        Thread t = new Thread(doConstruct);
-        threadVar = new ThreadVar(t);
-    }
+	/**
+	 * Start a thread that will call the <code>construct</code> method and then
+	 * exit.
+	 */
+	public SwingWorker() {
 
-    /**
-     * Compute the value to be returned by the <code>get</code> method.
-     */
-    public abstract Object construct();
+		final Runnable doFinished = new Runnable() {
+			public void run() {
+				finished();
+			}
+		};
 
-    /**
-     * Start the worker thread.
-     */
-    public void start() {
-        Thread t = threadVar.get();
-        if (t != null) {
-            t.start();
-        }
-    }
+		final Runnable doConstruct = new Runnable() {
+			public void run() {
+				try {
+					setValue(construct());
+				} finally {
+					threadVar.clear();
+				}
+				SwingUtilities.invokeLater(doFinished);
+			}
+		};
 
-    /**
-     * Class to maintain reference to current worker thread under separate
-     * synchronization control.
-     */
-    private static class ThreadVar {
+		Thread t = new Thread(doConstruct);
+		threadVar = new ThreadVar(t);
+	}
 
-        private Thread thread;
+	/**
+	 * Compute the value to be returned by the <code>get</code> method.
+	 */
+	public abstract Object construct();
 
-        ThreadVar(Thread t) {
-            thread = t;
-        }
+	/**
+	 * Start the worker thread.
+	 */
+	public void start() {
+		Thread t = threadVar.get();
+		if (t != null) {
+			t.start();
+		}
+	}
 
-        synchronized Thread get() {
-            return thread;
-        }
+	/**
+	 * Class to maintain reference to current worker thread under separate
+	 * synchronization control.
+	 */
+	private static class ThreadVar {
 
-        synchronized void clear() {
-            thread = null;
-        }
+		private Thread thread;
 
-    }
+		ThreadVar(Thread t) {
+			thread = t;
+		}
 
-    private ThreadVar threadVar;
+		synchronized Thread get() {
+			return thread;
+		}
 
-    /**
-     * Get the value produced by the worker thread, or null if it hasn't been
-     * constructed yet.
-     */
-    protected synchronized Object getValue() {
-        return value;
-    }
+		synchronized void clear() {
+			thread = null;
+		}
 
-    /**
-     * Set the value produced by worker thread
-     */
-    private synchronized void setValue(Object x) {
-        value = x;
-    }
+	}
 
-    /**
-     * Called on the event dispatching thread (not on the worker thread) after
-     * the <code>construct</code> method has returned.
-     */
-    public void finished() {
+	private ThreadVar threadVar;
 
-    }
+	/**
+	 * Get the value produced by the worker thread, or null if it hasn't been
+	 * constructed yet.
+	 */
+	protected synchronized Object getValue() {
+		return value;
+	}
 
-    /**
-     * A new method that interrupts the worker thread. Call this method to force
-     * the worker to stop what it's doing.
-     */
-    public void interrupt() {
-        Thread t = threadVar.get();
-        if (t != null) {
-            t.interrupt();
-        }
-        threadVar.clear();
-    }
+	/**
+	 * Set the value produced by worker thread
+	 */
+	private synchronized void setValue(Object x) {
+		value = x;
+	}
 
-    /**
-     * Return the value created by the <code>construct</code> method. Returns
-     * null if either the constructing thread or the current thread was
-     * interrupted before a value was produced.
-     * 
-     * @return the value created by the <code>construct</code> method
-     */
-    public Object get() {
-        while (true) {
-            Thread t = threadVar.get();
-            if (t == null) {
-                return getValue();
-            }
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // propagate
-                return null;
-            }
-        }
-    }
+	/**
+	 * Called on the event dispatching thread (not on the worker thread) after the
+	 * <code>construct</code> method has returned.
+	 */
+	public void finished() {
 
-    /**
-     * @return the parentMaster
-     */
-    public synchronized Object getParentMaster() {
-        return parentMaster;
-    }
+	}
 
-    /**
-     * @param parentMaster the parentMaster to set
-     */
-    public synchronized void setParentMaster(final Object parentMaster) {
-        this.parentMaster = parentMaster;
-    }
+	/**
+	 * A new method that interrupts the worker thread. Call this method to force the
+	 * worker to stop what it's doing.
+	 */
+	public void interrupt() {
+		Thread t = threadVar.get();
+		if (t != null) {
+			t.interrupt();
+		}
+		threadVar.clear();
+	}
+
+	/**
+	 * Return the value created by the <code>construct</code> method. Returns null
+	 * if either the constructing thread or the current thread was interrupted
+	 * before a value was produced.
+	 * 
+	 * @return the value created by the <code>construct</code> method
+	 */
+	public Object get() {
+		while (true) {
+			Thread t = threadVar.get();
+			if (t == null) {
+				return getValue();
+			}
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt(); // propagate
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * @return the parentMaster
+	 */
+	public synchronized Object getParentMaster() {
+		return parentMaster;
+	}
+
+	/**
+	 * @param parentMaster
+	 *            the parentMaster to set
+	 */
+	public synchronized void setParentMaster(final Object parentMaster) {
+		this.parentMaster = parentMaster;
+	}
 
 } // End of the Class //

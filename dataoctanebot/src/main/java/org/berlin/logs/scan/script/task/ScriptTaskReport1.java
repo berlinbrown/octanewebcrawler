@@ -54,75 +54,75 @@ import org.slf4j.LoggerFactory;
  */
 public class ScriptTaskReport1 implements IExecutor {
 
-  private final GlobalConfiguration globalConf;
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTaskReport1.class);
-  
-  public ScriptTaskReport1(final GlobalConfiguration globalConf) {
-    this.globalConf = globalConf;
-  }
-  
-  public void run() {
-    LOGGER.info(">> Begin Log File Download <<");
-    final CopyCustom1 custom1 = new CopyCustom1(globalConf);                
-    custom1.run();       
-    LOGGER.info("Done with copy");    
-    LOGGER.info("Working Directory : " + globalConf.getWorkingDirectory());    
-    LOGGER.info("Target Local Output Search Directory : " + globalConf.getFileCopyLocalTargetDir());
-    for (int i = 0; i < 3; i++) {      
-      try {
-        Thread.sleep(200);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      LOGGER.info("sleeping...");
-    }
-    
-    LOGGER.info(">> Running Search <<");                                                     
-    final LogSearchErr1 s = new LogSearchErr1(globalConf).run();
-    LOGGER.info(">> Done <<");
-    
-    for (int i = 0; i < 2; i++) {      
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      LOGGER.info("sleeping [2]...");
-    }
-    this.stats1(globalConf);
-  }
-  
-  protected void stats1(final GlobalConfiguration globalConf) {
-    final long start = System.currentTimeMillis();
-    LOGGER.info("Running MainParseCritical Logs ...");                
-    BufferedReader br = null;
-    try {                                
-        final File f = new File(globalConf.getWorkingDirectory() + "\\all_err.txt");
-        if (f.exists()) {
-            final FileInputStream fis = new FileInputStream(f);
-            final BufferedInputStream bis = new BufferedInputStream(fis);
-            br = new BufferedReader(new InputStreamReader(bis));
-            final ILogErrorParser p = new Parser(globalConf).parse(br);
-            p.report();
-            final long diff = System.currentTimeMillis() - start;
-            LOGGER.info("Markers found = " + p.getMarkersFound());
-            LOGGER.info("Done - diff=" + diff + " ms");
-        } else {
-            LOGGER.info("Invalid, File does not exist - " + f.getAbsolutePath());                        
-        } // End of if //
-        
-    } catch(final Exception e) {
-        e.printStackTrace();
-    } finally {
-        if (br != null) {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    } // End of the try - catch finally //   
-}
-  
+	private final GlobalConfiguration globalConf;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTaskReport1.class);
+
+	public ScriptTaskReport1(final GlobalConfiguration globalConf) {
+		this.globalConf = globalConf;
+	}
+
+	public void run() {
+		LOGGER.info(">> Begin Log File Download <<");
+		final CopyCustom1 custom1 = new CopyCustom1(globalConf);
+		custom1.run();
+		LOGGER.info("Done with copy");
+		LOGGER.info("Working Directory : " + globalConf.getWorkingDirectory());
+		LOGGER.info("Target Local Output Search Directory : " + globalConf.getFileCopyLocalTargetDir());
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			LOGGER.info("sleeping...");
+		}
+
+		LOGGER.info(">> Running Search <<");
+		final LogSearchErr1 s = new LogSearchErr1(globalConf).run();
+		LOGGER.info(">> Done <<");
+
+		for (int i = 0; i < 2; i++) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			LOGGER.info("sleeping [2]...");
+		}
+		this.stats1(globalConf);
+	}
+
+	protected void stats1(final GlobalConfiguration globalConf) {
+		final long start = System.currentTimeMillis();
+		LOGGER.info("Running MainParseCritical Logs ...");
+		BufferedReader br = null;
+		try {
+			final File f = new File(globalConf.getWorkingDirectory() + "\\all_err.txt");
+			if (f.exists()) {
+				final FileInputStream fis = new FileInputStream(f);
+				final BufferedInputStream bis = new BufferedInputStream(fis);
+				br = new BufferedReader(new InputStreamReader(bis));
+				final ILogErrorParser p = new Parser(globalConf).parse(br);
+				p.report();
+				final long diff = System.currentTimeMillis() - start;
+				LOGGER.info("Markers found = " + p.getMarkersFound());
+				LOGGER.info("Done - diff=" + diff + " ms");
+			} else {
+				LOGGER.info("Invalid, File does not exist - " + f.getAbsolutePath());
+			} // End of if //
+
+		} catch (final Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} // End of the try - catch finally //
+	}
+
 } // End of the Class //

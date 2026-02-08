@@ -44,30 +44,30 @@ import java.util.List;
  */
 public class FileScanner {
 
-    private String targetDirPath = "";
-            
-    public FileScanner(final String targetDirPath) {
-        this.targetDirPath = targetDirPath;
-    }
-            
-    public List<File> listFiles() {
-        final File f = new File(this.targetDirPath);
-        final File [] farr = f.listFiles(new FilenameFilter() {
-            public boolean accept(final File dir, final String name) {
-                return true;                
-            }        
-        });
-        final List<File> list = new ArrayList<File>();
-        for(final File fz : farr ) {
-            list.add(fz);
-        }
-        return Collections.unmodifiableList(list);
-    }
-    
-    public List<File> execute() {
-        final List<File> list = this.listFiles();
-        System.out.println("Pre-processing: Number of files to process=" + list.size());
-        return list;
-    }
-       
+	private String targetDirPath = "";
+
+	public FileScanner(final String targetDirPath) {
+		this.targetDirPath = targetDirPath;
+	}
+
+	public List<File> listFiles() {
+		final File f = new File(this.targetDirPath);
+		final File[] farr = f.listFiles(new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
+				return true;
+			}
+		});
+		final List<File> list = new ArrayList<File>();
+		for (final File fz : farr) {
+			list.add(fz);
+		}
+		return Collections.unmodifiableList(list);
+	}
+
+	public List<File> execute() {
+		final List<File> list = this.listFiles();
+		System.out.println("Pre-processing: Number of files to process=" + list.size());
+		return list;
+	}
+
 } // End of class //

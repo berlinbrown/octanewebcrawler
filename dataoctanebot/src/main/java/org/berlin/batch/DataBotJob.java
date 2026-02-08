@@ -20,24 +20,22 @@ public class DataBotJob {
 
 	public static void main(final String[] args) throws Exception {
 		logger.info("Running");
-		final ApplicationContext ctx = new ClassPathXmlApplicationContext("/org/berlin/batch/batch-databot-context.xml");
+		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"/org/berlin/batch/batch-databot-context.xml");
 		add(ctx);
-		list(ctx);		
+		list(ctx);
 		final JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
-        final Job job = ctx.getBean(Job.class);               
-        jobLauncher.run(job, new JobParametersBuilder()
-                .addString("inputResource", "file:./data.zip")
-                .addString("targetDirectory", "./import/")
-                .addString("targetFile","data.txt")
-                .addString("date", "2010-06-27")
-                .toJobParameters()
-        );		
+		final Job job = ctx.getBean(Job.class);
+		jobLauncher.run(job,
+				new JobParametersBuilder().addString("inputResource", "file:./data.zip")
+						.addString("targetDirectory", "./import/").addString("targetFile", "data.txt")
+						.addString("date", "2010-06-27").toJobParameters());
 		logger.info("Done");
 	} // End of the method //
 
 	public static void list(final ApplicationContext ctx) {
 		// Use the hibernate template class
-		Session session = null;		
+		Session session = null;
 		Transaction transaction = null;
 		try {
 			final SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");

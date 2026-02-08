@@ -35,26 +35,26 @@ package org.berlin.logs.scan.filter.custom;
 
 public class DefaultOutputLineFormatter {
 
-  final String inputLine;
-  final FilterLineInfo info;
-  
-  public DefaultOutputLineFormatter(final String inputLine, final FilterLineInfo info) {
-    this.inputLine = inputLine;
-    this.info = info;
-  }
-  
-  public String format() {    
-    String newline = inputLine;
-    if ((info != null) && (info.javaDate != null) && (info.endSizePrefixForStrip > 0)) {
-      final StringBuilder buf = new StringBuilder(300);
-      buf.append(info.javaDateFormatted);
-      buf.append(String.format(" { sess= %s } ", info.timeOfSession));      
-      buf.append(newline.substring(info.endSizePrefixForStrip).trim());              
-      newline = buf.toString().trim();
-    } else {
-      newline = newline.trim();
-    }        
-    return newline;
-  }
-  
+	final String inputLine;
+	final FilterLineInfo info;
+
+	public DefaultOutputLineFormatter(final String inputLine, final FilterLineInfo info) {
+		this.inputLine = inputLine;
+		this.info = info;
+	}
+
+	public String format() {
+		String newline = inputLine;
+		if ((info != null) && (info.javaDate != null) && (info.endSizePrefixForStrip > 0)) {
+			final StringBuilder buf = new StringBuilder(300);
+			buf.append(info.javaDateFormatted);
+			buf.append(String.format(" { sess= %s } ", info.timeOfSession));
+			buf.append(newline.substring(info.endSizePrefixForStrip).trim());
+			newline = buf.toString().trim();
+		} else {
+			newline = newline.trim();
+		}
+		return newline;
+	}
+
 } // End of the Class //

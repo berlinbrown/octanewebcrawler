@@ -36,6 +36,6 @@ package org.berlin.logs.scan.errors;
 
 public interface IPlotWriter {
 
-    public void statisticsReportGnuPlotHisto(final String outFilename);
-    
+	public void statisticsReportGnuPlotHisto(final String outFilename);
+
 }

@@ -14,7 +14,7 @@ public class SpellChecker {
 	private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
 
 	public SpellChecker(final String file) throws IOException {
-		
+
 		final BufferedReader in = new BufferedReader(new FileReader(file));
 		// Split all the words //
 		final Pattern p = Pattern.compile("\\w+");
@@ -31,13 +31,14 @@ public class SpellChecker {
 	} // End of the method //
 
 	private final ArrayList<String> edits(final String word) {
-		
+
 		final ArrayList<String> result = new ArrayList<String>();
 		for (int i = 0; i < word.length(); ++i) {
 			result.add(word.substring(0, i) + word.substring(i + 1));
 		}
 		for (int i = 0; i < word.length() - 1; ++i) {
-			result.add(word.substring(0, i) + word.substring(i + 1, i + 2) + word.substring(i, i + 1) + word.substring(i + 2));
+			result.add(word.substring(0, i) + word.substring(i + 1, i + 2) + word.substring(i, i + 1)
+					+ word.substring(i + 2));
 		}
 		for (int i = 0; i < word.length(); ++i) {
 			for (char c = 'a'; c <= 'z'; ++c) {
@@ -75,9 +76,8 @@ public class SpellChecker {
 					candidates.put(nWords.get(w), w);
 				}
 			} // End of the for //
-		
-		return candidates.size() > 0 
-				? candidates.get(Collections.max(candidates.keySet())) : word;
+
+		return candidates.size() > 0 ? candidates.get(Collections.max(candidates.keySet())) : word;
 	}
 
 	public static void main(String args[]) throws IOException {

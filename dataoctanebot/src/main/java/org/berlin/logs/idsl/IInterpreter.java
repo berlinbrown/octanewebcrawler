@@ -35,8 +35,8 @@ package org.berlin.logs.idsl;
 
 public interface IInterpreter {
 
-  public void interpret(final String inputArgCommand);
-  
-  public void interpret();
-  
+	public void interpret(final String inputArgCommand);
+
+	public void interpret();
+
 } // End of the Interface //

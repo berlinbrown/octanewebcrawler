@@ -22,15 +22,13 @@ import oauth.signpost.http.HttpRequest;
 @SuppressWarnings("serial")
 public class PlainTextMessageSigner extends OAuthMessageSigner {
 
-    @Override
-    public String getSignatureMethod() {
-        return "PLAINTEXT";
-    }
+	@Override
+	public String getSignatureMethod() {
+		return "PLAINTEXT";
+	}
 
-    @Override
-    public String sign(HttpRequest request, HttpParameters requestParams)
-            throws OAuthMessageSignerException {
-        return OAuth.percentEncode(getConsumerSecret()) + '&'
-                + OAuth.percentEncode(getTokenSecret());
-    }
+	@Override
+	public String sign(HttpRequest request, HttpParameters requestParams) throws OAuthMessageSignerException {
+		return OAuth.percentEncode(getConsumerSecret()) + '&' + OAuth.percentEncode(getTokenSecret());
+	}
 }

@@ -51,31 +51,32 @@ import org.slf4j.LoggerFactory;
 public class LinkProcessQueueDatabase {
 
 	private static final Logger logger = LoggerFactory.getLogger(LinkProcessQueueDatabase.class);
-	
+
 	/**
 	 * Main delay between requests for a host.
 	 * 
 	 * Default value is 4 seconds.
 	 */
 	public static final int LINK_PROCESS_DELAY = 3 * 900;
-	
-	private BlockingQueue<BotLink> queue = new LinkedBlockingQueue<BotLink>();		
-	private Map<BotLink, LinkProcessStatus> processed = new Hashtable<BotLink, LinkProcessStatus>();	
+
+	private BlockingQueue<BotLink> queue = new LinkedBlockingQueue<BotLink>();
+	private Map<BotLink, LinkProcessStatus> processed = new Hashtable<BotLink, LinkProcessStatus>();
 	private AtomicInteger linksConsumed = new AtomicInteger();
-		
+
 	private Map<String, RobotsInfo> robotsData = new Hashtable<String, RobotsInfo>();
-	
+
 	/**
 	 * For friendly browsing, ignore these URLs or hosts.
 	 */
 	private List<BotCrawlerIgnore> ignoreDatabase = new Vector<BotCrawlerIgnore>();
-	
+
 	public synchronized void addIgnore(final BotCrawlerIgnore ig) {
 		this.ignoreDatabase.add(ig);
 	}
-	
+
 	/**
 	 * Verify if link is OK to connect based on ignore info.
+	 * 
 	 * @return
 	 */
 	public synchronized boolean okFromIgnore(final String host) {
@@ -99,11 +100,11 @@ public class LinkProcessQueueDatabase {
 		}
 		return true;
 	}
-	
+
 	public synchronized BlockingQueue<BotLink> get() {
 		return queue;
 	}
-	
+
 	/**
 	 * Map robots data by hostname.
 	 * 
@@ -112,23 +113,24 @@ public class LinkProcessQueueDatabase {
 	public synchronized Map<String, RobotsInfo> robots() {
 		return robotsData;
 	}
-	
+
 	/**
 	 * Poison the queue with a bad link so processing can continue
+	 * 
 	 * @return
 	 */
 	public synchronized void poison() {
 		queue.add(new BotLink());
 	}
-	
+
 	public synchronized Map<BotLink, LinkProcessStatus> processed() {
 		return processed;
 	}
-	
+
 	public synchronized boolean hasproc(final BotLink link) {
 		return (this.processed.get(link) != null);
-	}	
-	
+	}
+
 	public synchronized boolean proc(final BotLink link, final LinkProcessStatus status) {
 		if (this.processed.get(link) == null) {
 			this.processed.put(link, status);
@@ -137,15 +139,15 @@ public class LinkProcessQueueDatabase {
 			return false;
 		}
 	}
-	
+
 	public synchronized boolean proc(final BotLink link) {
 		return proc(link, new LinkProcessStatus());
-	}	
-	
+	}
+
 	public int incConsumed() {
 		return this.linksConsumed.incrementAndGet();
 	}
-	
+
 	public void launchReportSystem() {
 		// Run until end of program
 		final DatabaseReport report = new DatabaseReport();
@@ -154,12 +156,12 @@ public class LinkProcessQueueDatabase {
 		t.setDaemon(false);
 		t.start();
 	}
-	
+
 	public class DatabaseReport implements Runnable {
 		@Override
 		public void run() {
 			final String NL = System.getProperty("line.separator");
-			while(true) {
+			while (true) {
 				final StringBuffer buf = new StringBuffer();
 				buf.append(NL);
 				buf.append(" + ====// Database Processing Report === +").append(NL);
@@ -180,10 +182,10 @@ public class LinkProcessQueueDatabase {
 							break;
 						}
 					} // End of the if //
-				} // End of the for //											
+				} // End of the for //
 				buf.append(NL);
-				
-				final double megabytes = 1024.0 * 1024.0; 
+
+				final double megabytes = 1024.0 * 1024.0;
 				// Get current size of heap in bytes
 				final double heapSize = Runtime.getRuntime().totalMemory() / megabytes;
 
@@ -194,19 +196,21 @@ public class LinkProcessQueueDatabase {
 				// Get amount of free memory within the heap in bytes. This size will increase
 				// after garbage collection and decrease as new objects are created.
 				final double heapFreeSize = Runtime.getRuntime().freeMemory() / megabytes;
-				
-				final String heap = String.format(" * Heap Memory curSize=%.2f MB / totalMax=s%.2f MB / curFree=%.2f MB", heapSize, heapMaxSize, heapFreeSize);
+
+				final String heap = String.format(
+						" * Heap Memory curSize=%.2f MB / totalMax=s%.2f MB / curFree=%.2f MB", heapSize, heapMaxSize,
+						heapFreeSize);
 				buf.append(heap).append(NL);
 				buf.append(" * ====// END OF = Database Processing Report === +").append(NL);
 				logger.info(buf.toString());
-				// Delay for a minute before next report 
+				// Delay for a minute before next report
 				try {
 					Thread.sleep(2 * 40 * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} // End of the while //
-		} // End of the method //		
+		} // End of the method //
 	} // End of the class //
-	
+
 } // End of the class //

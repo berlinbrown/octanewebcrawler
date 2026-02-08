@@ -40,214 +40,222 @@ import java.util.List;
 
 import org.berlin.logs.scan.GlobalConfiguration;
 
-
 /**
  * Writer configuration.
  * 
  */
 public class FileWriterConf {
 
-    private List<String> serversForSearch = new ArrayList<String>();       
-    private List<String> jvmsToSearch = new ArrayList<String>();
-    
-    /**
-     * Log directory to append to source.
-     */
-    private String logDirToSearch = "logs";
-    
-    /**
-     * Full local target directory
-     */
-    private String localTargetDir = "E:\\berlin_work\\search_logs\\ant_search\\search_result\\logs";
-    
-    /**
-     * End target directory for source.
-     */
-    private String targetLogDirToSearch = "logs";
-  
-    // EXAMPLE : private String regexIncludeExt = ".*\\.(?i)(gz|log|1|2|3|4|5)$";
-    private String regexIncludeFile = ".*(?i)(logs).*";
-    private String regexIncludeExt = "";
-    private String regexExcludeExt = "";
-    
-    private String regexZippedExt = ".*\\.(?i)(gz)$";;
-    
-    private boolean committed = false;    
-    private boolean verbose = false;    
-    private boolean deleteOldFiles = true;   
-    private boolean unzipArchiveFiles = true;
-        
-    /**
-     * Add server for search.
-     * @param server
-     */
-    public void addServerForSearch(final String server) {
-        if (committed) {
-            throw new IllegalStateException("Data is committed and cannot receive further modifications");
-        }
-        serversForSearch.add(server);
-    }
-    
-    /**
-     * Add server for search.
-     * @param server
-     */
-    public void addJvmForSearch(final String server) {
-        if (committed) {
-            throw new IllegalStateException("Data is committed and cannot receive further modifications");
-        }
-        this.jvmsToSearch.add(server);
-    }
-        
-    /**
-     * Lock servers.
-     */
-    public void lockServers() {
-        if (committed) {
-            throw new IllegalStateException("Data is committed and cannot receive further modifications");
-        }        
-        this.serversForSearch = Collections.unmodifiableList(this.serversForSearch);
-        this.jvmsToSearch = Collections.unmodifiableList(this.jvmsToSearch);
-        
-        for (final String server : this.serversForSearch) {
-            if (server == null || server.trim().length() == 0) {
-                continue;
-            }
-            final File f = new File("\\\\" + server);
-            if (!f.exists()) {                
-                System.out.println("At Lock Servers : cannot process, file=" + f.getAbsolutePath());
-            } 
-        } // End of the for //
-        committed = true;
-    }    
-    
-    /**
-     * Transfer configuration from global configuration .
-     */
-    public void transferGlobalConf(final GlobalConfiguration mainConf) {
-        
-    }
-    
-    public void lock() {
-        this.lockServers();
-    }
+	private List<String> serversForSearch = new ArrayList<String>();
+	private List<String> jvmsToSearch = new ArrayList<String>();
 
-    /**
-     * @return the serversForSearch
-     */
-    public List<String> getServersForSearch() {
-        return serversForSearch;
-    }
+	/**
+	 * Log directory to append to source.
+	 */
+	private String logDirToSearch = "logs";
 
-    /**
-     * @return the jvmsToSearch
-     */
-    public List<String> getJvmsToSearch() {
-        return jvmsToSearch;
-    }
+	/**
+	 * Full local target directory
+	 */
+	private String localTargetDir = "E:\\berlin_work\\search_logs\\ant_search\\search_result\\logs";
 
-    /**
-     * @return the logDirToSearch
-     */
-    public String getBaseLogDirToSearch() {
-        return logDirToSearch;
-    }
-    
-    /**
-     * End target directory for source.
-     * @return the targetLogDirToSearch
-     */
-    public String getTargetLogDirToSearch() {
-        return targetLogDirToSearch;
-    }
+	/**
+	 * End target directory for source.
+	 */
+	private String targetLogDirToSearch = "logs";
 
-    /**
-     * @return the regexIncludeFile
-     */
-    public String getRegexIncludeFile() {
-        return regexIncludeFile;
-    }
+	// EXAMPLE : private String regexIncludeExt = ".*\\.(?i)(gz|log|1|2|3|4|5)$";
+	private String regexIncludeFile = ".*(?i)(logs).*";
+	private String regexIncludeExt = "";
+	private String regexExcludeExt = "";
 
-    /**
-     * @return the regexIncludeExt
-     */
-    public String getRegexIncludeExt() {
-        return regexIncludeExt;
-    }
+	private String regexZippedExt = ".*\\.(?i)(gz)$";;
 
-    /**
-     * @return the regexExcludeExt
-     */
-    public String getRegexExcludeExt() {
-        return regexExcludeExt;
-    }
+	private boolean committed = false;
+	private boolean verbose = false;
+	private boolean deleteOldFiles = true;
+	private boolean unzipArchiveFiles = true;
 
-    /**
-     * @return the localTargetDir
-     */
-    public String getLocalTargetDir() {
-        return localTargetDir;
-    }
+	/**
+	 * Add server for search.
+	 * 
+	 * @param server
+	 */
+	public void addServerForSearch(final String server) {
+		if (committed) {
+			throw new IllegalStateException("Data is committed and cannot receive further modifications");
+		}
+		serversForSearch.add(server);
+	}
 
-    /**
-     * @return the regexZippedExt
-     */
-    public String getRegexZippedExt() {
-        return regexZippedExt;
-    }
+	/**
+	 * Add server for search.
+	 * 
+	 * @param server
+	 */
+	public void addJvmForSearch(final String server) {
+		if (committed) {
+			throw new IllegalStateException("Data is committed and cannot receive further modifications");
+		}
+		this.jvmsToSearch.add(server);
+	}
 
-    /**
-     * @return the deleteOldFiles
-     */
-    public boolean isDeleteOldFiles() {
-        return deleteOldFiles;
-    }
+	/**
+	 * Lock servers.
+	 */
+	public void lockServers() {
+		if (committed) {
+			throw new IllegalStateException("Data is committed and cannot receive further modifications");
+		}
+		this.serversForSearch = Collections.unmodifiableList(this.serversForSearch);
+		this.jvmsToSearch = Collections.unmodifiableList(this.jvmsToSearch);
 
-    /**
-     * @return the unzipArchiveFiles
-     */
-    public boolean isUnzipArchiveFiles() {
-        return unzipArchiveFiles;
-    }
+		for (final String server : this.serversForSearch) {
+			if (server == null || server.trim().length() == 0) {
+				continue;
+			}
+			final File f = new File("\\\\" + server);
+			if (!f.exists()) {
+				System.out.println("At Lock Servers : cannot process, file=" + f.getAbsolutePath());
+			}
+		} // End of the for //
+		committed = true;
+	}
 
-    /**
-     * @param regexIncludeFile the regexIncludeFile to set
-     */
-    public void setRegexIncludeFile(String regexIncludeFile) {
-        this.regexIncludeFile = regexIncludeFile;
-    }
+	/**
+	 * Transfer configuration from global configuration .
+	 */
+	public void transferGlobalConf(final GlobalConfiguration mainConf) {
 
-    /**
-     * End target directory for source.
-     * @param targetLogDirToSearch the targetLogDirToSearch to set
-     */
-    public void setTargetLogDirToSearch(String targetLogDirToSearch) {
-        this.targetLogDirToSearch = targetLogDirToSearch;
-    }
+	}
 
-    /**
-     * @param localTargetDir the localTargetDir to set
-     */
-    public void setLocalTargetDir(String localTargetDir) {
-        this.localTargetDir = localTargetDir;
-    }
+	public void lock() {
+		this.lockServers();
+	}
 
-    /**
-     * @param logDirToSearch the logDirToSearch to set
-     */
-    public void setLogDirToSearch(String logDirToSearch) {
-        this.logDirToSearch = logDirToSearch;
-    }
-    
-    public void setUnzipArchiveFiles(boolean unzipArchiveFiles) {
-      this.unzipArchiveFiles = unzipArchiveFiles;
-    }
+	/**
+	 * @return the serversForSearch
+	 */
+	public List<String> getServersForSearch() {
+		return serversForSearch;
+	}
 
-    /**
-     * @param deleteOldFiles the deleteOldFiles to set
-     */
-    public void setDeleteOldFiles(boolean deleteOldFiles) {
-      this.deleteOldFiles = deleteOldFiles;
-    }
-       
+	/**
+	 * @return the jvmsToSearch
+	 */
+	public List<String> getJvmsToSearch() {
+		return jvmsToSearch;
+	}
+
+	/**
+	 * @return the logDirToSearch
+	 */
+	public String getBaseLogDirToSearch() {
+		return logDirToSearch;
+	}
+
+	/**
+	 * End target directory for source.
+	 * 
+	 * @return the targetLogDirToSearch
+	 */
+	public String getTargetLogDirToSearch() {
+		return targetLogDirToSearch;
+	}
+
+	/**
+	 * @return the regexIncludeFile
+	 */
+	public String getRegexIncludeFile() {
+		return regexIncludeFile;
+	}
+
+	/**
+	 * @return the regexIncludeExt
+	 */
+	public String getRegexIncludeExt() {
+		return regexIncludeExt;
+	}
+
+	/**
+	 * @return the regexExcludeExt
+	 */
+	public String getRegexExcludeExt() {
+		return regexExcludeExt;
+	}
+
+	/**
+	 * @return the localTargetDir
+	 */
+	public String getLocalTargetDir() {
+		return localTargetDir;
+	}
+
+	/**
+	 * @return the regexZippedExt
+	 */
+	public String getRegexZippedExt() {
+		return regexZippedExt;
+	}
+
+	/**
+	 * @return the deleteOldFiles
+	 */
+	public boolean isDeleteOldFiles() {
+		return deleteOldFiles;
+	}
+
+	/**
+	 * @return the unzipArchiveFiles
+	 */
+	public boolean isUnzipArchiveFiles() {
+		return unzipArchiveFiles;
+	}
+
+	/**
+	 * @param regexIncludeFile
+	 *            the regexIncludeFile to set
+	 */
+	public void setRegexIncludeFile(String regexIncludeFile) {
+		this.regexIncludeFile = regexIncludeFile;
+	}
+
+	/**
+	 * End target directory for source.
+	 * 
+	 * @param targetLogDirToSearch
+	 *            the targetLogDirToSearch to set
+	 */
+	public void setTargetLogDirToSearch(String targetLogDirToSearch) {
+		this.targetLogDirToSearch = targetLogDirToSearch;
+	}
+
+	/**
+	 * @param localTargetDir
+	 *            the localTargetDir to set
+	 */
+	public void setLocalTargetDir(String localTargetDir) {
+		this.localTargetDir = localTargetDir;
+	}
+
+	/**
+	 * @param logDirToSearch
+	 *            the logDirToSearch to set
+	 */
+	public void setLogDirToSearch(String logDirToSearch) {
+		this.logDirToSearch = logDirToSearch;
+	}
+
+	public void setUnzipArchiveFiles(boolean unzipArchiveFiles) {
+		this.unzipArchiveFiles = unzipArchiveFiles;
+	}
+
+	/**
+	 * @param deleteOldFiles
+	 *            the deleteOldFiles to set
+	 */
+	public void setDeleteOldFiles(boolean deleteOldFiles) {
+		this.deleteOldFiles = deleteOldFiles;
+	}
+
 } // End of the Class //

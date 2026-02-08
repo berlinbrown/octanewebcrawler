@@ -39,72 +39,74 @@ import java.util.Map;
  * Minute statistics handler.
  */
 public class MinuteStatisticsHandler {
-         
-    int beginTotal = 0;
-    int endTotal = 0;
-    int errorTotal = 0;
-    int exceptionTotal = 0;
-    int nullptrTotal = 0;
-    int criticalerrorTotal = 0;  
-    int searchTermTotal = 0;
-    
-    LineTermInfoHandler dataAtTimeOfStat = new LineTermInfoHandler(null);
-    
-    public static MinuteStatisticsHandler buildStatisticsMapHelper(final Map<Long, MinuteStatisticsHandler> statsMapByMinute, final LineTermInfoHandler dataAtTimeOfStat) {
-        if (dataAtTimeOfStat == null) {
-            return null;
-        }
-        if (dataAtTimeOfStat.timeByTenMin <= 1) {
-            return null;
-        }
-        // Place on map if available
-        final MinuteStatisticsHandler chkInfo = statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin);
-        if (chkInfo == null) {
-            final MinuteStatisticsHandler info = new MinuteStatisticsHandler();
-            info.dataAtTimeOfStat = dataAtTimeOfStat;
-            statsMapByMinute.put(dataAtTimeOfStat.timeByTenMin, info);
-            info.parse(dataAtTimeOfStat);
-            return info;
-        } else {
-            statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin).parse(dataAtTimeOfStat);
-            // process existing handler
-            return statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin);
-        }
-    }    
-    public void parse(final LineTermInfoHandler dataAtTimeOfStat) {
-        if (dataAtTimeOfStat == null) {
-            return;
-        }               
-        this.dataAtTimeOfStat = dataAtTimeOfStat;
-        if (this.dataAtTimeOfStat.javaDate == null) {
-            return;
-        }
-        if (this.dataAtTimeOfStat.timeByTenMin == 0) {
-            return;
-        }
-        switch(this.dataAtTimeOfStat.termType) {
-        case begin:
-            this.beginTotal++;
-            break;
-        case end:
-            this.endTotal++;
-            break;            
-        case error:
-            this.errorTotal++;
-            break;
-        case exception:
-            this.exceptionTotal++;
-            break;
-        case nullptr:
-            this.nullptrTotal++;
-            break;
-        case criticalerror:            
-            this.criticalerrorTotal++;
-            break;
-        case searchterm:
-            this.searchTermTotal++;
-            break;            
-        default: break;
-        };                        
-    }    
+
+	int beginTotal = 0;
+	int endTotal = 0;
+	int errorTotal = 0;
+	int exceptionTotal = 0;
+	int nullptrTotal = 0;
+	int criticalerrorTotal = 0;
+	int searchTermTotal = 0;
+
+	LineTermInfoHandler dataAtTimeOfStat = new LineTermInfoHandler(null);
+
+	public static MinuteStatisticsHandler buildStatisticsMapHelper(
+			final Map<Long, MinuteStatisticsHandler> statsMapByMinute, final LineTermInfoHandler dataAtTimeOfStat) {
+		if (dataAtTimeOfStat == null) {
+			return null;
+		}
+		if (dataAtTimeOfStat.timeByTenMin <= 1) {
+			return null;
+		}
+		// Place on map if available
+		final MinuteStatisticsHandler chkInfo = statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin);
+		if (chkInfo == null) {
+			final MinuteStatisticsHandler info = new MinuteStatisticsHandler();
+			info.dataAtTimeOfStat = dataAtTimeOfStat;
+			statsMapByMinute.put(dataAtTimeOfStat.timeByTenMin, info);
+			info.parse(dataAtTimeOfStat);
+			return info;
+		} else {
+			statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin).parse(dataAtTimeOfStat);
+			// process existing handler
+			return statsMapByMinute.get(dataAtTimeOfStat.timeByTenMin);
+		}
+	}
+	public void parse(final LineTermInfoHandler dataAtTimeOfStat) {
+		if (dataAtTimeOfStat == null) {
+			return;
+		}
+		this.dataAtTimeOfStat = dataAtTimeOfStat;
+		if (this.dataAtTimeOfStat.javaDate == null) {
+			return;
+		}
+		if (this.dataAtTimeOfStat.timeByTenMin == 0) {
+			return;
+		}
+		switch (this.dataAtTimeOfStat.termType) {
+			case begin :
+				this.beginTotal++;
+				break;
+			case end :
+				this.endTotal++;
+				break;
+			case error :
+				this.errorTotal++;
+				break;
+			case exception :
+				this.exceptionTotal++;
+				break;
+			case nullptr :
+				this.nullptrTotal++;
+				break;
+			case criticalerror :
+				this.criticalerrorTotal++;
+				break;
+			case searchterm :
+				this.searchTermTotal++;
+				break;
+			default :
+				break;
+		};
+	}
 } // End of Class //

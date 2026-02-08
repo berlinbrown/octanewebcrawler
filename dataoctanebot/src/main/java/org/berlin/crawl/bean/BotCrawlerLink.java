@@ -40,13 +40,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="bot_crawler_links")
+@Table(name = "bot_crawler_links")
 public class BotCrawlerLink {
 
-	@Id	
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
-	private Long id;		
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
+	private Long id;
 	private Date createdAt;
 
 	private String url;
@@ -54,14 +54,14 @@ public class BotCrawlerLink {
 	private int status;
 	private String title;
 	private String descr;
-	private String path;	
-	
+	private String path;
+
 	private String statusline;
 	private int score;
 	private String linktext;
 	private int linkcount;
 	private String source;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -69,7 +69,8 @@ public class BotCrawlerLink {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -81,7 +82,8 @@ public class BotCrawlerLink {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -93,7 +95,8 @@ public class BotCrawlerLink {
 		return url;
 	}
 	/**
-	 * @param url the url to set
+	 * @param url
+	 *            the url to set
 	 */
 	public void setUrl(String url) {
 		this.url = url;
@@ -105,7 +108,8 @@ public class BotCrawlerLink {
 		return host;
 	}
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -117,7 +121,8 @@ public class BotCrawlerLink {
 		return status;
 	}
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setStatus(int status) {
 		this.status = status;
@@ -129,7 +134,8 @@ public class BotCrawlerLink {
 		return title;
 	}
 	/**
-	 * @param title the title to set
+	 * @param title
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -141,7 +147,8 @@ public class BotCrawlerLink {
 		return descr;
 	}
 	/**
-	 * @param descr the descr to set
+	 * @param descr
+	 *            the descr to set
 	 */
 	public void setDescr(String descr) {
 		this.descr = descr;
@@ -153,7 +160,8 @@ public class BotCrawlerLink {
 		return path;
 	}
 	/**
-	 * @param path the path to set
+	 * @param path
+	 *            the path to set
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -165,7 +173,8 @@ public class BotCrawlerLink {
 		return statusline;
 	}
 	/**
-	 * @param statusline the statusline to set
+	 * @param statusline
+	 *            the statusline to set
 	 */
 	public void setStatusline(String statusline) {
 		this.statusline = statusline;
@@ -177,7 +186,8 @@ public class BotCrawlerLink {
 		return score;
 	}
 	/**
-	 * @param score the score to set
+	 * @param score
+	 *            the score to set
 	 */
 	public void setScore(int score) {
 		this.score = score;
@@ -189,7 +199,8 @@ public class BotCrawlerLink {
 		return linktext;
 	}
 	/**
-	 * @param linktext the linktext to set
+	 * @param linktext
+	 *            the linktext to set
 	 */
 	public void setLinktext(String linktext) {
 		this.linktext = linktext;
@@ -201,7 +212,8 @@ public class BotCrawlerLink {
 		return linkcount;
 	}
 	/**
-	 * @param linkcount the linkcount to set
+	 * @param linkcount
+	 *            the linkcount to set
 	 */
 	public void setLinkcount(int linkcount) {
 		this.linkcount = linkcount;
@@ -213,9 +225,10 @@ public class BotCrawlerLink {
 		return source;
 	}
 	/**
-	 * @param source the source to set
+	 * @param source
+	 *            the source to set
 	 */
 	public void setSource(String source) {
 		this.source = source;
-	}	
+	}
 } // End of the class //

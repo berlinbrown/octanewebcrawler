@@ -8,29 +8,29 @@ import oauth.signpost.http.HttpResponse;
 
 public class HttpURLConnectionResponseAdapter implements HttpResponse {
 
-    private HttpURLConnection connection;
+	private HttpURLConnection connection;
 
-    public HttpURLConnectionResponseAdapter(HttpURLConnection connection) {
-        this.connection = connection;
-    }
+	public HttpURLConnectionResponseAdapter(HttpURLConnection connection) {
+		this.connection = connection;
+	}
 
-    public InputStream getContent() throws IOException {
-        try {
-            return connection.getInputStream();
-        } catch (IOException e) {
-            return connection.getErrorStream();
-        }
-    }
+	public InputStream getContent() throws IOException {
+		try {
+			return connection.getInputStream();
+		} catch (IOException e) {
+			return connection.getErrorStream();
+		}
+	}
 
-    public int getStatusCode() throws IOException {
-        return connection.getResponseCode();
-    }
+	public int getStatusCode() throws IOException {
+		return connection.getResponseCode();
+	}
 
-    public String getReasonPhrase() throws Exception {
-        return connection.getResponseMessage();
-    }
+	public String getReasonPhrase() throws Exception {
+		return connection.getResponseMessage();
+	}
 
-    public Object unwrap() {
-        return connection;
-    }
+	public Object unwrap() {
+		return connection;
+	}
 }

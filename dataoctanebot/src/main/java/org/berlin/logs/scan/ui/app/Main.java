@@ -40,26 +40,24 @@ import org.slf4j.LoggerFactory;
 /**
  * Main entry point application for GUI log scan system.
  */
-public class Main  {
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-  
-  /*
-   * To Run with maven: mvn exec:java
-   * -Dexec.mainClass="com.Main" mvn exec:java
-   * -Dexec.mainClass="com.Main"
-   * -Dexec.args="arg0 arg1 arg2"
-   */
+public class Main {
 
-  /**
-   * @param args
-   */
-  public static void main(final String[] args) {
-    LOGGER.info(">>>");
-    LOGGER.info(">>> Loading basic UI Log Parser application");    
-    LOGGER.info(">>>");
-    final BasicApp app = new BasicApp();
-    app.createApplication();
-  }
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+	/*
+	 * To Run with maven: mvn exec:java -Dexec.mainClass="com.Main" mvn exec:java
+	 * -Dexec.mainClass="com.Main" -Dexec.args="arg0 arg1 arg2"
+	 */
+
+	/**
+	 * @param args
+	 */
+	public static void main(final String[] args) {
+		LOGGER.info(">>>");
+		LOGGER.info(">>> Loading basic UI Log Parser application");
+		LOGGER.info(">>>");
+		final BasicApp app = new BasicApp();
+		app.createApplication();
+	}
 
 } // End of the Main //

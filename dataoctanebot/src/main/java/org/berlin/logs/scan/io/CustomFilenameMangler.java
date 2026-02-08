@@ -34,39 +34,41 @@
 package org.berlin.logs.scan.io;
 
 public class CustomFilenameMangler {
-    
-    private String archiveExt = "gz";
-    private String stripFilenamePrefix = "logs";
-    
-    private final FileWriterConf conf;
-    private final ServerDirConf dirConf;
-    
-    public CustomFilenameMangler(final FileWriterConf conf, final ServerDirConf dir) {
-        this.conf = conf;
-        this.dirConf = dir;
-    }
-    
-    public String parseZippedFilenameMangle(final String filename) {                            
-        if (filename.indexOf(this.archiveExt) > 0) {
-            String res = filename.substring(0, filename.indexOf(this.archiveExt)-1);            
-            res = res + "." + this.dirConf.server;
-            String namePrefixCustom = "";
-            if (this.dirConf.jvm.indexOf(this.stripFilenamePrefix) >= 0) {
-                namePrefixCustom = this.dirConf.jvm.substring(this.dirConf.jvm.indexOf(this.stripFilenamePrefix)+this.stripFilenamePrefix.length()) ;
-                res = res + "." + namePrefixCustom;
-            }
-            return res;
-        }
-        return filename;
-    }
-    
-    public String parseJvmMangle() {               
-        String namePrefixCustom = ""; 
-        if (this.dirConf.jvm.indexOf(this.stripFilenamePrefix) >= 0) {
-            namePrefixCustom = this.dirConf.jvm.substring(this.dirConf.jvm.indexOf(this.stripFilenamePrefix)+this.stripFilenamePrefix.length()) ;            
-            return namePrefixCustom; 
-        }
-        return this.dirConf.jvm;
-    }
-    
+
+	private String archiveExt = "gz";
+	private String stripFilenamePrefix = "logs";
+
+	private final FileWriterConf conf;
+	private final ServerDirConf dirConf;
+
+	public CustomFilenameMangler(final FileWriterConf conf, final ServerDirConf dir) {
+		this.conf = conf;
+		this.dirConf = dir;
+	}
+
+	public String parseZippedFilenameMangle(final String filename) {
+		if (filename.indexOf(this.archiveExt) > 0) {
+			String res = filename.substring(0, filename.indexOf(this.archiveExt) - 1);
+			res = res + "." + this.dirConf.server;
+			String namePrefixCustom = "";
+			if (this.dirConf.jvm.indexOf(this.stripFilenamePrefix) >= 0) {
+				namePrefixCustom = this.dirConf.jvm.substring(
+						this.dirConf.jvm.indexOf(this.stripFilenamePrefix) + this.stripFilenamePrefix.length());
+				res = res + "." + namePrefixCustom;
+			}
+			return res;
+		}
+		return filename;
+	}
+
+	public String parseJvmMangle() {
+		String namePrefixCustom = "";
+		if (this.dirConf.jvm.indexOf(this.stripFilenamePrefix) >= 0) {
+			namePrefixCustom = this.dirConf.jvm
+					.substring(this.dirConf.jvm.indexOf(this.stripFilenamePrefix) + this.stripFilenamePrefix.length());
+			return namePrefixCustom;
+		}
+		return this.dirConf.jvm;
+	}
+
 } // End of Class //

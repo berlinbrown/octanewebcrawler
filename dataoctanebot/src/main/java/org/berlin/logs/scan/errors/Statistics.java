@@ -42,29 +42,28 @@ import java.util.Date;
  * Total statistics after log analysis run.
  */
 public class Statistics {
-    
-    Date minDate = null;
-        
-    int errorsProcTimeSlow = 0;
-    int errorsToday = 0;
-    int errorsWeek = 0;
-    
-    int ie7 = 0;
-    int ie8 = 0;
-    int ie9 = 0;    
-    
-    int ipad = 0;
-    int ie = 0;
-    int nonIe = 0;
-    int android = 0;
-    int iphone = 0;
-    int winmobile = 0;    
-    int totalErrors = 0;        
-    
-    int [] errsDevIe   = { 0, 0, 0 };
-    int [] errsDevIpd  = { 0, 0, 0 };
-    int [] errsDevAnd  = { 0, 0, 0 };
-    int [] errsDevIp   = { 0, 0, 0 };
-    
-} // End of Class 
 
+	Date minDate = null;
+
+	int errorsProcTimeSlow = 0;
+	int errorsToday = 0;
+	int errorsWeek = 0;
+
+	int ie7 = 0;
+	int ie8 = 0;
+	int ie9 = 0;
+
+	int ipad = 0;
+	int ie = 0;
+	int nonIe = 0;
+	int android = 0;
+	int iphone = 0;
+	int winmobile = 0;
+	int totalErrors = 0;
+
+	int[] errsDevIe = {0, 0, 0};
+	int[] errsDevIpd = {0, 0, 0};
+	int[] errsDevAnd = {0, 0, 0};
+	int[] errsDevIp = {0, 0, 0};
+
+} // End of Class

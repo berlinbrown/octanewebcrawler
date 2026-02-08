@@ -49,56 +49,52 @@ import org.slf4j.LoggerFactory;
 /**
  * Main.
  * 
- * Enter the :  ant_search/search_result/ directory
- * Using linux command:  $ grep -H -A2 -B60 ERROR * > ../all_err.txt
- * Run with;  
- * java -Xms40m -Xmx200m -server -cp "bin" MainParseCritical < all_err.txt
+ * Enter the : ant_search/search_result/ directory Using linux command: $ grep
+ * -H -A2 -B60 ERROR * > ../all_err.txt Run with; java -Xms40m -Xmx200m -server
+ * -cp "bin" MainParseCritical < all_err.txt
  * 
- * ErrorsTodayByTime
- * ErrorsTodayByErrorType
- * ErrorsTodayByJvm
- * ErrorsAllByTime
+ * ErrorsTodayByTime ErrorsTodayByErrorType ErrorsTodayByJvm ErrorsAllByTime
  * ErrorsAllByBrowser
  *
  */
 public class MainParseCritical {
-  
-    private static final Logger LOGGER = LoggerFactory.getLogger(MainParseCritical.class);
-  
-    /**
-     * Main.
-     * 
-     * @param args
-     */
-    public static void main(final String [] args) {
-        
-        final long start = System.currentTimeMillis();
-        LOGGER.info("Running MainParseCritical Logs ...");                
-        BufferedReader br = null;
-        try {
-            
-            final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
-            LOGGER.info(globalConf.toString());
-            
-            final FileInputStream fis = new FileInputStream(globalConf.getWorkingDirectory() + "\\all_err.txt");
-            final BufferedInputStream bis = new BufferedInputStream(fis);
-            br = new BufferedReader(new InputStreamReader(bis));
-            final ILogErrorParser p = new Parser(globalConf).parse(br);
-            p.report();
-            final long diff = System.currentTimeMillis() - start;
-            LOGGER.info("Markers found = " + p.getMarkersFound());
-            LOGGER.info("Done - diff=" + diff + " ms");
-            
-        } catch(final Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } // End of the try - catch finally //
-    }   
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainParseCritical.class);
+
+	/**
+	 * Main.
+	 * 
+	 * @param args
+	 */
+	public static void main(final String[] args) {
+
+		final long start = System.currentTimeMillis();
+		LOGGER.info("Running MainParseCritical Logs ...");
+		BufferedReader br = null;
+		try {
+
+			final GlobalConfiguration globalConf = new GlobalConfiguration().load(GlobalConfiguration.PATH);
+			LOGGER.info(globalConf.toString());
+
+			final FileInputStream fis = new FileInputStream(globalConf.getWorkingDirectory() + "\\all_err.txt");
+			final BufferedInputStream bis = new BufferedInputStream(fis);
+			br = new BufferedReader(new InputStreamReader(bis));
+			final ILogErrorParser p = new Parser(globalConf).parse(br);
+			p.report();
+			final long diff = System.currentTimeMillis() - start;
+			LOGGER.info("Markers found = " + p.getMarkersFound());
+			LOGGER.info("Done - diff=" + diff + " ms");
+
+		} catch (final Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} // End of the try - catch finally //
+	}
 } // End of the class //

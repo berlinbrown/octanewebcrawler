@@ -38,162 +38,164 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ReportPlotWriter implements IPlotWriter {
-    
-  private final Statistics stats;
-    
-    /**
-     * Default constructor for writer.
-     * 
-     * @param listErrorDataPoints
-     * @param stats
-     */
-    public ReportPlotWriter(final Statistics stats) {    
-        this.stats = stats;
-    }       
-    
-    /**
-     * Return gnu plot stats.
-     * 
-     * @param outFilename
-     * @param in
-     * @param out
-     * @param plotline
-     */
-    public void statisticsReportGnuPlotHistoScript1(final String outFilename, final String in, final String out, final String plotline) {
-        final String o = outFilename + "_script.plot.sh";
-        final File f = new File(o);          
-        FileWriter fw = null;
-                
-        try {
-            fw = new FileWriter(f);
-            
-            fw.write("#!/bin/sh");
-            fw.write("\n");            
-            fw.write("INPUT_PLOT_FILE="+ in);
-            fw.write("\n");            
-            fw.write("OUTPUT_IMG_FILE=" + out);
-            fw.write("\n");            
-            fw.write("echo \"set terminal pngcairo size 600,450");
-            fw.write("\n");            
-            fw.write("set output '${OUTPUT_IMG_FILE}'");
-            fw.write("\n");            
-            fw.write("set title 'Critical Errors By Type (Recently and Week)'");
-            fw.write("\n");            
-            fw.write("set size 1,1");
-            fw.write("\n");            
-            fw.write("set key left top");
-            fw.write("\n");            
-            fw.write("set autoscale");
-            fw.write("\n");            
-            fw.write("set xlabel 'Type Of Error'");
-            fw.write("\n");            
-            fw.write("set ylabel 'Number of Errors'");
-            fw.write("\n");           
-            fw.write("set style fill pattern");
-            fw.write("\n");           
-            fw.write("set style histogram clustered");
-            fw.write("\n");            
-            fw.write("set xtic rotate by -45 scale 0.8");
-            fw.write("\n");
-            
-            // Example: fw.write("plot '${INPUT_PLOT_FILE}' u 2:xtic(1) t 'Recently' w histograms, '' u 3 t 'Week' w histograms");
-            fw.write(plotline);
-            fw.write("\n");                       
-            fw.write("\n");            
-            fw.write("\" > gnuplot_tmp_cmd.tmp");
-            fw.write("\n");            
-            fw.write("gnuplot gnuplot_tmp_cmd.tmp > /dev/null");
-            fw.write("\n");
-                    
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } finally {        
-            try {
-                fw.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        } // End of try write
-    }
-            
-    public void statisticsReportGnuPlotHisto(final String outFilename) {
-        final String o = outFilename + ".dat";
-        final File f = new File(o);          
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(f);
-            fw.write("# Type\t\tRecently\t\tWeek");
-            fw.flush();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }                        
-        try {                    
-            fw.flush();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } finally {        
-            try {
-                fw.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        } // End of try write
-        
-    }    
 
-    /**
-     * Return gnu plot stats 2.
-     * 
-     * @param outFilename
-     */
-    protected void statisticsReportGnuPlotHisto2(final String outFilename) {
-        final String o = outFilename + "2.dat";
-        final File f = new File(o);          
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(f);
-            fw.write("# Type\t\tAllTime");
-            fw.flush();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }                
-        try {
-            fw.write(Parser.NL);
-            fw.write("IE7\t\t" + stats.ie7);            
-            fw.write(Parser.NL);
-            
-            fw.write("IE8\t\t" + stats.ie8);
-            fw.write(Parser.NL);
-            
-            fw.write("IE9\t\t" + stats.ie9);            
-            fw.write(Parser.NL);
-            
-            fw.write("iPad\t\t" + stats.ipad);
-            fw.write(Parser.NL);
-            
-            fw.write("Android\t\t" + stats.android);
-            fw.write(Parser.NL);
-            
-            fw.write("iPhone\t\t" + stats.iphone);
-            fw.write(Parser.NL);
-            
-            fw.write("WinMobile\t\t" + stats.winmobile);
-            fw.write(Parser.NL);                       
-            
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }                
-        try {                    
-            fw.flush();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } finally {        
-            try {
-                fw.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        } // End of try write       
-    }
-    
+	private final Statistics stats;
+
+	/**
+	 * Default constructor for writer.
+	 * 
+	 * @param listErrorDataPoints
+	 * @param stats
+	 */
+	public ReportPlotWriter(final Statistics stats) {
+		this.stats = stats;
+	}
+
+	/**
+	 * Return gnu plot stats.
+	 * 
+	 * @param outFilename
+	 * @param in
+	 * @param out
+	 * @param plotline
+	 */
+	public void statisticsReportGnuPlotHistoScript1(final String outFilename, final String in, final String out,
+			final String plotline) {
+		final String o = outFilename + "_script.plot.sh";
+		final File f = new File(o);
+		FileWriter fw = null;
+
+		try {
+			fw = new FileWriter(f);
+
+			fw.write("#!/bin/sh");
+			fw.write("\n");
+			fw.write("INPUT_PLOT_FILE=" + in);
+			fw.write("\n");
+			fw.write("OUTPUT_IMG_FILE=" + out);
+			fw.write("\n");
+			fw.write("echo \"set terminal pngcairo size 600,450");
+			fw.write("\n");
+			fw.write("set output '${OUTPUT_IMG_FILE}'");
+			fw.write("\n");
+			fw.write("set title 'Critical Errors By Type (Recently and Week)'");
+			fw.write("\n");
+			fw.write("set size 1,1");
+			fw.write("\n");
+			fw.write("set key left top");
+			fw.write("\n");
+			fw.write("set autoscale");
+			fw.write("\n");
+			fw.write("set xlabel 'Type Of Error'");
+			fw.write("\n");
+			fw.write("set ylabel 'Number of Errors'");
+			fw.write("\n");
+			fw.write("set style fill pattern");
+			fw.write("\n");
+			fw.write("set style histogram clustered");
+			fw.write("\n");
+			fw.write("set xtic rotate by -45 scale 0.8");
+			fw.write("\n");
+
+			// Example: fw.write("plot '${INPUT_PLOT_FILE}' u 2:xtic(1) t 'Recently' w
+			// histograms, '' u 3 t 'Week' w histograms");
+			fw.write(plotline);
+			fw.write("\n");
+			fw.write("\n");
+			fw.write("\" > gnuplot_tmp_cmd.tmp");
+			fw.write("\n");
+			fw.write("gnuplot gnuplot_tmp_cmd.tmp > /dev/null");
+			fw.write("\n");
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} // End of try write
+	}
+
+	public void statisticsReportGnuPlotHisto(final String outFilename) {
+		final String o = outFilename + ".dat";
+		final File f = new File(o);
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(f);
+			fw.write("# Type\t\tRecently\t\tWeek");
+			fw.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fw.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} // End of try write
+
+	}
+
+	/**
+	 * Return gnu plot stats 2.
+	 * 
+	 * @param outFilename
+	 */
+	protected void statisticsReportGnuPlotHisto2(final String outFilename) {
+		final String o = outFilename + "2.dat";
+		final File f = new File(o);
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(f);
+			fw.write("# Type\t\tAllTime");
+			fw.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fw.write(Parser.NL);
+			fw.write("IE7\t\t" + stats.ie7);
+			fw.write(Parser.NL);
+
+			fw.write("IE8\t\t" + stats.ie8);
+			fw.write(Parser.NL);
+
+			fw.write("IE9\t\t" + stats.ie9);
+			fw.write(Parser.NL);
+
+			fw.write("iPad\t\t" + stats.ipad);
+			fw.write(Parser.NL);
+
+			fw.write("Android\t\t" + stats.android);
+			fw.write(Parser.NL);
+
+			fw.write("iPhone\t\t" + stats.iphone);
+			fw.write(Parser.NL);
+
+			fw.write("WinMobile\t\t" + stats.winmobile);
+			fw.write(Parser.NL);
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fw.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				fw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} // End of try write
+	}
+
 } // End of the class //

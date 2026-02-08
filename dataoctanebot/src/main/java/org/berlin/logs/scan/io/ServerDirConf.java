@@ -35,12 +35,12 @@ package org.berlin.logs.scan.io;
 
 public class ServerDirConf {
 
-    String dir = "";
-    String server = "";
-    String jvm = "";
-    
-    public String toString() {
-        return "[ServerDir : server=" + server + " jvm=" + jvm + " dirFile=" + dir + "]";
-    }
-    
+	String dir = "";
+	String server = "";
+	String jvm = "";
+
+	public String toString() {
+		return "[ServerDir : server=" + server + " jvm=" + jvm + " dirFile=" + dir + "]";
+	}
+
 } // End of the Class //

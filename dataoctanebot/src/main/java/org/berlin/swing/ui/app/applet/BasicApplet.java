@@ -55,32 +55,32 @@ import org.berlin.swing.ui.app.BasicAppCore.WindowBuilder;
  *
  */
 public class BasicApplet extends JApplet implements ICloser {
-    
-    /**
-     * Serial version id.
-     */
-    private static final long serialVersionUID = 1L;    
-    public void init() {
-        // Execute a job on the event-dispatching thread; creating this applet's GUI.
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {                                         
-                    final IBasicWindow window = new BasicWindow(); 
-                    final AbstractWindowBuilder windowBuilder = new WindowBuilder(window);
-                    windowBuilder.setCloser(BasicApplet.this);
-                    windowBuilder.build();                                                                   
-                    BasicApplet.this.setLocation(0, 0);
-                    BasicApplet.this.setPreferredSize(new Dimension(500, 460));                                    
-                    BasicApplet.this.setVisible(true);
-                    BasicApplet.this.add(window.getComponent());                    
-                }
-            });
-        } catch (Exception e) {
-            System.err.println("createGUI didn't complete successfully");
-        }
-    }
-    
-    public void close() {        
-    }
+
+	/**
+	 * Serial version id.
+	 */
+	private static final long serialVersionUID = 1L;
+	public void init() {
+		// Execute a job on the event-dispatching thread; creating this applet's GUI.
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					final IBasicWindow window = new BasicWindow();
+					final AbstractWindowBuilder windowBuilder = new WindowBuilder(window);
+					windowBuilder.setCloser(BasicApplet.this);
+					windowBuilder.build();
+					BasicApplet.this.setLocation(0, 0);
+					BasicApplet.this.setPreferredSize(new Dimension(500, 460));
+					BasicApplet.this.setVisible(true);
+					BasicApplet.this.add(window.getComponent());
+				}
+			});
+		} catch (Exception e) {
+			System.err.println("createGUI didn't complete successfully");
+		}
+	}
+
+	public void close() {
+	}
 
 } // End of the class

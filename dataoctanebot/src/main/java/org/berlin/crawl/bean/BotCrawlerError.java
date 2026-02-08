@@ -43,19 +43,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="bot_crawler_links")
+@Table(name = "bot_crawler_links")
 public class BotCrawlerError {
 
-	@Id	
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
-	private Long id;		
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "assignedGen")
+	private Long id;
 	private Date createdAt;
 
 	private String url;
 	private String host;
-	private int status;	
-	private String statusline;	
+	private int status;
+	private String statusline;
 	/**
 	 * @return the id
 	 */
@@ -63,7 +63,8 @@ public class BotCrawlerError {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -75,7 +76,8 @@ public class BotCrawlerError {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -87,7 +89,8 @@ public class BotCrawlerError {
 		return url;
 	}
 	/**
-	 * @param url the url to set
+	 * @param url
+	 *            the url to set
 	 */
 	public void setUrl(String url) {
 		this.url = url;
@@ -99,7 +102,8 @@ public class BotCrawlerError {
 		return host;
 	}
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -111,12 +115,13 @@ public class BotCrawlerError {
 		return status;
 	}
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+
 	/**
 	 * @return the statusline
 	 */
@@ -124,10 +129,11 @@ public class BotCrawlerError {
 		return statusline;
 	}
 	/**
-	 * @param statusline the statusline to set
+	 * @param statusline
+	 *            the statusline to set
 	 */
 	public void setStatusline(String statusline) {
 		this.statusline = statusline;
 	}
-	
+
 } // End of the class //

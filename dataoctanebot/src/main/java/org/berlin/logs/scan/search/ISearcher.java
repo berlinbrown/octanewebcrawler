@@ -37,15 +37,15 @@ import java.io.PrintWriter;
 
 public interface ISearcher {
 
-  /**
-   * @return the termFoundTotal
-   */
-  public int getTermFoundTotal();
+	/**
+	 * @return the termFoundTotal
+	 */
+	public int getTermFoundTotal();
 
-  /**
-   * @param printWriter the printWriter to set
-   */
-  public void setPrintWriter(final PrintWriter printWriter);
-  
-  
+	/**
+	 * @param printWriter
+	 *            the printWriter to set
+	 */
+	public void setPrintWriter(final PrintWriter printWriter);
+
 } // End of the class //

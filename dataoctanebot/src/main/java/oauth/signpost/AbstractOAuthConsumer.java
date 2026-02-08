@@ -38,225 +38,224 @@ import oauth.signpost.signature.SigningStrategy;
  */
 public abstract class AbstractOAuthConsumer implements OAuthConsumer {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String consumerKey, consumerSecret;
+	private String consumerKey, consumerSecret;
 
-    private String token;
+	private String token;
 
-    private OAuthMessageSigner messageSigner;
+	private OAuthMessageSigner messageSigner;
 
-    private SigningStrategy signingStrategy;
+	private SigningStrategy signingStrategy;
 
-    // these are params that may be passed to the consumer directly (i.e.
-    // without going through the request object)
-    private HttpParameters additionalParameters;
+	// these are params that may be passed to the consumer directly (i.e.
+	// without going through the request object)
+	private HttpParameters additionalParameters;
 
-    // these are the params which will be passed to the message signer
-    private HttpParameters requestParameters;
-    
-    private boolean sendEmptyTokens;
-    
-    final private Random random = new Random(System.nanoTime());
+	// these are the params which will be passed to the message signer
+	private HttpParameters requestParameters;
 
-    public AbstractOAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = consumerKey;
-        this.consumerSecret = consumerSecret;
-        setMessageSigner(new HmacSha1MessageSigner());
-        setSigningStrategy(new AuthorizationHeaderSigningStrategy());
-    }
+	private boolean sendEmptyTokens;
 
-    public void setMessageSigner(OAuthMessageSigner messageSigner) {
-        this.messageSigner = messageSigner;
-        messageSigner.setConsumerSecret(consumerSecret);
-    }
+	final private Random random = new Random(System.nanoTime());
 
-    public void setSigningStrategy(SigningStrategy signingStrategy) {
-        this.signingStrategy = signingStrategy;
-    }
+	public AbstractOAuthConsumer(String consumerKey, String consumerSecret) {
+		this.consumerKey = consumerKey;
+		this.consumerSecret = consumerSecret;
+		setMessageSigner(new HmacSha1MessageSigner());
+		setSigningStrategy(new AuthorizationHeaderSigningStrategy());
+	}
 
-    public void setAdditionalParameters(HttpParameters additionalParameters) {
-        this.additionalParameters = additionalParameters;
-    }
+	public void setMessageSigner(OAuthMessageSigner messageSigner) {
+		this.messageSigner = messageSigner;
+		messageSigner.setConsumerSecret(consumerSecret);
+	}
 
-    public synchronized HttpRequest sign(HttpRequest request) throws OAuthMessageSignerException,
-            OAuthExpectationFailedException, OAuthCommunicationException {
-        if (consumerKey == null) {
-            throw new OAuthExpectationFailedException("consumer key not set");
-        }
-        if (consumerSecret == null) {
-            throw new OAuthExpectationFailedException("consumer secret not set");
-        }
+	public void setSigningStrategy(SigningStrategy signingStrategy) {
+		this.signingStrategy = signingStrategy;
+	}
 
-        requestParameters = new HttpParameters();
-        try {
-            if (additionalParameters != null) {
-                requestParameters.putAll(additionalParameters, false);
-            }
-            collectHeaderParameters(request, requestParameters);
-            collectQueryParameters(request, requestParameters);
-            collectBodyParameters(request, requestParameters);
+	public void setAdditionalParameters(HttpParameters additionalParameters) {
+		this.additionalParameters = additionalParameters;
+	}
 
-            // add any OAuth params that haven't already been set
-            completeOAuthParameters(requestParameters);
+	public synchronized HttpRequest sign(HttpRequest request)
+			throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
+		if (consumerKey == null) {
+			throw new OAuthExpectationFailedException("consumer key not set");
+		}
+		if (consumerSecret == null) {
+			throw new OAuthExpectationFailedException("consumer secret not set");
+		}
 
-            requestParameters.remove(OAuth.OAUTH_SIGNATURE);
+		requestParameters = new HttpParameters();
+		try {
+			if (additionalParameters != null) {
+				requestParameters.putAll(additionalParameters, false);
+			}
+			collectHeaderParameters(request, requestParameters);
+			collectQueryParameters(request, requestParameters);
+			collectBodyParameters(request, requestParameters);
 
-        } catch (IOException e) {
-            throw new OAuthCommunicationException(e);
-        }
+			// add any OAuth params that haven't already been set
+			completeOAuthParameters(requestParameters);
 
-        String signature = messageSigner.sign(request, requestParameters);
-        OAuth.debugOut("signature", signature);
+			requestParameters.remove(OAuth.OAUTH_SIGNATURE);
 
-        signingStrategy.writeSignature(signature, request, requestParameters);
-        OAuth.debugOut("Request URL", request.getRequestUrl());
+		} catch (IOException e) {
+			throw new OAuthCommunicationException(e);
+		}
 
-        return request;
-    }
+		String signature = messageSigner.sign(request, requestParameters);
+		OAuth.debugOut("signature", signature);
 
-    public synchronized HttpRequest sign(Object request) throws OAuthMessageSignerException,
-            OAuthExpectationFailedException, OAuthCommunicationException {
-        return sign(wrap(request));
-    }
+		signingStrategy.writeSignature(signature, request, requestParameters);
+		OAuth.debugOut("Request URL", request.getRequestUrl());
 
-    public synchronized String sign(String url) throws OAuthMessageSignerException,
-            OAuthExpectationFailedException, OAuthCommunicationException {
-        HttpRequest request = new UrlStringRequestAdapter(url);
+		return request;
+	}
 
-        // switch to URL signing
-        SigningStrategy oldStrategy = this.signingStrategy;
-        this.signingStrategy = new QueryStringSigningStrategy();
+	public synchronized HttpRequest sign(Object request)
+			throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
+		return sign(wrap(request));
+	}
 
-        sign(request);
+	public synchronized String sign(String url)
+			throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
+		HttpRequest request = new UrlStringRequestAdapter(url);
 
-        // revert to old strategy
-        this.signingStrategy = oldStrategy;
+		// switch to URL signing
+		SigningStrategy oldStrategy = this.signingStrategy;
+		this.signingStrategy = new QueryStringSigningStrategy();
 
-        return request.getRequestUrl();
-    }
+		sign(request);
 
-    /**
-     * Adapts the given request object to a Signpost {@link HttpRequest}. How
-     * this is done depends on the consumer implementation.
-     *
-     * @param request
-     *        the native HTTP request instance
-     * @return the adapted request
-     */
-    protected abstract HttpRequest wrap(Object request);
+		// revert to old strategy
+		this.signingStrategy = oldStrategy;
 
-    public void setTokenWithSecret(String token, String tokenSecret) {
-        this.token = token;
-        messageSigner.setTokenSecret(tokenSecret);
-    }
+		return request.getRequestUrl();
+	}
 
-    public String getToken() {
-        return token;
-    }
+	/**
+	 * Adapts the given request object to a Signpost {@link HttpRequest}. How this
+	 * is done depends on the consumer implementation.
+	 *
+	 * @param request
+	 *            the native HTTP request instance
+	 * @return the adapted request
+	 */
+	protected abstract HttpRequest wrap(Object request);
 
-    public String getTokenSecret() {
-        return messageSigner.getTokenSecret();
-    }
+	public void setTokenWithSecret(String token, String tokenSecret) {
+		this.token = token;
+		messageSigner.setTokenSecret(tokenSecret);
+	}
 
-    public String getConsumerKey() {
-        return this.consumerKey;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public String getConsumerSecret() {
-        return this.consumerSecret;
-    }
+	public String getTokenSecret() {
+		return messageSigner.getTokenSecret();
+	}
 
-    /**
-     * <p>
-     * Helper method that adds any OAuth parameters to the given request
-     * parameters which are missing from the current request but required for
-     * signing. A good example is the oauth_nonce parameter, which is typically
-     * not provided by the client in advance.
-     * </p>
-     * <p>
-     * It's probably not a very good idea to override this method. If you want
-     * to generate different nonces or timestamps, override
-     * {@link #generateNonce()} or {@link #generateTimestamp()} instead.
-     * </p>
-     *
-     * @param out
-     *        the request parameter which should be completed
-     */
-    protected void completeOAuthParameters(HttpParameters out) {
-        if (!out.containsKey(OAuth.OAUTH_CONSUMER_KEY)) {
-            out.put(OAuth.OAUTH_CONSUMER_KEY, consumerKey, true);
-        }
-        if (!out.containsKey(OAuth.OAUTH_SIGNATURE_METHOD)) {
-            out.put(OAuth.OAUTH_SIGNATURE_METHOD, messageSigner.getSignatureMethod(), true);
-        }
-        if (!out.containsKey(OAuth.OAUTH_TIMESTAMP)) {
-            out.put(OAuth.OAUTH_TIMESTAMP, generateTimestamp(), true);
-        }
-        if (!out.containsKey(OAuth.OAUTH_NONCE)) {
-            out.put(OAuth.OAUTH_NONCE, generateNonce(), true);
-        }
-        if (!out.containsKey(OAuth.OAUTH_VERSION)) {
-            out.put(OAuth.OAUTH_VERSION, OAuth.VERSION_1_0, true);
-        }
-        if (!out.containsKey(OAuth.OAUTH_TOKEN)) {
-            if (token != null && !token.equals("") || sendEmptyTokens) {
-                out.put(OAuth.OAUTH_TOKEN, token, true);
-            }
-        }
-    }
+	public String getConsumerKey() {
+		return this.consumerKey;
+	}
 
-    public HttpParameters getRequestParameters() {
-        return requestParameters;
-    }
+	public String getConsumerSecret() {
+		return this.consumerSecret;
+	}
 
-    public void setSendEmptyTokens(boolean enable) {
-        this.sendEmptyTokens = enable;
-    }
+	/**
+	 * <p>
+	 * Helper method that adds any OAuth parameters to the given request parameters
+	 * which are missing from the current request but required for signing. A good
+	 * example is the oauth_nonce parameter, which is typically not provided by the
+	 * client in advance.
+	 * </p>
+	 * <p>
+	 * It's probably not a very good idea to override this method. If you want to
+	 * generate different nonces or timestamps, override {@link #generateNonce()} or
+	 * {@link #generateTimestamp()} instead.
+	 * </p>
+	 *
+	 * @param out
+	 *            the request parameter which should be completed
+	 */
+	protected void completeOAuthParameters(HttpParameters out) {
+		if (!out.containsKey(OAuth.OAUTH_CONSUMER_KEY)) {
+			out.put(OAuth.OAUTH_CONSUMER_KEY, consumerKey, true);
+		}
+		if (!out.containsKey(OAuth.OAUTH_SIGNATURE_METHOD)) {
+			out.put(OAuth.OAUTH_SIGNATURE_METHOD, messageSigner.getSignatureMethod(), true);
+		}
+		if (!out.containsKey(OAuth.OAUTH_TIMESTAMP)) {
+			out.put(OAuth.OAUTH_TIMESTAMP, generateTimestamp(), true);
+		}
+		if (!out.containsKey(OAuth.OAUTH_NONCE)) {
+			out.put(OAuth.OAUTH_NONCE, generateNonce(), true);
+		}
+		if (!out.containsKey(OAuth.OAUTH_VERSION)) {
+			out.put(OAuth.OAUTH_VERSION, OAuth.VERSION_1_0, true);
+		}
+		if (!out.containsKey(OAuth.OAUTH_TOKEN)) {
+			if (token != null && !token.equals("") || sendEmptyTokens) {
+				out.put(OAuth.OAUTH_TOKEN, token, true);
+			}
+		}
+	}
 
-    /**
-     * Collects OAuth Authorization header parameters as per OAuth Core 1.0 spec
-     * section 9.1.1
-     */
-    protected void collectHeaderParameters(HttpRequest request, HttpParameters out) {
-        HttpParameters headerParams = OAuth.oauthHeaderToParamsMap(request.getHeader(OAuth.HTTP_AUTHORIZATION_HEADER));
-        out.putAll(headerParams, false);
-    }
+	public HttpParameters getRequestParameters() {
+		return requestParameters;
+	}
 
-    /**
-     * Collects x-www-form-urlencoded body parameters as per OAuth Core 1.0 spec
-     * section 9.1.1
-     */
-    protected void collectBodyParameters(HttpRequest request, HttpParameters out)
-            throws IOException {
+	public void setSendEmptyTokens(boolean enable) {
+		this.sendEmptyTokens = enable;
+	}
 
-        // collect x-www-form-urlencoded body params
-        String contentType = request.getContentType();
-        if (contentType != null && contentType.startsWith(OAuth.FORM_ENCODED)) {
-            InputStream payload = request.getMessagePayload();
-            out.putAll(OAuth.decodeForm(payload), true);
-        }
-    }
+	/**
+	 * Collects OAuth Authorization header parameters as per OAuth Core 1.0 spec
+	 * section 9.1.1
+	 */
+	protected void collectHeaderParameters(HttpRequest request, HttpParameters out) {
+		HttpParameters headerParams = OAuth.oauthHeaderToParamsMap(request.getHeader(OAuth.HTTP_AUTHORIZATION_HEADER));
+		out.putAll(headerParams, false);
+	}
 
-    /**
-     * Collects HTTP GET query string parameters as per OAuth Core 1.0 spec
-     * section 9.1.1
-     */
-    protected void collectQueryParameters(HttpRequest request, HttpParameters out) {
+	/**
+	 * Collects x-www-form-urlencoded body parameters as per OAuth Core 1.0 spec
+	 * section 9.1.1
+	 */
+	protected void collectBodyParameters(HttpRequest request, HttpParameters out) throws IOException {
 
-        String url = request.getRequestUrl();
-        int q = url.indexOf('?');
-        if (q >= 0) {
-            // Combine the URL query string with the other parameters:
-            out.putAll(OAuth.decodeForm(url.substring(q + 1)), true);
-        }
-    }
+		// collect x-www-form-urlencoded body params
+		String contentType = request.getContentType();
+		if (contentType != null && contentType.startsWith(OAuth.FORM_ENCODED)) {
+			InputStream payload = request.getMessagePayload();
+			out.putAll(OAuth.decodeForm(payload), true);
+		}
+	}
 
-    protected String generateTimestamp() {
-        return Long.toString(System.currentTimeMillis() / 1000L);
-    }
+	/**
+	 * Collects HTTP GET query string parameters as per OAuth Core 1.0 spec section
+	 * 9.1.1
+	 */
+	protected void collectQueryParameters(HttpRequest request, HttpParameters out) {
 
-    protected String generateNonce() {
-        return Long.toString(random.nextLong());
-    }
+		String url = request.getRequestUrl();
+		int q = url.indexOf('?');
+		if (q >= 0) {
+			// Combine the URL query string with the other parameters:
+			out.putAll(OAuth.decodeForm(url.substring(q + 1)), true);
+		}
+	}
+
+	protected String generateTimestamp() {
+		return Long.toString(System.currentTimeMillis() / 1000L);
+	}
+
+	protected String generateNonce() {
+		return Long.toString(random.nextLong());
+	}
 }

@@ -19,19 +19,19 @@ import oauth.signpost.http.HttpRequest;
  */
 public interface SigningStrategy extends Serializable {
 
-    /**
-     * Writes an OAuth signature and all remaining required parameters to an
-     * HTTP message.
-     * 
-     * @param signature
-     *        the signature to write
-     * @param request
-     *        the request to sign
-     * @param requestParameters
-     *        the request parameters
-     * @return whatever has been written to the request, e.g. an Authorization
-     *         header field
-     */
-    String writeSignature(String signature, HttpRequest request, HttpParameters requestParameters);
-    
+	/**
+	 * Writes an OAuth signature and all remaining required parameters to an HTTP
+	 * message.
+	 * 
+	 * @param signature
+	 *            the signature to write
+	 * @param request
+	 *            the request to sign
+	 * @param requestParameters
+	 *            the request parameters
+	 * @return whatever has been written to the request, e.g. an Authorization
+	 *         header field
+	 */
+	String writeSignature(String signature, HttpRequest request, HttpParameters requestParameters);
+
 }

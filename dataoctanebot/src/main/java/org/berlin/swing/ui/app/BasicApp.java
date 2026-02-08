@@ -48,99 +48,98 @@ import org.berlin.swing.ui.app.BasicAppBaseUI.BasicWindow;
 import org.berlin.swing.ui.app.BasicAppBaseUI.IBasicWindow;
 import org.berlin.swing.ui.app.BasicAppCore.WindowBuilder;
 
-/** 
- * Basic Java swing application, modify the basic app classes
- * for your particular task and application.
+/**
+ * Basic Java swing application, modify the basic app classes for your
+ * particular task and application.
  * 
- * @author berlin.brown 
+ * @author berlin.brown
  */
 public class BasicApp implements ICloser {
 
-    private JFrame frame;
-    
-    public static final String TIME = "";
-    public static final String FILE = "scan_timestamps_global.txt";
-    public static final String DIR  = "C:\\usr\\local\\";
-   
-    /**
-     * Create application.
-     * Do not extend the JFrame class.
-     */
-    public void createApplication() {
-        
-        this.frame = new JFrame("ScanLogs - " + new Date());                      
-        final IBasicWindow window = new BasicWindow(); 
-        final AbstractWindowBuilder windowBuilder = new WindowBuilder(window);
-        windowBuilder.setCloser(this);
-        windowBuilder.build();        
-        System.out.println("Window Data : " + window);        
-        frame.add(window.getComponent());
-        frame.setLocation(200, 200);
-        frame.setPreferredSize(new Dimension(900, 760)); 
-        frame.setSize(new Dimension(900, 760));
-        frame.pack();
-        frame.setResizable(true);        
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-        frame.setVisible(true);         
-        this.startServer();
-    }
-    
-    public void close() {
-        if (frame != null) {
-            System.out.println("Closer operation invoked, closing");
-            frame.setVisible(false);
-            frame.dispose();
-            System.exit(0);
-        }
-    }
-    
-    protected void startServer() {
-      try {
-        final ThreadEvent resultsReady = new ThreadEvent();
-        final Runnable r = new Runnable() {
-          @Override
-          public void run() {
-            System.out.println("Starting server thread");           
-            // Normally when we are done with server,
-            resultsReady.signal();
-          };
-        };
-        new Thread(r).start();
-        resultsReady.await();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+	private JFrame frame;
 
-    public static class ThreadEvent {
+	public static final String TIME = "";
+	public static final String FILE = "scan_timestamps_global.txt";
+	public static final String DIR = "C:\\usr\\local\\";
 
-      private final Object lock = new Object();
+	/**
+	 * Create application. Do not extend the JFrame class.
+	 */
+	public void createApplication() {
 
-      public void signal() {
-        synchronized (lock) {
-          lock.notify();
-        }
-      }
+		this.frame = new JFrame("ScanLogs - " + new Date());
+		final IBasicWindow window = new BasicWindow();
+		final AbstractWindowBuilder windowBuilder = new WindowBuilder(window);
+		windowBuilder.setCloser(this);
+		windowBuilder.build();
+		System.out.println("Window Data : " + window);
+		frame.add(window.getComponent());
+		frame.setLocation(200, 200);
+		frame.setPreferredSize(new Dimension(900, 760));
+		frame.setSize(new Dimension(900, 760));
+		frame.pack();
+		frame.setResizable(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		this.startServer();
+	}
 
-      public void await() throws InterruptedException {
-        synchronized (lock) {
-          lock.wait();
-        }
-      }
-    }
-    
-    /*
-     * To Run with maven:
-     * mvn exec:java -Dexec.mainClass="org.berlin.swing.ui.app.BasicApp"  
-     * mvn exec:java -Dexec.mainClass="com.Main" -Dexec.args="arg0 arg1 arg2"  
-     */    
-    
-    /**     
-     * @param args
-     */
-    private static void main(final String [] args) {        
-        final BasicApp app = new BasicApp();        
-        app.createApplication();
-    }       
-    
+	public void close() {
+		if (frame != null) {
+			System.out.println("Closer operation invoked, closing");
+			frame.setVisible(false);
+			frame.dispose();
+			System.exit(0);
+		}
+	}
+
+	protected void startServer() {
+		try {
+			final ThreadEvent resultsReady = new ThreadEvent();
+			final Runnable r = new Runnable() {
+				@Override
+				public void run() {
+					System.out.println("Starting server thread");
+					// Normally when we are done with server,
+					resultsReady.signal();
+				};
+			};
+			new Thread(r).start();
+			resultsReady.await();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static class ThreadEvent {
+
+		private final Object lock = new Object();
+
+		public void signal() {
+			synchronized (lock) {
+				lock.notify();
+			}
+		}
+
+		public void await() throws InterruptedException {
+			synchronized (lock) {
+				lock.wait();
+			}
+		}
+	}
+
+	/*
+	 * To Run with maven: mvn exec:java
+	 * -Dexec.mainClass="org.berlin.swing.ui.app.BasicApp" mvn exec:java
+	 * -Dexec.mainClass="com.Main" -Dexec.args="arg0 arg1 arg2"
+	 */
+
+	/**
+	 * @param args
+	 */
+	private static void main(final String[] args) {
+		final BasicApp app = new BasicApp();
+		app.createApplication();
+	}
+
 } // End of the class

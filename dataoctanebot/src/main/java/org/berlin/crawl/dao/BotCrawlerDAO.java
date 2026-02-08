@@ -43,8 +43,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hibernate data access layer for connecting to the bot crawler database. 
- * Store links and seed information.
+ * Hibernate data access layer for connecting to the bot crawler database. Store
+ * links and seed information.
  * 
  * @author bbrown
  *
@@ -52,209 +52,211 @@ import org.slf4j.LoggerFactory;
 public class BotCrawlerDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(BotCrawlerDAO.class);
-	
+
 	public List<BotCrawlerIgnore> findIgnores(final Session session) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		final List<BotCrawlerIgnore> ignores = new ArrayList<BotCrawlerIgnore>();
-		try {						
+		try {
 			transaction = session.beginTransaction();
-			logger.info("Attempting to find ignores");			
-			final List list = session.createQuery("from BotCrawlerIgnore as ignore").list();			
+			logger.info("Attempting to find ignores");
+			final List list = session.createQuery("from BotCrawlerIgnore as ignore").list();
 			BotCrawlerIgnore ig = null;
 			if (list != null) {
 				for (final Object obj : list) {
 					ig = (BotCrawlerIgnore) obj;
 					ignores.add(ig);
 				}
-			} // End of the if //																
+			} // End of the if //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add", e);			
+			logger.error("Error at add", e);
 			if (transaction != null) {
 				transaction.rollback();
-			}			
-		} finally {			
+			}
+		} finally {
 		}
 		return ignores;
 	} // End of the method //
-	
+
 	public List<BotSeed> findSeedRequests(final Session session) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		final List<BotSeed> seeds = new ArrayList<BotSeed>();
-		try {						
-			transaction = session.beginTransaction();			
-			logger.info("Attempting to find top seed requests");			
-			final List list = session.createQuery("from BotSeed as seed").list();			
+		try {
+			transaction = session.beginTransaction();
+			logger.info("Attempting to find top seed requests");
+			final List list = session.createQuery("from BotSeed as seed").list();
 			BotSeed seed = null;
 			if (list != null) {
 				for (final Object obj : list) {
 					seed = (BotSeed) obj;
 					seeds.add(seed);
 				}
-			} // End of the if //																
+			} // End of the if //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add", e);			
+			logger.error("Error at add", e);
 			if (transaction != null) {
 				transaction.rollback();
-			}			
-		} finally {			
+			}
+		} finally {
 		}
 		return seeds;
 	} // End of the method //
-	
+
 	public List<String> findHosts(final Session session) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		final List<String> seeds = new ArrayList<String>();
-		try {						
-			transaction = session.beginTransaction();			
-			logger.info("Attempting to find top seed requests");			
-			final List list = session.createQuery("select distinct host from BotCrawlerLink o ").list();			
+		try {
+			transaction = session.beginTransaction();
+			logger.info("Attempting to find top seed requests");
+			final List list = session.createQuery("select distinct host from BotCrawlerLink o ").list();
 			String seed = null;
 			if (list != null) {
 				for (final Object obj : list) {
 					seed = (String) obj;
 					seeds.add(seed);
 				}
-			} // End of the if //																
+			} // End of the if //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add", e);			
+			logger.error("Error at add", e);
 			if (transaction != null) {
 				transaction.rollback();
-			}			
-		} finally {			
+			}
+		} finally {
 		}
 		return seeds;
 	} // End of the method //
 
 	public List<Long> countLinks(final Session session) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		final List<Long> seeds = new ArrayList<Long>();
-		try {						
-			transaction = session.beginTransaction();			
-			logger.info("Attempting to find top seed requests");			
-			final List list = session.createQuery("select count(*) from BotCrawlerLink o ").list();			
+		try {
+			transaction = session.beginTransaction();
+			logger.info("Attempting to find top seed requests");
+			final List list = session.createQuery("select count(*) from BotCrawlerLink o ").list();
 			Long i = null;
 			if (list != null) {
 				for (final Object obj : list) {
 					i = (Long) obj;
 					seeds.add(i);
 				}
-			} // End of the if //																
+			} // End of the if //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add", e);			
+			logger.error("Error at add", e);
 			if (transaction != null) {
 				transaction.rollback();
-			}			
-		} finally {			
+			}
+		} finally {
 		}
 		return seeds;
 	} // End of the method //
-	
+
 	public void createSeed(final Session session, final BotSeed seed) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		int status = -1;
-		try {		
+		try {
 			status = 1001;
-			transaction = session.beginTransaction();																	
-			seed.setCreatedAt(new Date());												
+			transaction = session.beginTransaction();
+			seed.setCreatedAt(new Date());
 			session.saveOrUpdate(seed);
 			status = 1004;
 			// End of work //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add <status: " + status + ">>", e);			
+			logger.error("Error at add <status: " + status + ">>", e);
 			if (transaction != null) {
 				transaction.rollback();
 			}
 			throw new RuntimeException("Error from create");
-		} finally {			
+		} finally {
 		}
-	} // End of the method //	
-	
+	} // End of the method //
+
 	public void createLink(final Session session, final BotCrawlerLink link) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		int status = -1;
-		try {		
+		try {
 			status = 1001;
-			transaction = session.beginTransaction();																	
-			link.setCreatedAt(new Date());												
+			transaction = session.beginTransaction();
+			link.setCreatedAt(new Date());
 			session.saveOrUpdate(link);
 			status = 1004;
 			// End of work //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add <status: " + status + ">>", e);			
+			logger.error("Error at add <status: " + status + ">>", e);
 			if (transaction != null) {
 				transaction.rollback();
 			}
 			throw new RuntimeException("Error from create");
-		} finally {			
+		} finally {
 		}
 	} // End of the method //
-	
+
 	public void createError(final Session session, final BotCrawlerError err) {
-		// Use the hibernate template class		
+		// Use the hibernate template class
 		Transaction transaction = null;
 		int status = -1;
-		try {		
+		try {
 			status = 1001;
-			transaction = session.beginTransaction();																	
-			err.setCreatedAt(new Date());												
+			transaction = session.beginTransaction();
+			err.setCreatedAt(new Date());
 			session.saveOrUpdate(err);
 			status = 1004;
 			// End of work //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add <status: " + status + ">>", e);			
+			logger.error("Error at add <status: " + status + ">>", e);
 			if (transaction != null) {
 				transaction.rollback();
 			}
 			throw new RuntimeException("Error from create");
-		} finally {			
+		} finally {
 		}
 	} // End of the method //
-	
-	public List<Object []> findTopHosts(final Session session) {
-		// Use the hibernate template class		
+
+	public List<Object[]> findTopHosts(final Session session) {
+		// Use the hibernate template class
 		Transaction transaction = null;
-		final List<Object []> seeds = new ArrayList<Object []>();
-		try {						
-			transaction = session.beginTransaction();			
-			logger.info("Attempting to find top seed requests");			
-			final List list = session.createQuery("select o.host, count(o.host) as theCount from BotCrawlerLink o group by o.host order by theCount").list();			
-			Object [] seed = null;
+		final List<Object[]> seeds = new ArrayList<Object[]>();
+		try {
+			transaction = session.beginTransaction();
+			logger.info("Attempting to find top seed requests");
+			final List list = session.createQuery(
+					"select o.host, count(o.host) as theCount from BotCrawlerLink o group by o.host order by theCount")
+					.list();
+			Object[] seed = null;
 			if (list != null) {
 				for (final Object obj : list) {
-					seed = (Object []) obj;
+					seed = (Object[]) obj;
 					seeds.add(seed);
 				}
-			} // End of the if //																
+			} // End of the if //
 			transaction.commit();
 			session.flush();
 		} catch (final Exception e) {
-			logger.error("Error at add", e);			
+			logger.error("Error at add", e);
 			if (transaction != null) {
 				transaction.rollback();
-			}			
-		} finally {			
+			}
+		} finally {
 		}
 		return seeds;
 	} // End of the method //
-	
+
 } // End of the class //

@@ -54,30 +54,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Connect to robots, connect to page and produce a collection of links and add to the collective.
+ * Connect to robots, connect to page and produce a collection of links and add
+ * to the collective.
  * 
  * Non-threaded approach for connecting and crawling.
  * 
- * @author bbrown 
+ * @author bbrown
  */
 public class BotCrawlerProducer {
 
 	private static final Logger logger = LoggerFactory.getLogger(BotCrawlerProducer.class);
-	
+
 	private final LinkProcessQueueDatabase queue;
-	private final ApplicationContext ctx;	
-	
+	private final ApplicationContext ctx;
+
 	public BotCrawlerProducer(final ApplicationContext ctx, final LinkProcessQueueDatabase queue) {
 		this.queue = queue;
 		this.ctx = ctx;
 	}
-	
+
 	/**
 	 * Crawl and produce a collection of links.
 	 * 
 	 * @param link
 	 */
-	public void connectAndCrawl(final BotLink link) {		
+	public void connectAndCrawl(final BotLink link) {
 		if (this.queue.hasproc(link)) {
 			// Already been processed, exit //
 			logger.info("This link has been processed, exiting " + link);
@@ -88,7 +89,7 @@ public class BotCrawlerProducer {
 			return;
 		}
 		logger.info("Launching crawl against link : " + link + " // id=" + Thread.currentThread().getName());
-		
+
 		// First check, verify against the 'ignore' list
 		final boolean okFromIgnore = this.queue.okFromIgnore(link.getHost());
 		if (!okFromIgnore) {
@@ -96,18 +97,18 @@ public class BotCrawlerProducer {
 			logger.info("Link is not valid based on ignore information, link=" + link);
 			return;
 		}
-		
+
 		final String host = link.getHost();
 		if (queue.robots().get(host) == null) {
 			this.connectRobots(link);
 		} else {
 			logger.info("Using existing robots data for host, host=" + host);
 		}
-		
+
 		// Check the robots text against the URL
 		// If robots data suggests not to crawl then don't crawl //
 		boolean invalidRobotsRunConnect = false;
-		if (queue.robots().get(host) != null) {					
+		if (queue.robots().get(host) != null) {
 			// With robots info, attempt to process
 			final RobotsInfo robotsInfo = queue.robots().get(host);
 			if (robotsInfo.valid()) {
@@ -124,24 +125,22 @@ public class BotCrawlerProducer {
 		} else {
 			invalidRobotsRunConnect = true;
 		} // End of the if - else //
-		
+
 		if (invalidRobotsRunConnect) {
 			// Connect and parse without robot info //
 			logger.info("Connecting and parsing without robots info [CRL76x0]");
 			this.connectAndParse(link);
 		} // End of the if else //
-		
+
 		logger.info("End of launching crawl against link : " + link);
 	} // End of the method //
-	
-	protected void connectAndParse(final BotLink link)  {
+
+	protected void connectAndParse(final BotLink link) {
 		final WebConnector connector = new WebConnector(queue);
 		try {
-			// Based on allowed rules from robots.txt continue with parsing //			
+			// Based on allowed rules from robots.txt continue with parsing //
 			final URIBuilder builder = new URIBuilder();
-			builder.setScheme(link.getScheme())
-			.setHost(link.getHost())
-			.setPath(link.getPath());
+			builder.setScheme(link.getScheme()).setHost(link.getHost()).setPath(link.getPath());
 			final String data = connector.connect(link, builder);
 			if (data == null) {
 				logger.error("Could not collect data from request, link=" + link);
@@ -149,7 +148,7 @@ public class BotCrawlerProducer {
 			} // End of the if //
 			final WebParser parser = new WebParser(ctx, queue);
 			parser.parse(link, builder, data);
-		} catch(final CrawlerError ce) {
+		} catch (final CrawlerError ce) {
 			logger.error("Crawler code Error at connect/parse", ce);
 			final HttpResponse response = connector.getResponse();
 			if (response != null) {
@@ -169,41 +168,41 @@ public class BotCrawlerProducer {
 							if (session != null) {
 								session.close();
 							}
-						} catch(final Throwable ee) {
+						} catch (final Throwable ee) {
 							logger.error("Error at connect error save", ee);
-						} 
+						}
 					} // End if code //
-				} // End of the if status line 
+				} // End of the if status line
 			} // End of the if - response //
-		} catch(final Throwable e) {
+		} catch (final Throwable e) {
 			e.printStackTrace();
-			logger.error("Error at connact and parse" , e);					
+			logger.error("Error at connact and parse", e);
 		} // End of the try - catch //
 	} // End of the method //
-	
-	protected void connectRobots(final BotLink link)  {
+
+	protected void connectRobots(final BotLink link) {
 		final RobotsConnector robotsConnector = new RobotsConnector();
 		try {
-			// Download robots.txt and parse //			
+			// Download robots.txt and parse //
 			final String robotsTxt = robotsConnector.connect(link.getScheme(), link.getHost());
 			final RobotsParser robotParser = new RobotsParser();
-			final RobotsInfo info = robotParser.parse(link, robotsTxt);		
-			logger.info(String.valueOf(info));			
-			
+			final RobotsInfo info = robotParser.parse(link, robotsTxt);
+			logger.info(String.valueOf(info));
+
 			// Write robots info to correct path //
 			final TextHelpers text = new TextHelpers();
-			final String dir = text.baseDirectory(link);					 					
+			final String dir = text.baseDirectory(link);
 			final File chkdir = new File(OctaneCrawlerConstants.CRAWLER_HOME + "/" + dir + "_robots_ignore");
-			final boolean res = chkdir.mkdirs();			
+			final boolean res = chkdir.mkdirs();
 			final String robotpath = OctaneCrawlerConstants.CRAWLER_HOME + "/" + dir + "_robots_ignore/robots.txt";
-			new IO<Void>().w(robotpath, new Fx<PrintWriter>() {							
-				 public void $(final PrintWriter o, final int idx) {
-					 o.println(robotsTxt);
-				 } 
-			});						
+			new IO<Void>().w(robotpath, new Fx<PrintWriter>() {
+				public void $(final PrintWriter o, final int idx) {
+					o.println(robotsTxt);
+				}
+			});
 			// Save that this robots data is available //
-			queue.robots().put(link.getHost(), info);	
-		} catch(final CrawlerError ce) {
+			queue.robots().put(link.getHost(), info);
+		} catch (final CrawlerError ce) {
 			logger.error("Crawler code Error at connect robots", ce);
 			final HttpResponse response = robotsConnector.getResponse();
 			if (response != null) {
@@ -223,16 +222,16 @@ public class BotCrawlerProducer {
 							if (session != null) {
 								session.close();
 							}
-						} catch(final Throwable ee) {
+						} catch (final Throwable ee) {
 							logger.error("Error at connect robots/error save", ee);
-						} 
+						}
 					} // End if code //
-				} // End of the if status line 
+				} // End of the if status line
 			} // End of the if - response //
-		} catch(final Throwable e) {
-			logger.error("Error at connect robots", e);			
-			// It is possible to log the error and persist			
-		} // End of the try - catch //	
+		} catch (final Throwable e) {
+			logger.error("Error at connect robots", e);
+			// It is possible to log the error and persist
+		} // End of the try - catch //
 	} // End of the method //
-	
+
 } // End of the class //

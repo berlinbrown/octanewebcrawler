@@ -36,20 +36,20 @@ import org.slf4j.LoggerFactory;
 
 public class RobotsConnector {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebConnector.class);	
+	private static final Logger logger = LoggerFactory.getLogger(WebConnector.class);
 	private static final String NL = System.getProperty("line.separator");
-	
+
 	private URIBuilder lastURIBuilder = null;
 	private HttpResponse response = null;
-	
+
 	public String connect(final String scheme, final String host) throws Exception {
 		final URIBuilder builder = new URIBuilder();
 		builder.setScheme(scheme);
 		builder.setHost(host);
-		builder.setPath("/robots.txt");		
+		builder.setPath("/robots.txt");
 		return this.connect(builder);
 	} // End of the method //
-	
+
 	/**
 	 * Connect to robots.txt file.
 	 * 
@@ -62,7 +62,7 @@ public class RobotsConnector {
 	protected synchronized String connect(final URIBuilder builder) throws Exception {
 		this.lastURIBuilder = builder;
 		InputStream instream = null;
-		try {						
+		try {
 			logger.info("Attempting request : " + builder.toString());
 			final HttpParams params = new BasicHttpParams();
 			final HttpProtocolParamBean paramsBean = new HttpProtocolParamBean(params);
@@ -75,22 +75,22 @@ public class RobotsConnector {
 			final HttpClient httpclient = new DefaultHttpClient();
 			final HttpGet httpget = new HttpGet(uri);
 			httpget.setParams(params);
-			
+
 			// Connect //
 			final HttpResponse response = httpclient.execute(httpget);
 			final HttpEntity entity = response.getEntity();
-			
+
 			this.response = response;
 			if (response != null) {
 				if (response.getStatusLine() != null) {
 					if (response.getStatusLine().getStatusCode() != 200) {
 						// Log the error line
-						logger.error("Invalid status code - "   + response.getStatusLine().getStatusCode());
+						logger.error("Invalid status code - " + response.getStatusLine().getStatusCode());
 						throw new CrawlerError("Invalid status code - " + response.getStatusLine().getStatusCode());
 					}
 				}
 			}
-			
+
 			if (entity != null) {
 				instream = entity.getContent();
 				if (instream != null) {
@@ -133,5 +133,5 @@ public class RobotsConnector {
 	public HttpResponse getResponse() {
 		return response;
 	}
-	
+
 } // End of the class //

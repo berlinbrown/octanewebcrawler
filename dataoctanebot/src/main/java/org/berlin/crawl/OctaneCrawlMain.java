@@ -38,13 +38,13 @@ import org.berlin.crawl.bom.StartURLSeedReader;
 /**
  * Main entry point for octane web crawler.
  * 
- * @author bbrown 
+ * @author bbrown
  */
 public class OctaneCrawlMain {
 
-	public static void main(final String [] args) {				
+	public static void main(final String[] args) {
 		final StartURLSeedReader seeder = new StartURLSeedReader();
 		seeder.launch();
 	} // End of the method //
-	
+
 } // End of the class //

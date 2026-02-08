@@ -53,246 +53,246 @@ import org.berlin.swing.ui.ICloser;
  * Library interface.
  */
 public class BasicAppBaseUI {
-    
-    /**
-     * Library interface.
-     */
-    public static class BasicFrame {
-        public BasicFrame(final IBasicWindow window) {
 
-        }
-    } // End of the Class //
+	/**
+	 * Library interface.
+	 */
+	public static class BasicFrame {
+		public BasicFrame(final IBasicWindow window) {
 
-    /**
-     * Library interface.     
-     */
-    public static abstract class AbstractWindowBuilder implements IWindowBuilder {
-        private final IBasicWindow basicWindow;
+		}
+	} // End of the Class //
 
-        public AbstractWindowBuilder(final IBasicWindow basicWindow) {
-            this.basicWindow = basicWindow;
-        }
-        public abstract IBasicWindow build();
+	/**
+	 * Library interface.
+	 */
+	public static abstract class AbstractWindowBuilder implements IWindowBuilder {
+		private final IBasicWindow basicWindow;
 
-        /**
-         * @return the basicWindow
-         */
-        public IWindow getBasicWindow() {
-            return this.basicWindow;
-        }
-    } // End of the Class //
+		public AbstractWindowBuilder(final IBasicWindow basicWindow) {
+			this.basicWindow = basicWindow;
+		}
+		public abstract IBasicWindow build();
 
-    /**
-     * Library interface.
-     */
-    public static interface IBasicWindow extends IWindow {
+		/**
+		 * @return the basicWindow
+		 */
+		public IWindow getBasicWindow() {
+			return this.basicWindow;
+		}
+	} // End of the Class //
 
-        public void setWindowPanel(final IPanel panel);
-        public void setOutputTextArea(final ITextArea textArea);
-        public void setInputTextArea(final ITextArea inputTextArea);
-        public void setButtonPanel(final IPanel buttonPanel);
-        public void setButtonEnter(final IButton buttonEnter);
-        public void setButtonClear(final IButton buttonClear);
-        public void setButtonExit(final IButton buttonExit);
-        public void setLayout(ILayout layout);
-        public void setTestSelectPanel(final IPanel testSelectPanel);
+	/**
+	 * Library interface.
+	 */
+	public static interface IBasicWindow extends IWindow {
 
-        public ITextArea getOutputTextArea();
+		public void setWindowPanel(final IPanel panel);
+		public void setOutputTextArea(final ITextArea textArea);
+		public void setInputTextArea(final ITextArea inputTextArea);
+		public void setButtonPanel(final IPanel buttonPanel);
+		public void setButtonEnter(final IButton buttonEnter);
+		public void setButtonClear(final IButton buttonClear);
+		public void setButtonExit(final IButton buttonExit);
+		public void setLayout(ILayout layout);
+		public void setTestSelectPanel(final IPanel testSelectPanel);
 
-        /**
-         * @return the inputTextArea
-         */
-        public ITextArea getInputTextArea();
+		public ITextArea getOutputTextArea();
 
-        /**
-         * @return the buttonPanel
-         */
-        public IPanel getButtonPanel();
+		/**
+		 * @return the inputTextArea
+		 */
+		public ITextArea getInputTextArea();
 
-        /**
-         * @return the buttonPanel
-         */
-        public IPanel getTestSelectPanel();
+		/**
+		 * @return the buttonPanel
+		 */
+		public IPanel getButtonPanel();
 
-    } // End of the Interface //
+		/**
+		 * @return the buttonPanel
+		 */
+		public IPanel getTestSelectPanel();
 
-    /**    
-     * @author NNN    
-     */
-    public static class BasicWindow implements IBasicWindow {
+	} // End of the Interface //
 
-        private ILayout layout;
-        private IPanel windowPanel;
-        private ITextArea outputTextArea;
-        private ITextArea inputTextArea;
-        private IPanel buttonPanel;
-        private IButton buttonEnter;
-        private IButton buttonClear;
-        private IButton buttonExit;
-        private IPanel testSelectPanel;
+	/**
+	 * @author NNN
+	 */
+	public static class BasicWindow implements IBasicWindow {
 
-        private IActionHandler actionHandler = new ScriptActionHandler(this);
-                        
-        /**
-         * Method toString.
-         * 
-         * @return String
-         */
-        public String toString() {
-            return String.format("#{Basic Window: %s - %s}", super.toString(), this.windowPanel);
-        }
+		private ILayout layout;
+		private IPanel windowPanel;
+		private ITextArea outputTextArea;
+		private ITextArea inputTextArea;
+		private IPanel buttonPanel;
+		private IButton buttonEnter;
+		private IButton buttonClear;
+		private IButton buttonExit;
+		private IPanel testSelectPanel;
 
-        public void setWindowPanel(final IPanel windowPanel) {
-            this.windowPanel = windowPanel;
-        }
+		private IActionHandler actionHandler = new ScriptActionHandler(this);
 
-        public void setOutputTextArea(final ITextArea textArea) {
-            this.outputTextArea = textArea;
-        }
+		/**
+		 * Method toString.
+		 * 
+		 * @return String
+		 */
+		public String toString() {
+			return String.format("#{Basic Window: %s - %s}", super.toString(), this.windowPanel);
+		}
 
-        public void setInputTextArea(final ITextArea inputTextArea) {
-            this.inputTextArea = inputTextArea;
-        }
+		public void setWindowPanel(final IPanel windowPanel) {
+			this.windowPanel = windowPanel;
+		}
 
-        public void setButtonPanel(final IPanel buttonPanel) {
-            this.buttonPanel = buttonPanel;
-        }
+		public void setOutputTextArea(final ITextArea textArea) {
+			this.outputTextArea = textArea;
+		}
 
-        public void setButtonEnter(final IButton buttonEnter) {
-            this.buttonEnter = buttonEnter;
-        }
+		public void setInputTextArea(final ITextArea inputTextArea) {
+			this.inputTextArea = inputTextArea;
+		}
 
-        public void setButtonClear(final IButton buttonClear) {
-            this.buttonClear = buttonClear;
-        }
+		public void setButtonPanel(final IPanel buttonPanel) {
+			this.buttonPanel = buttonPanel;
+		}
 
-        public void setButtonExit(final IButton buttonExit) {
-            this.buttonExit = buttonExit;
-        }
+		public void setButtonEnter(final IButton buttonEnter) {
+			this.buttonEnter = buttonEnter;
+		}
 
-        /**
-         * Method getComponent.
-         * 
-         * @return JComponent
-         * @see org.berlin.seesaw.swing.IWidget#getComponent()
-         */
-        public JComponent getComponent() {
-            return this.windowPanel.getComponent();
-        }
+		public void setButtonClear(final IButton buttonClear) {
+			this.buttonClear = buttonClear;
+		}
 
-        /**
-         * @param layout
-         *            the layout to set
-         * @see win.base.IBasicWindow#setLayout(ILayout)
-         */
-        public void setLayout(ILayout layout) {
-            this.layout = layout;
-        }
+		public void setButtonExit(final IButton buttonExit) {
+			this.buttonExit = buttonExit;
+		}
 
-        /**
-         * @return the chatTextArea
-         * @see win.base.IBasicWindow#getChatTextArea()
-         */
-        public ITextArea getOutputTextArea() {
-            return outputTextArea;
-        }
+		/**
+		 * Method getComponent.
+		 * 
+		 * @return JComponent
+		 * @see org.berlin.seesaw.swing.IWidget#getComponent()
+		 */
+		public JComponent getComponent() {
+			return this.windowPanel.getComponent();
+		}
 
-        /**
-         * @return the inputTextArea
-         * @see win.base.IBasicWindow#getInputTextArea()
-         */
-        public ITextArea getInputTextArea() {
-            return inputTextArea;
-        }
+		/**
+		 * @param layout
+		 *            the layout to set
+		 * @see win.base.IBasicWindow#setLayout(ILayout)
+		 */
+		public void setLayout(ILayout layout) {
+			this.layout = layout;
+		}
 
-        /**
-         * @return the buttonPanel
-         * @see win.base.IBasicWindow#getButtonPanel()
-         */
-        public IPanel getButtonPanel() {
-            return buttonPanel;
-        }
+		/**
+		 * @return the chatTextArea
+		 * @see win.base.IBasicWindow#getChatTextArea()
+		 */
+		public ITextArea getOutputTextArea() {
+			return outputTextArea;
+		}
 
-        /**
-         * @return the layout
-         */
-        public ILayout getLayout() {
-            return layout;
-        }
+		/**
+		 * @return the inputTextArea
+		 * @see win.base.IBasicWindow#getInputTextArea()
+		 */
+		public ITextArea getInputTextArea() {
+			return inputTextArea;
+		}
 
-        /**
-         * Method getText.
-         * 
-         * @return String
-         * @see org.berlin.seesaw.swing.IWidget#getText()
-         */
-        public String getText() {
-            return "";
-        }
+		/**
+		 * @return the buttonPanel
+		 * @see win.base.IBasicWindow#getButtonPanel()
+		 */
+		public IPanel getButtonPanel() {
+			return buttonPanel;
+		}
 
-        /**
-         * Method setText.
-         * 
-         * @param text
-         *            String
-         * @see org.berlin.seesaw.swing.IWidget#setText(String)
-         */
-        public void setText(String text) {
+		/**
+		 * @return the layout
+		 */
+		public ILayout getLayout() {
+			return layout;
+		}
 
-        }
+		/**
+		 * Method getText.
+		 * 
+		 * @return String
+		 * @see org.berlin.seesaw.swing.IWidget#getText()
+		 */
+		public String getText() {
+			return "";
+		}
 
-        /**
-         * @return the actionHandler
-         * @see org.berlin.seesaw.app.IWindow#getActionHandler()
-         */
-        public IActionHandler getActionHandler() {
-            return actionHandler;
-        }
+		/**
+		 * Method setText.
+		 * 
+		 * @param text
+		 *            String
+		 * @see org.berlin.seesaw.swing.IWidget#setText(String)
+		 */
+		public void setText(String text) {
 
-        /**
-         * @param actionHandler
-         *            the actionHandler to set
-         * @see org.berlin.seesaw.app.IWindow#setActionHandler(IActionHandler)
-         */
-        public void setActionHandler(IActionHandler actionHandler) {
-            this.actionHandler = actionHandler;
-        }
+		}
 
-        /**
-         * @return the testSelectPanel
-         */
-        public IPanel getTestSelectPanel() {
-            return testSelectPanel;
-        }
+		/**
+		 * @return the actionHandler
+		 * @see org.berlin.seesaw.app.IWindow#getActionHandler()
+		 */
+		public IActionHandler getActionHandler() {
+			return actionHandler;
+		}
 
-        /**
-         * @param testSelectPanel
-         *            the testSelectPanel to set
-         */
-        public void setTestSelectPanel(IPanel testSelectPanel) {
-            this.testSelectPanel = testSelectPanel;
-        }
+		/**
+		 * @param actionHandler
+		 *            the actionHandler to set
+		 * @see org.berlin.seesaw.app.IWindow#setActionHandler(IActionHandler)
+		 */
+		public void setActionHandler(IActionHandler actionHandler) {
+			this.actionHandler = actionHandler;
+		}
 
-    } // End of the Class //
-   
-    /**
-     * 
-     * @author berlin.brown
-     *
-     */
-    public static interface IWindowBuilder {
-        public IWindow build();        
-        public IWindow getBasicWindow();        
-        public void setCloser(final ICloser closer);        
-        public ICloser getCloser();
-        
-    } // End of the Class //
-        
-    /**
-     * Library interface.     
-     */
-    public static class MainFrame extends JFrame {
-        private static final long serialVersionUID = 8886912074222991557L;
-    }
+		/**
+		 * @return the testSelectPanel
+		 */
+		public IPanel getTestSelectPanel() {
+			return testSelectPanel;
+		}
+
+		/**
+		 * @param testSelectPanel
+		 *            the testSelectPanel to set
+		 */
+		public void setTestSelectPanel(IPanel testSelectPanel) {
+			this.testSelectPanel = testSelectPanel;
+		}
+
+	} // End of the Class //
+
+	/**
+	 * 
+	 * @author berlin.brown
+	 *
+	 */
+	public static interface IWindowBuilder {
+		public IWindow build();
+		public IWindow getBasicWindow();
+		public void setCloser(final ICloser closer);
+		public ICloser getCloser();
+
+	} // End of the Class //
+
+	/**
+	 * Library interface.
+	 */
+	public static class MainFrame extends JFrame {
+		private static final long serialVersionUID = 8886912074222991557L;
+	}
 
 } // End of the class

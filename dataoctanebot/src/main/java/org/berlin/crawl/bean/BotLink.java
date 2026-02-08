@@ -21,9 +21,9 @@ import org.apache.tika.sax.Link;
 
 public class BotLink {
 
-	private Long id;		
+	private Long id;
 	private Date createdAt;
-	
+
 	private Integer port;
 	private String scheme;
 	private String host;
@@ -33,20 +33,20 @@ public class BotLink {
 	private String statusline;
 	private int code;
 	private int numberLinks = 0;
-	
-	public String toString() {			
+
+	public String toString() {
 		return String.valueOf(toBuilder());
 	}
-	
+
 	public URIBuilder toBuilder() {
 		final URIBuilder b = new URIBuilder();
 		b.setPath(path);
 		b.setHost(host);
-		b.setScheme(scheme);		
+		b.setScheme(scheme);
 		b.setQuery(query);
 		return b;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -54,7 +54,8 @@ public class BotLink {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	private void setId(Long id) {
 		this.id = id;
@@ -66,7 +67,8 @@ public class BotLink {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt
+	 *            the createdAt to set
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -80,7 +82,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param port the port to set
+	 * @param port
+	 *            the port to set
 	 */
 	public void setPort(Integer port) {
 		this.port = port;
@@ -94,7 +97,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param scheme the scheme to set
+	 * @param scheme
+	 *            the scheme to set
 	 */
 	public void setScheme(String scheme) {
 		this.scheme = scheme;
@@ -108,7 +112,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param host the host to set
+	 * @param host
+	 *            the host to set
 	 */
 	public void setHost(String host) {
 		this.host = host;
@@ -122,7 +127,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param path the path to set
+	 * @param path
+	 *            the path to set
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -136,7 +142,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param query the query to set
+	 * @param query
+	 *            the query to set
 	 */
 	public void setQuery(String query) {
 		this.query = query;
@@ -150,13 +157,16 @@ public class BotLink {
 	}
 
 	/**
-	 * @param link the link to set
+	 * @param link
+	 *            the link to set
 	 */
 	public void setLink(Link link) {
 		this.link = link;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -171,7 +181,9 @@ public class BotLink {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -219,7 +231,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param statusline the statusline to set
+	 * @param statusline
+	 *            the statusline to set
 	 */
 	public void setStatusline(String statusline) {
 		this.statusline = statusline;
@@ -233,7 +246,8 @@ public class BotLink {
 	}
 
 	/**
-	 * @param code the code to set
+	 * @param code
+	 *            the code to set
 	 */
 	public void setCode(int code) {
 		this.code = code;
@@ -247,10 +261,11 @@ public class BotLink {
 	}
 
 	/**
-	 * @param numberLinks the numberLinks to set
+	 * @param numberLinks
+	 *            the numberLinks to set
 	 */
 	public void setNumberLinks(int numberLinks) {
 		this.numberLinks = numberLinks;
-	}	
-	
+	}
+
 } // End of the class //

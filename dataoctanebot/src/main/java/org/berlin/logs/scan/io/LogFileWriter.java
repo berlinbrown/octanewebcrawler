@@ -44,82 +44,83 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LogFileWriter {
-  
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogFileWriter.class);
-  
-    private String src = "";
-    private String dest = "";
-    private File srcFile;
-    private File destFile;
-    
-    private boolean verbose = false;
-    
-    private int bufferSizeInput = 4 * 8192;
-    private int bufferSizeOutput = 4 * 8192;
-    private int internalCopyWriteBufferSize = 8192;
-    
-    public LogFileWriter(final String src, final String dest) {
-        this.src = src;
-        this.dest = dest;
-        this.srcFile = new File(src);
-        this.destFile = new File(dest);        
-    }    
-    
-    public LogFileWriter(final File src, final File dest) {
-        if (this.src == null) {
-            throw new IllegalArgumentException("Invalid File at src");
-        }
-        if (this.dest == null) {
-            throw new IllegalArgumentException("Invalid File at dest");
-        }
-        this.srcFile = src;
-        this.destFile = dest;       
-    }    
-    
-    public boolean copy() {   
-      
-        LOGGER.info("LogWriter: copying : src=" + this.srcFile.getName() + " -> dest=" + this.destFile.getName());
-        LOGGER.info("LogWriter: copying : src=" + this.srcFile.getAbsolutePath() + " -> dest=" + this.destFile.getAbsolutePath());
-        
-        // Reader
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        boolean success = false;
-        try {
-            final FileInputStream fis = new FileInputStream(this.srcFile);
-            bis = new BufferedInputStream(fis, bufferSizeInput);            
-            // Writer
-            final FileOutputStream fout = new FileOutputStream(this.destFile);
-            bos = new BufferedOutputStream(fout, bufferSizeOutput);            
-            byte [] b = new byte[internalCopyWriteBufferSize];
-            int noOfBytes = 0;
-            while( (noOfBytes = bis.read(b)) != -1) {        
-                bos.write(b, 0, noOfBytes);
-            }
-            success = true;
-            Thread.sleep(80);
-        } catch(final IOException ioe) {
-            ioe.printStackTrace();
-        } catch(final InterruptedException oo) {
-            oo.printStackTrace();
-        } finally {
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }   
-            }            
-        } // End of the try - catch finally //
-        LOGGER.info("LogWriter: copying : >> Done <<");
-        return success;
-    }
-    
-} // End of the class // 
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LogFileWriter.class);
+
+	private String src = "";
+	private String dest = "";
+	private File srcFile;
+	private File destFile;
+
+	private boolean verbose = false;
+
+	private int bufferSizeInput = 4 * 8192;
+	private int bufferSizeOutput = 4 * 8192;
+	private int internalCopyWriteBufferSize = 8192;
+
+	public LogFileWriter(final String src, final String dest) {
+		this.src = src;
+		this.dest = dest;
+		this.srcFile = new File(src);
+		this.destFile = new File(dest);
+	}
+
+	public LogFileWriter(final File src, final File dest) {
+		if (this.src == null) {
+			throw new IllegalArgumentException("Invalid File at src");
+		}
+		if (this.dest == null) {
+			throw new IllegalArgumentException("Invalid File at dest");
+		}
+		this.srcFile = src;
+		this.destFile = dest;
+	}
+
+	public boolean copy() {
+
+		LOGGER.info("LogWriter: copying : src=" + this.srcFile.getName() + " -> dest=" + this.destFile.getName());
+		LOGGER.info("LogWriter: copying : src=" + this.srcFile.getAbsolutePath() + " -> dest="
+				+ this.destFile.getAbsolutePath());
+
+		// Reader
+		BufferedInputStream bis = null;
+		BufferedOutputStream bos = null;
+		boolean success = false;
+		try {
+			final FileInputStream fis = new FileInputStream(this.srcFile);
+			bis = new BufferedInputStream(fis, bufferSizeInput);
+			// Writer
+			final FileOutputStream fout = new FileOutputStream(this.destFile);
+			bos = new BufferedOutputStream(fout, bufferSizeOutput);
+			byte[] b = new byte[internalCopyWriteBufferSize];
+			int noOfBytes = 0;
+			while ((noOfBytes = bis.read(b)) != -1) {
+				bos.write(b, 0, noOfBytes);
+			}
+			success = true;
+			Thread.sleep(80);
+		} catch (final IOException ioe) {
+			ioe.printStackTrace();
+		} catch (final InterruptedException oo) {
+			oo.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (bos != null) {
+				try {
+					bos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} // End of the try - catch finally //
+		LOGGER.info("LogWriter: copying : >> Done <<");
+		return success;
+	}
+
+} // End of the class //

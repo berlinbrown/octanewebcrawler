@@ -41,22 +41,23 @@ import java.io.Serializable;
  */
 public interface IHandler<T, K> extends Serializable {
 
-    /**
-     * No return type.
-     */
-    public static final Object NONE = new Object();
-    
-    /**
-     * No return type.
-     */
-    public static final Object VOID = new Object();
-    
-    /**
-     * Process the object.
-     * 
-     * @param input  Any input object
-     * @return
-     */
-    public K execute(final T input);
-    
+	/**
+	 * No return type.
+	 */
+	public static final Object NONE = new Object();
+
+	/**
+	 * No return type.
+	 */
+	public static final Object VOID = new Object();
+
+	/**
+	 * Process the object.
+	 * 
+	 * @param input
+	 *            Any input object
+	 * @return
+	 */
+	public K execute(final T input);
+
 } // End of the Handler Interface //

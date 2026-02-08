@@ -17,33 +17,32 @@ import oauth.signpost.http.HttpRequest;
  */
 public class QueryStringSigningStrategy implements SigningStrategy {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public String writeSignature(String signature, HttpRequest request,
-            HttpParameters requestParameters) {
+	public String writeSignature(String signature, HttpRequest request, HttpParameters requestParameters) {
 
-        // add all (x_)oauth parameters
-        HttpParameters oauthParams = requestParameters.getOAuthParameters();
-        oauthParams.put(OAuth.OAUTH_SIGNATURE, signature, true);
+		// add all (x_)oauth parameters
+		HttpParameters oauthParams = requestParameters.getOAuthParameters();
+		oauthParams.put(OAuth.OAUTH_SIGNATURE, signature, true);
 
-        Iterator<String> iter = oauthParams.keySet().iterator();
+		Iterator<String> iter = oauthParams.keySet().iterator();
 
-        // add the first query parameter (we always have at least the signature)
-        String firstKey = iter.next();
-        StringBuilder sb = new StringBuilder(OAuth.addQueryString(request.getRequestUrl(),
-            oauthParams.getAsQueryString(firstKey)));
+		// add the first query parameter (we always have at least the signature)
+		String firstKey = iter.next();
+		StringBuilder sb = new StringBuilder(
+				OAuth.addQueryString(request.getRequestUrl(), oauthParams.getAsQueryString(firstKey)));
 
-        while (iter.hasNext()) {
-            sb.append("&");
-            String key = iter.next();
-            sb.append(oauthParams.getAsQueryString(key));
-        }
+		while (iter.hasNext()) {
+			sb.append("&");
+			String key = iter.next();
+			sb.append(oauthParams.getAsQueryString(key));
+		}
 
-        String signedUrl = sb.toString();
+		String signedUrl = sb.toString();
 
-        request.setRequestUrl(signedUrl);
+		request.setRequestUrl(signedUrl);
 
-        return signedUrl;
-    }
+		return signedUrl;
+	}
 
 }

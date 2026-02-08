@@ -27,33 +27,32 @@ import oauth.signpost.http.HttpResponse;
  */
 public class DefaultOAuthProvider extends AbstractOAuthProvider {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public DefaultOAuthProvider(String requestTokenEndpointUrl, String accessTokenEndpointUrl,
-            String authorizationWebsiteUrl) {
-        super(requestTokenEndpointUrl, accessTokenEndpointUrl, authorizationWebsiteUrl);
-    }
+	public DefaultOAuthProvider(String requestTokenEndpointUrl, String accessTokenEndpointUrl,
+			String authorizationWebsiteUrl) {
+		super(requestTokenEndpointUrl, accessTokenEndpointUrl, authorizationWebsiteUrl);
+	}
 
-    protected HttpRequest createRequest(String endpointUrl) throws MalformedURLException,
-            IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL(endpointUrl).openConnection();
-        connection.setRequestMethod("POST");
-        connection.setAllowUserInteraction(false);
-        connection.setRequestProperty("Content-Length", "0");
-        return new HttpURLConnectionRequestAdapter(connection);
-    }
+	protected HttpRequest createRequest(String endpointUrl) throws MalformedURLException, IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(endpointUrl).openConnection();
+		connection.setRequestMethod("POST");
+		connection.setAllowUserInteraction(false);
+		connection.setRequestProperty("Content-Length", "0");
+		return new HttpURLConnectionRequestAdapter(connection);
+	}
 
-    protected HttpResponse sendRequest(HttpRequest request) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) request.unwrap();
-        connection.connect();
-        return new HttpURLConnectionResponseAdapter(connection);
-    }
+	protected HttpResponse sendRequest(HttpRequest request) throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) request.unwrap();
+		connection.connect();
+		return new HttpURLConnectionResponseAdapter(connection);
+	}
 
-    @Override
-    protected void closeConnection(HttpRequest request, HttpResponse response) {
-        HttpURLConnection connection = (HttpURLConnection) request.unwrap();
-        if (connection != null) {
-            connection.disconnect();
-        }
-    }
+	@Override
+	protected void closeConnection(HttpRequest request, HttpResponse response) {
+		HttpURLConnection connection = (HttpURLConnection) request.unwrap();
+		if (connection != null) {
+			connection.disconnect();
+		}
+	}
 }

@@ -10,13 +10,13 @@ import org.codehaus.jackson.JsonNode;
 public class TestParseJSON3 {
 
 	public static void test() {
-		
+
 		final StringBuffer document = new StringBuffer(128);
 		FileInputStream stream = null;
-		try {	        	       
-	        final FriendsRequest req = new FriendsRequest();
-	        final JsonNode n = req.connect("obama");	        
-		} catch(final Exception e) {	
+		try {
+			final FriendsRequest req = new FriendsRequest();
+			final JsonNode n = req.connect("obama");
+		} catch (final Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (stream != null) {
@@ -27,14 +27,14 @@ public class TestParseJSON3 {
 				} // End of the try - catch //
 			}
 		} // End of the try - catch //
-		
-		final JSONParser p = new JSONParser();		
+
+		final JSONParser p = new JSONParser();
 	} // End of the method //
-	
-	public static void main(final String [] args) {		
+
+	public static void main(final String[] args) {
 		System.out.println("Running Test");
 		test();
 		System.out.println("Done Running Test");
 	} // End of the method //
-	
+
 } // End of the class //

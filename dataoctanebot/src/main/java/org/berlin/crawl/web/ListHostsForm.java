@@ -4,9 +4,9 @@ import org.apache.struts.action.ActionForm;
 
 public class ListHostsForm extends ActionForm {
 
-	private String [] hosts = new String [] {};
-	private String [] selectedHosts = null;
-	
+	private String[] hosts = new String[]{};
+	private String[] selectedHosts = null;
+
 	/**
 	 * @return the hosts
 	 */
@@ -15,7 +15,8 @@ public class ListHostsForm extends ActionForm {
 	}
 
 	/**
-	 * @param hosts the hosts to set
+	 * @param hosts
+	 *            the hosts to set
 	 */
 	public void setHosts(final String[] hosts) {
 		this.hosts = hosts;
@@ -29,10 +30,11 @@ public class ListHostsForm extends ActionForm {
 	}
 
 	/**
-	 * @param selectedHosts the selectedHosts to set
+	 * @param selectedHosts
+	 *            the selectedHosts to set
 	 */
 	public void setSelectedHosts(final String[] selectedHosts) {
 		this.selectedHosts = selectedHosts;
 	}
-	
+
 }

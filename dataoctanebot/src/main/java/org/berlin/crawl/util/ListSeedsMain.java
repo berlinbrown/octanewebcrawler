@@ -47,18 +47,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ListSeedsMain {
 
 	private static final Logger logger = LoggerFactory.getLogger(ListSeedsMain.class);
-	
+
 	private static final String PREFIX = "insert into bot_crawler_seeds(created_at, scheme, host, path, enabled) values('2013-03-14 03:22:36', 'http', '";
-	private static final String POST1 = "', '" ;
+	private static final String POST1 = "', '";
 	private static final String POST2 = "', 'Y');";
-	
-	public static void main(final String [] args) {		
+
+	public static void main(final String[] args) {
 		logger.info("Running");
-		final ApplicationContext ctx = new ClassPathXmlApplicationContext("/org/berlin/batch/batch-databot-context.xml");
-		final BotCrawlerDAO dao = new  BotCrawlerDAO();
+		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"/org/berlin/batch/batch-databot-context.xml");
+		final BotCrawlerDAO dao = new BotCrawlerDAO();
 		final SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
 		Session session = sf.openSession();
-		
+
 		final StringBuffer buf = new StringBuffer();
 		final List<String> seeds = dao.findHosts(session);
 		final String nl = System.getProperty("line.separator");
@@ -69,26 +70,26 @@ public class ListSeedsMain {
 			buf.append(POST1);
 			buf.append("/");
 			buf.append(POST2);
-			buf.append(nl);		
+			buf.append(nl);
 		} // End of the for //
 		logger.info(buf.toString());
-		
+
 		// Now print the number of links //
 		final List<Long> ii = dao.countLinks(session);
 		logger.warn("Count of Links : " + ii);
-		
+
 		// Also print top hosts //
-		final List<Object []> hosts = dao.findTopHosts(session);
+		final List<Object[]> hosts = dao.findTopHosts(session);
 		Collections.reverse(hosts);
-		for (final Object [] oo : hosts) {
+		for (final Object[] oo : hosts) {
 			System.out.println(oo[0] + " // " + oo[1].getClass());
 		}
-		
+
 		if (session != null) {
 			// May not need to close the session
 			session.close();
 		} // End of the if //
-		logger.info("Done");		
+		logger.info("Done");
 	} // End of the method //
-	
+
 } // End of the class //

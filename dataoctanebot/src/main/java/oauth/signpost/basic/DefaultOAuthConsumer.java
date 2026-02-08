@@ -27,18 +27,19 @@ import oauth.signpost.http.HttpRequest;
  */
 public class DefaultOAuthConsumer extends AbstractOAuthConsumer {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public DefaultOAuthConsumer(String consumerKey, String consumerSecret) {
-        super(consumerKey, consumerSecret);
-    }
+	public DefaultOAuthConsumer(String consumerKey, String consumerSecret) {
+		super(consumerKey, consumerSecret);
+	}
 
-    @Override
-    protected HttpRequest wrap(final Object request) {    	
-        if (!(request instanceof HttpURLConnection)) {
-            throw new IllegalArgumentException("The default consumer expects requests of type java.net.HttpURLConnection");
-        }
-        return new HttpURLConnectionRequestAdapter((HttpURLConnection) request);
-    }
+	@Override
+	protected HttpRequest wrap(final Object request) {
+		if (!(request instanceof HttpURLConnection)) {
+			throw new IllegalArgumentException(
+					"The default consumer expects requests of type java.net.HttpURLConnection");
+		}
+		return new HttpURLConnectionRequestAdapter((HttpURLConnection) request);
+	}
 
 } // End of the class //

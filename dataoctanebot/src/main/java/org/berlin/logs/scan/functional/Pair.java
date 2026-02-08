@@ -37,78 +37,84 @@ package org.berlin.logs.scan.functional;
 import java.io.Serializable;
 
 /**
- * Basic pair, tuple type for storing multiple values.
- * This class has an advantage over arrays because you can hold different types of objects
- * without losing type safety.
+ * Basic pair, tuple type for storing multiple values. This class has an
+ * advantage over arrays because you can hold different types of objects without
+ * losing type safety.
  * 
  * Pair Usage:
  * 
  * <pre>
- *   Pair<String, String> p = new Pair<String, String>("john", "A");
- *   Pair<String, Integer> z = new Pair<String, Integer>("adam", 100);
+ * Pair<String, String> p = new Pair<String, String>("john", "A");
+ * Pair<String, Integer> z = new Pair<String, Integer>("adam", 100);
  * </pre>
  * 
  * @param <T>
  * @param <S>
  */
-public class Pair <T, S> implements Serializable {
-	
-     /**
-      * serial version id.
-      */
-      private static final long serialVersionUID = -2202117371650541073L;
-    
-	  private final T first;
-      private final S second;
+public class Pair<T, S> implements Serializable {
 
-      /**
-       * Constructor for Pair.
-       * @param f T
-       * @param s S
-       */
-      public Pair(T f, S s) {
-          first = f;
-          second = s;
-      }
+	/**
+	 * serial version id.
+	 */
+	private static final long serialVersionUID = -2202117371650541073L;
 
-      /**
-       * Method getFirst.
-       * @return T
-       */
-      public T getFirst() {
-          return first;
-      }
+	private final T first;
+	private final S second;
 
-      /**
-       * Method getSecond.
-       * @return S
-       */
-      public S getSecond() {
-          return second;
-      }
+	/**
+	 * Constructor for Pair.
+	 * 
+	 * @param f
+	 *            T
+	 * @param s
+	 *            S
+	 */
+	public Pair(T f, S s) {
+		first = f;
+		second = s;
+	}
 
-      /**
-       * Method toString.
-       * @return String
-       */
-      public String toString() {
-          return "(" 
-              + ((first  == null) ? "" : first.toString()) + ", " 
-              + ((second == null) ? "" : second.toString()) + ")";
-      }
+	/**
+	 * Method getFirst.
+	 * 
+	 * @return T
+	 */
+	public T getFirst() {
+		return first;
+	}
 
-      /**
-       * usage:
-       * --------
-       * 
-       * <pre>
-       * Pair&lt;String, String&gt; Pair = dup(&quot;Testing&quot;);
-       * </pre>
-       * @param value T
-       * @return Pair<T,T>
-       */
-      public static <T> Pair<T, T> dup(T value) {
-          return new Pair<T, T>(value, value);
-      }
-      
+	/**
+	 * Method getSecond.
+	 * 
+	 * @return S
+	 */
+	public S getSecond() {
+		return second;
+	}
+
+	/**
+	 * Method toString.
+	 * 
+	 * @return String
+	 */
+	public String toString() {
+		return "(" + ((first == null) ? "" : first.toString()) + ", " + ((second == null) ? "" : second.toString())
+				+ ")";
+	}
+
+	/**
+	 * usage: --------
+	 * 
+	 * <pre>
+	 * Pair&lt;String, String&gt; Pair = dup(&quot;Testing&quot;);
+	 * </pre>
+	 * 
+	 * @param value
+	 *            T
+	 * @return Pair<T,T>
+	 */
+	public static <T> Pair<T, T> dup(T value) {
+		return new Pair<T, T>(value, value);
+	}
+
 } // End of Class //

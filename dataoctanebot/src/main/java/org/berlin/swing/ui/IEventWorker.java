@@ -48,26 +48,27 @@ import org.berlin.swing.ui.Components.IWidget;
  *
  */
 public interface IEventWorker {
-    
-    /**
-     * Execute.
-     */
-    public void execute();
-    
-    /**
-     * Build worker.
-     * @param masterParent
-     * @param event
-     * @return
-     */
-    public SwingWorker buildWorker(final IWidget masterParent, final ActionEvent event);
-    
-    /**
-     * Builder listener.
-     * 
-     * @param masterParent
-     * @return
-     */
-    public ActionListener buildListener(final IWidget masterParent);
-    
+
+	/**
+	 * Execute.
+	 */
+	public void execute();
+
+	/**
+	 * Build worker.
+	 * 
+	 * @param masterParent
+	 * @param event
+	 * @return
+	 */
+	public SwingWorker buildWorker(final IWidget masterParent, final ActionEvent event);
+
+	/**
+	 * Builder listener.
+	 * 
+	 * @param masterParent
+	 * @return
+	 */
+	public ActionListener buildListener(final IWidget masterParent);
+
 } // End of interface

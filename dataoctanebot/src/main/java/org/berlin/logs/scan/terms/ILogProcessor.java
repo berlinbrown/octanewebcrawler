@@ -34,7 +34,7 @@
 package org.berlin.logs.scan.terms;
 
 public interface ILogProcessor {
-   
-    public void report();
-    
+
+	public void report();
+
 }

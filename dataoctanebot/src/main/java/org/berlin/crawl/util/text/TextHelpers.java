@@ -41,7 +41,7 @@ public class TextHelpers {
 		if (link == null) {
 			// If link is null do not create //
 			return null;
-		}		
+		}
 		// Host + path
 		final StringBuffer buf = new StringBuffer();
 		// Replace all nonalphanumeric characters with a space
@@ -51,36 +51,36 @@ public class TextHelpers {
 		}
 		return "pX" + h + "Xy";
 	}
-	
+
 	public String mangleFile(final BotLink link) {
 		if (link == null) {
 			// If link is null do not create //
 			return null;
-		}		
+		}
 		if (link.getPath() == null) {
 			return null;
 		}
 		// Host + path
 		final StringBuffer buf = new StringBuffer();
-		
+
 		// Treat path as _
 		String p = link.getPath().trim().toLowerCase();
-		p = p.replaceAll("/", "_");		
+		p = p.replaceAll("/", "_");
 		p = p.replaceAll("\\.", "_");
 		// Replace all nonalphanumeric characters with a space
 		p = p.replaceAll("[^_a-z0-9]", "");
 		if (p.length() == 0) {
 			return null;
 		}
-		
+
 		String q = "";
 		if (link.getQuery() != null) {
 			q = link.getQuery().trim().toLowerCase();
 			q = q.replaceAll("[^a-z0-9]", "");
-		}		
+		}
 		return "wX" + p + "_" + q + "Xz";
-	}	
-	
+	}
+
 	public String manglePath(final BotLink link) {
 		final String b = baseDirectory(link);
 		final String f = mangleFile(link);
@@ -90,12 +90,12 @@ public class TextHelpers {
 		}
 		return (b + "/" + f2).replaceAll("\\-", "");
 	}
-	
+
 	public String mangleText(final BotLink link) {
 		return manglePath(link) + ".oct_txt";
 	}
 	public String mangleFull(final BotLink link) {
-		return manglePath(link) + ".oct_fll";		
-	}		
-	
+		return manglePath(link) + ".oct_fll";
+	}
+
 } // End of the class //

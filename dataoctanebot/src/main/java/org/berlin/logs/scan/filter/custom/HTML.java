@@ -36,35 +36,35 @@ package org.berlin.logs.scan.filter.custom;
 import java.util.Hashtable;
 
 public class HTML {
-  
-  Hashtable<String, String> sessionBgColor = new Hashtable<String, String>(); 
-  Hashtable<String, String> agentBgColor = new Hashtable<String, String>();
-  
-  public HTML() {
-    
-    sessionBgColor.put("1", "#ffbbee"); 
-    sessionBgColor.put("2", "#bbffaa");
-    sessionBgColor.put("3", "#ffaaee"); 
-    sessionBgColor.put("4", "#ffaadd");
-    sessionBgColor.put("5", "#fff");    
-    sessionBgColor.put("6", "#ffffaa");    
-    sessionBgColor.put("7", "#ffffbb");
-    sessionBgColor.put("8", "#fff");
-    sessionBgColor.put("9", "#ffee88");    
-    sessionBgColor.put("10", "#ffee88");
-    sessionBgColor.put("11", "#fff");
-    sessionBgColor.put("12", "#ffee88");
-    sessionBgColor.put("13", "#bbddff");
-       
-    agentBgColor.put("1","#ff88dd");
-    agentBgColor.put("2","#ffff88");
-    agentBgColor.put("3","#ff77dd");
-    agentBgColor.put("4","#ee77ff");    
-    agentBgColor.put("5","#ffaaff");           
-    agentBgColor.put("6","#ffaaff");    
-    agentBgColor.put("7","#ffccff");    
-    agentBgColor.put("8","#ff77dd");
-    
-  }
-  
+
+	Hashtable<String, String> sessionBgColor = new Hashtable<String, String>();
+	Hashtable<String, String> agentBgColor = new Hashtable<String, String>();
+
+	public HTML() {
+
+		sessionBgColor.put("1", "#ffbbee");
+		sessionBgColor.put("2", "#bbffaa");
+		sessionBgColor.put("3", "#ffaaee");
+		sessionBgColor.put("4", "#ffaadd");
+		sessionBgColor.put("5", "#fff");
+		sessionBgColor.put("6", "#ffffaa");
+		sessionBgColor.put("7", "#ffffbb");
+		sessionBgColor.put("8", "#fff");
+		sessionBgColor.put("9", "#ffee88");
+		sessionBgColor.put("10", "#ffee88");
+		sessionBgColor.put("11", "#fff");
+		sessionBgColor.put("12", "#ffee88");
+		sessionBgColor.put("13", "#bbddff");
+
+		agentBgColor.put("1", "#ff88dd");
+		agentBgColor.put("2", "#ffff88");
+		agentBgColor.put("3", "#ff77dd");
+		agentBgColor.put("4", "#ee77ff");
+		agentBgColor.put("5", "#ffaaff");
+		agentBgColor.put("6", "#ffaaff");
+		agentBgColor.put("7", "#ffccff");
+		agentBgColor.put("8", "#ff77dd");
+
+	}
+
 } // End of the class //

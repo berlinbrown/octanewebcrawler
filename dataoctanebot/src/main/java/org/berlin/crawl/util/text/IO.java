@@ -47,119 +47,120 @@ import java.io.PrintWriter;
  * 
  * @param <A>
  */
-public final class IO <A> {
+public final class IO<A> {
 
 	public static interface Fx2<Bx> {
-        Bx f();
-    }    
-    public static interface Fx<Ax> {
-        void $ (final Ax o, final int idx);
-    }        
-    public static interface Fx3<Ax, Bx> {
-        void $ (final Ax o, final Bx u, final int idx);
-    }    
-    public final void foreach(final Iterable<A> lst, final Fx<A> f) {
-        int i = 0;
-        for (final A o : lst) {            
-            f.$(o, i++);
-            
-        }        
-    }   
-    
-    public final void w(final String filename, final Fx<PrintWriter> f) {
-    	this.withOpenWriteFile(filename, f);
-    }
-    
-    /**
-     * Open file macro.
-     */
-    public final void withOpenFile(final String filename, final Fx<String> f) {
-        FileInputStream fis = null;        
-        try {
-            fis = new FileInputStream(new File(filename));
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(fis));            
-            String data = "";            
-            do {            
-                int i = 0;
-                data = reader.readLine(); 
-                if (data != null) {
-                    f.$(data, i++);
-                }
-            } while(data != null);       
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) { }
-            }
-        } // End of the try - catch finally //            
-    } // End of the function //
-    
-    /**
-     * Open file macro.
-     */
-    public final void withOpenWriteFile(final String filename, final Fx<PrintWriter> f) {
-        PrintWriter out = null;
-        try {
-            final String outputFilename = filename;
-            final BufferedOutputStream bos1 = new BufferedOutputStream(new FileOutputStream(outputFilename));
-            out = new PrintWriter(bos1);
-            f.$(out, 0);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }               
-        } // End of the try - catch //          
-    } // End of the function //
-    
-    /**
-     * Open file macro.
-     */
-    public final void withFiles(final String filename1, final String filename2, final Fx3<String, PrintWriter> f) {
-        PrintWriter out = null;
-        FileInputStream fis = null;   
-        try {
-            final String outputFilename = filename2;
-            final BufferedOutputStream bos1 = new BufferedOutputStream(new FileOutputStream(outputFilename));
-            out = new PrintWriter(bos1);
-            
-            fis = new FileInputStream(new File(filename1));
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(fis));            
-            String data = "";               
-            do {            
-                int i = 0;
-                data = reader.readLine(); 
-                if (data != null) {
-                    f.$(data, out, i++);
-                }
-            } while(data != null);                  
-        } catch (final Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            } 
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-        } // End of the try - catch //          
-    } // End of the function //    
-         
-    public final void programAspect(final String msg, final Fx<String> f) {
-        final long start = System.currentTimeMillis();
-        System.out.println("* {START} " + msg);
-        f.$("", 0);
-        final long end = System.currentTimeMillis();
-        System.out.println("* {END} " + msg + " - procTime=" + (end - start));
-    }
-    
+		Bx f();
+	}
+	public static interface Fx<Ax> {
+		void $(final Ax o, final int idx);
+	}
+	public static interface Fx3<Ax, Bx> {
+		void $(final Ax o, final Bx u, final int idx);
+	}
+	public final void foreach(final Iterable<A> lst, final Fx<A> f) {
+		int i = 0;
+		for (final A o : lst) {
+			f.$(o, i++);
+
+		}
+	}
+
+	public final void w(final String filename, final Fx<PrintWriter> f) {
+		this.withOpenWriteFile(filename, f);
+	}
+
+	/**
+	 * Open file macro.
+	 */
+	public final void withOpenFile(final String filename, final Fx<String> f) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(new File(filename));
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+			String data = "";
+			do {
+				int i = 0;
+				data = reader.readLine();
+				if (data != null) {
+					f.$(data, i++);
+				}
+			} while (data != null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+				}
+			}
+		} // End of the try - catch finally //
+	} // End of the function //
+
+	/**
+	 * Open file macro.
+	 */
+	public final void withOpenWriteFile(final String filename, final Fx<PrintWriter> f) {
+		PrintWriter out = null;
+		try {
+			final String outputFilename = filename;
+			final BufferedOutputStream bos1 = new BufferedOutputStream(new FileOutputStream(outputFilename));
+			out = new PrintWriter(bos1);
+			f.$(out, 0);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		} // End of the try - catch //
+	} // End of the function //
+
+	/**
+	 * Open file macro.
+	 */
+	public final void withFiles(final String filename1, final String filename2, final Fx3<String, PrintWriter> f) {
+		PrintWriter out = null;
+		FileInputStream fis = null;
+		try {
+			final String outputFilename = filename2;
+			final BufferedOutputStream bos1 = new BufferedOutputStream(new FileOutputStream(outputFilename));
+			out = new PrintWriter(bos1);
+
+			fis = new FileInputStream(new File(filename1));
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+			String data = "";
+			do {
+				int i = 0;
+				data = reader.readLine();
+				if (data != null) {
+					f.$(data, out, i++);
+				}
+			} while (data != null);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} // End of the try - catch //
+	} // End of the function //
+
+	public final void programAspect(final String msg, final Fx<String> f) {
+		final long start = System.currentTimeMillis();
+		System.out.println("* {START} " + msg);
+		f.$("", 0);
+		final long end = System.currentTimeMillis();
+		System.out.println("* {END} " + msg + " - procTime=" + (end - start));
+	}
+
 } // End of the algebra //

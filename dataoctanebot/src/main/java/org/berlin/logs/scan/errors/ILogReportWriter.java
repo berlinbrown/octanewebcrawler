@@ -35,10 +35,12 @@ package org.berlin.logs.scan.errors;
 
 public interface ILogReportWriter {
 
-    public void databaseReportGraphProcTime(final String outFilename, final int typi, final boolean today, final boolean week);
-    
-    public void databaseReport(final String outFilename, final boolean postfix, final boolean today, final boolean week);
-    
-    public void statisticsReport(final String outFilename, final boolean postfix);
-    
+	public void databaseReportGraphProcTime(final String outFilename, final int typi, final boolean today,
+			final boolean week);
+
+	public void databaseReport(final String outFilename, final boolean postfix, final boolean today,
+			final boolean week);
+
+	public void statisticsReport(final String outFilename, final boolean postfix);
+
 }

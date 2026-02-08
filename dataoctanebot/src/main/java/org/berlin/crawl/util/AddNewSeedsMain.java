@@ -48,24 +48,25 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class AddNewSeedsMain {
 
 	private static final Logger logger = LoggerFactory.getLogger(AddNewSeedsMain.class);
-	
+
 	public static BotSeed seed() {
 		final BotSeed seed = new BotSeed();
 		seed.setScheme("http");
-		//seed.setHost("berlin2research.com");
-		//seed.setPath("/crawl1/cr1.html");
+		// seed.setHost("berlin2research.com");
+		// seed.setPath("/crawl1/cr1.html");
 		seed.setHost("thehill.com");
 		seed.setPath("/");
-		seed.setPort(null);		
+		seed.setPort(null);
 		return seed;
-	}  // End of the method //
-	
-	public static void main(final String [] args) {		
+	} // End of the method //
+
+	public static void main(final String[] args) {
 		logger.info("Running");
-		final ApplicationContext ctx = new ClassPathXmlApplicationContext("/org/berlin/batch/batch-databot-context.xml");
-		final BotCrawlerDAO dao = new  BotCrawlerDAO();
+		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"/org/berlin/batch/batch-databot-context.xml");
+		final BotCrawlerDAO dao = new BotCrawlerDAO();
 		final SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
-		Session session = sf.openSession();		
+		Session session = sf.openSession();
 		dao.createSeed(session, seed());
 		final List<BotSeed> seeds = dao.findSeedRequests(session);
 		for (final BotSeed seed : seeds) {
@@ -75,7 +76,7 @@ public class AddNewSeedsMain {
 			// May not need to close the session
 			session.close();
 		} // End of the if //
-		logger.info("Done");		
+		logger.info("Done");
 	} // End of the method //
-	
+
 } // End of the class //
