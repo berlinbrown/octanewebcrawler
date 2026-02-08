@@ -27,15 +27,12 @@ Use this query to get a count per user:
 
 select screen_name, count(message) as "Number" from bot_data_messages group by screen_name order by Number;
 
-
 ## Author and Contact
 
 Berlin Brown (berlin dot brown at gmail.com)
 http://berlin2research.com/
 
-########################################
- License 
-########################################
+## License 
 
  Copyright (c) 2013 Berlin Brown (berlin2research.com)
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +44,7 @@ http://berlin2research.com/
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- 
+
 ## Libraries used
 
 commons-io-2.1.jar, commons-lang3-3.1.jar, commons-logging-1.1.1.jar, derby-10.8.3.0.jar, 
