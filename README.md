@@ -27,9 +27,8 @@ Use this query to get a count per user:
 
 select screen_name, count(message) as "Number" from bot_data_messages group by screen_name order by Number;
 
-########################################
-Author and Contact
-########################################
+
+## Author and Contact
 
 Berlin Brown (berlin dot brown at gmail.com)
 http://berlin2research.com/
