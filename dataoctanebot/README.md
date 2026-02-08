@@ -1,22 +1,16 @@
-########################################
-# README for Octane Web Crawler
-########################################
-
-Date: 3/15/2012
+# Readme
 
 Octane Crawler is a Java based web crawler. Octane Crawler follows polite web crawler rules. 
 The goal of this project is to research content on the web.
 
-########################################
-# Quick start for octane crawler
-########################################
+## Quick start for octane crawler
 
  1. Run the database setup routines in docs/DATABASE.txt
  2. Launch the program org.berlin.crawl.OctaneCrawlMain
 
-########################################
-# README for twitter data collection
-########################################
+
+## README for twitter data collection
+
 Note: OpenNLP natural language processing data from:
 
 http://opennlp.sourceforge.net/models-1.5/
@@ -54,10 +48,8 @@ http://berlin2research.com/
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-
-########################################
-# Libraries used
-########################################
+ 
+## Libraries used
 
 commons-io-2.1.jar, commons-lang3-3.1.jar, commons-logging-1.1.1.jar, derby-10.8.3.0.jar, 
 dom4j-1.6.1.jar, hibernate-core-4.0.1.Final.jar, hsqldb-1.8.0.10.jar, httpclient-4.2.3.jar, jackson-core-asl-1.9.12.jar, 

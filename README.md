@@ -1,15 +1,14 @@
-# README for Octane Web Crawler
-Date: 3/15/2012
+# Readme
 
-Octane Crawler and OpenBotList are Java-based tools designed for web crawling and indexing the machine-readable web. Octane Crawler adheres to polite web crawling rules, ensuring responsible interaction with websites.
-
-The primary goal of this project is to research web content and publish it to centralized or decentralized platforms, promoting a free and connected web where information is openly accessible to everyone.
+Octane Crawler is a Java based web crawler. Octane Crawler follows polite web crawler rules. 
+The goal of this project is to research content on the web.
 
 ## Quick start for octane crawler
 
  1. Run the database setup routines in docs/DATABASE.txt
  2. Launch the program org.berlin.crawl.OctaneCrawlMain
- 3. 
+
+
 ## README for twitter data collection
 
 Note: OpenNLP natural language processing data from:
@@ -19,6 +18,15 @@ http://opennlp.sourceforge.net/models-1.5/
 Also see:
 http://opennlp.apache.org/documentation/1.5.2-incubating/manual/opennlp.html#tools.sentdetect
 
+Resources:
+http://norvig.com/spell-correct.html
+
+----
+
+Use this query to get a count per user:
+
+select screen_name, count(message) as "Number" from bot_data_messages group by screen_name order by Number;
+
 ########################################
 Author and Contact
 ########################################
@@ -26,7 +34,9 @@ Author and Contact
 Berlin Brown (berlin dot brown at gmail.com)
 http://berlin2research.com/
 
-## License 
+########################################
+ License 
+########################################
 
  Copyright (c) 2013 Berlin Brown (berlin2research.com)
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +48,7 @@ http://berlin2research.com/
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-
+ 
 ## Libraries used
 
 commons-io-2.1.jar, commons-lang3-3.1.jar, commons-logging-1.1.1.jar, derby-10.8.3.0.jar, 
